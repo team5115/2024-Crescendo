@@ -46,7 +46,7 @@ public class Constants{
     public static final double TARGET_ANGLE = 1;
 
     public static final class Paths{
-        // TODO path constraints
+        // TODO set the path planner constraints
         private static final PathConstraints constraints = new PathConstraints(4.0, 3.0, 1, 1);
     }
 
