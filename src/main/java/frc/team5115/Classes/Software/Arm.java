@@ -69,10 +69,6 @@ public class Arm extends SubsystemBase{
         return atSetpoint;
     }
 
-    public void turnRaw(double speed) {
-        hardwareArm.turnRaw(speed);
-    }
-
     public boolean atSetpoint() {
         return turnController.atSetpoint();
     }
