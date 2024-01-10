@@ -19,7 +19,7 @@ public class HardwareIntake{
         intakeMotor.set(speed);
     }
 
-    public void setScooterSpeed(double speed){
+    public void setScoocherSpeed(double speed){
         scoocher.set(speed);
     }
 }

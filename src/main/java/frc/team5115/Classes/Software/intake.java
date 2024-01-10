@@ -11,5 +11,19 @@ public class intake extends SubsystemBase {
     }
 
 
+    public void startIntakeMotor(){
+        HardwareIntake.setIntakeSpeed(0.3);
+    }
 
+    public void stopIntakeMotor(){
+        HardwareIntake.setIntakeSpeed(0);
+    } 
+
+    public void startScoocher(){
+        HardwareIntake.setScoocherSpeed(0.6);
+    }
+
+    public void stopScoocher(){
+        HardwareIntake.setScoocherSpeed(0);
+    }
 }
