@@ -3,10 +3,10 @@ package frc.team5115.Classes.Software;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 
-public class Intake extends SubsystemBase {
+public class Intake_temp extends SubsystemBase {
     HardwareIntake HardwareIntake;
     
-    public Intake(HardwareIntake hardwareIntake){
+    public Intake_temp(HardwareIntake hardwareIntake){
         this.HardwareIntake = hardwareIntake;
     }
 
