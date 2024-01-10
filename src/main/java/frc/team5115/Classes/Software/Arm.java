@@ -1,6 +1,8 @@
 package frc.team5115.Classes.Software;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
@@ -11,7 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
  */
 public class Arm extends SubsystemBase{
     private static final double MIN_DEGREES = -180.0;
-    private static final double TURN_PID_TOLERANCE = 0.0;
+    private static final double TURN_PID_TOLERANCE = 2.0;
     private static final double TURN_PID_KP = 0.002;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
@@ -37,7 +39,7 @@ public class Arm extends SubsystemBase{
      * @param newSetpoint the new setpoint as an angle, but might as well be a double
      */
     public void setSetpoint(Angle newSetpoint) {
-        setpoint.angle = newSetpoint.angle;
+        setpoint.angle = newSetpoint.getDegrees(MIN_DEGREES);
     }
 
     public void turnUp() {
@@ -49,11 +51,11 @@ public class Arm extends SubsystemBase{
     }
 
     public void disableBrake(){
-        hardwareArm.disableBrake();
+        hardwareArm.setIdleMode(IdleMode.kCoast);;
     }
 
     public void enableBrake(){
-        hardwareArm.enableBrake();
+        hardwareArm.setIdleMode(IdleMode.kBrake);;
     }
 
     /**
@@ -64,7 +66,7 @@ public class Arm extends SubsystemBase{
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
         System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
-        boolean atSetpoint = turnController.atSetpoint();
+        boolean atSetpoint = atSetpoint();
         if (!atSetpoint) hardwareArm.setTurn(pidOutput);
         return atSetpoint;
     }

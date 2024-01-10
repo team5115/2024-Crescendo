@@ -27,7 +27,8 @@ public class HardwareArm extends SubsystemBase{
         this.navx = navx;
         this.i2c = i2c;
         
-        grabby = new CANSparkMax(9,MotorType.kBrushless);
+        // TODO arm canIDs
+        grabby = new CANSparkMax(9, MotorType.kBrushless);
         armTurn = new CANSparkMax(10, MotorType.kBrushless);  
         armTurn.setIdleMode(IdleMode.kBrake);
         armTurn.setSmartCurrentLimit(80, 80);
@@ -67,11 +68,7 @@ public class HardwareArm extends SubsystemBase{
         return armAngle;
     }
 
-    public void disableBrake(){
-        // armTurn.setIdleMode(IdleMode.kCoast);
-    }
-
-    public void enableBrake(){
-        // armTurn.setIdleMode(IdleMode.kBrake);
+    public void setIdleMode(IdleMode mode) {
+        armTurn.setIdleMode(mode);
     }
 }

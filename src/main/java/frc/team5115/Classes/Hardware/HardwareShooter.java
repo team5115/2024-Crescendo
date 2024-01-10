@@ -11,7 +11,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 public class HardwareShooter{
     // TODO find shooter motor max voltage
     private static final double SHOOTER_MAX_VOLTAGE = 12;
-    private static final double SHOOTER_MIN_VOLTAGE = 0.05;
+    private static final double SHOOTER_MIN_RPM = 1;
 
     private CANSparkMax feederMotor;
     private CANSparkMax shooterMotor;
@@ -36,15 +36,14 @@ public class HardwareShooter{
         feederMotor.set(speed);
     }
 
-    // Units?
-    public void setShooterSpeed(double speed) {
-        if (Math.abs(speed) < SHOOTER_MIN_VOLTAGE) {
+    public void setShooterSpeedRPM(double speedRpm) {
+        if (Math.abs(speedRpm) < SHOOTER_MIN_RPM) {
             shooterMotor.setVoltage(+0);
             return;
         }
 
-        double voltage = shooterFF.calculate(speed);
-        voltage += shooterPID.calculate(speed, getShooterVelocity());
+        double voltage = shooterFF.calculate(speedRpm);
+        voltage += shooterPID.calculate(speedRpm, getShooterVelocity());
         voltage = MathUtil.clamp(voltage, -SHOOTER_MAX_VOLTAGE, SHOOTER_MAX_VOLTAGE);
         shooterMotor.setVoltage(voltage);
     }
