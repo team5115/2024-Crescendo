@@ -19,10 +19,10 @@ public class Shooter extends SubsystemBase {
     }
 
     public void startShooter() {
-        hardwareShooter.setShooterSpeed(1); // TODO find good shooter speed [0, ???]
+        hardwareShooter.setShooterSpeedRPM(120); // TODO find good shooter speed in RPMs
     }
 
     public void stopShooter() {
-        hardwareShooter.setShooterSpeed(0);
+        hardwareShooter.setShooterSpeedRPM(0);
     }
 }
