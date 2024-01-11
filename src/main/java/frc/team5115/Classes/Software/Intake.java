@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
 
 
     public void startIntakeMotor(){
-        HardwareIntake.setIntakeSpeed(0.3);
+        HardwareIntake.setIntakeSpeed(0.3); // TODO find good intake speed [-1, +1]
     }
 
     public void stopIntakeMotor(){

@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 public class HardwareFeeder {
     private CANSparkMax feederMotor;
     public HardwareFeeder() { 
+        // TODO feeder canIds
         feederMotor = new CANSparkMax(0, MotorType.kBrushless);
     }
     

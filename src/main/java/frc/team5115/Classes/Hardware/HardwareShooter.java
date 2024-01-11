@@ -20,9 +20,7 @@ public class HardwareShooter{
 
     public HardwareShooter() {
         // TODO shooter can IDs
-        
         shooterMotor = new CANSparkMax(0, MotorType.kBrushless);
-        
         shooterEncoder = shooterMotor.getEncoder();
         shooterEncoder.setVelocityConversionFactor(0); // TODO shooter velocity conversion factor
   
@@ -46,5 +44,4 @@ public class HardwareShooter{
     public double getShooterVelocity() {
         return shooterEncoder.getVelocity();
     }
-    
 }

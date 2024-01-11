@@ -10,7 +10,7 @@ public class HardwareIntake{
     
 
     public HardwareIntake(){
-        //TODO change deviceId
+        //TODO intake canIds
         intakeMotor = new CANSparkMax(0, MotorType.kBrushless);
         
     }
