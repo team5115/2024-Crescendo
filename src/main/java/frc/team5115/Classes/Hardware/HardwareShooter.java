@@ -13,7 +13,6 @@ public class HardwareShooter{
     private static final double SHOOTER_MAX_VOLTAGE = 12;
     private static final double SHOOTER_MIN_RPM = 1;
 
-    
     private CANSparkMax shooterMotor;
     private RelativeEncoder shooterEncoder;
     private SimpleMotorFeedforward shooterFF;
@@ -31,8 +30,6 @@ public class HardwareShooter{
         shooterFF = new SimpleMotorFeedforward(0, 0, 0);
         shooterPID = new PIDController(0, 0, 0);
     }
-
-    
 
     public void setShooterSpeedRPM(double speedRpm) {
         if (Math.abs(speedRpm) < SHOOTER_MIN_RPM) {

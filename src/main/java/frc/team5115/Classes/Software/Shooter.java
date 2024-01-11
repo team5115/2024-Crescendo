@@ -10,8 +10,6 @@ public class Shooter extends SubsystemBase {
         this.hardwareShooter = hardwareShooter;
     }
 
-    
-
     public void startShooter() {
         hardwareShooter.setShooterSpeedRPM(120); // TODO find good shooter speed in RPMs
     }
