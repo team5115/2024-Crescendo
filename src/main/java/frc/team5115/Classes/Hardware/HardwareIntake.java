@@ -7,19 +7,17 @@ public class HardwareIntake{
     
     private CANSparkMax intakeMotor;
     //private CANSparkMax intakeMotor2;
-    private CANSparkMax scoocher;
+    
 
     public HardwareIntake(){
-        //TODO change deviceId
+        //TODO intake canIds
         intakeMotor = new CANSparkMax(0, MotorType.kBrushless);
-        scoocher = new CANSparkMax(0, MotorType.kBrushless);
+        
     }
 
     public void setIntakeSpeed(double speed){
         intakeMotor.set(speed);
     }
 
-    public void setScoocherSpeed(double speed){
-        scoocher.set(speed);
-    }
+    
 }

@@ -13,7 +13,6 @@ public class HardwareShooter{
     private static final double SHOOTER_MAX_VOLTAGE = 12;
     private static final double SHOOTER_MIN_RPM = 1;
 
-    private CANSparkMax feederMotor;
     private CANSparkMax shooterMotor;
     private RelativeEncoder shooterEncoder;
     private SimpleMotorFeedforward shooterFF;
@@ -21,19 +20,13 @@ public class HardwareShooter{
 
     public HardwareShooter() {
         // TODO shooter can IDs
-        feederMotor = new CANSparkMax(0, MotorType.kBrushless);
         shooterMotor = new CANSparkMax(0, MotorType.kBrushless);
-        
         shooterEncoder = shooterMotor.getEncoder();
         shooterEncoder.setVelocityConversionFactor(0); // TODO shooter velocity conversion factor
-
+  
         // TODO tune shooter feed forward and PID
         shooterFF = new SimpleMotorFeedforward(0, 0, 0);
         shooterPID = new PIDController(0, 0, 0);
-    }
-
-    public void setFeederSpeed(double speed) {
-        feederMotor.set(speed);
     }
 
     public void setShooterSpeedRPM(double speedRpm) {
@@ -51,5 +44,4 @@ public class HardwareShooter{
     public double getShooterVelocity() {
         return shooterEncoder.getVelocity();
     }
-    
 }
