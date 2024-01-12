@@ -41,6 +41,10 @@ public class HardwareShooter{
         shooterMotor.setVoltage(voltage);
     }
 
+    public void setVoltage(double voltage) {
+        shooterMotor.setVoltage(voltage);
+    }
+
     public double getShooterVelocity() {
         return shooterEncoder.getVelocity();
     }
