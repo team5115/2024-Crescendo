@@ -14,21 +14,25 @@ public class HardwareShooter{
     private static final double SHOOTER_MAX_VOLTAGE = 12;
     private static final double SHOOTER_MIN_RPM = 1;
 
-    private CANSparkMax shooterMotorLeft;
-    private CANSparkMax shooterMotorRight;
-    private RelativeEncoder shooterEncoder;
-    private SimpleMotorFeedforward shooterFF;
-    private PIDController shooterPID;
+    private final CANSparkMax leaderMotor;
+    private final CANSparkMax followerMotor;
+    private final RelativeEncoder shooterEncoder;
+    private final SimpleMotorFeedforward shooterFF;
+    private final PIDController shooterPID;
 
     public HardwareShooter() {
         // TODO shooter can IDs
-        shooterMotorLeft = new CANSparkMax(0, MotorType.kBrushless);
-        shooterMotorRight = new CANSparkMax(0, MotorType.kBrushless);
+        leaderMotor = new CANSparkMax(0, MotorType.kBrushless);
+        followerMotor = new CANSparkMax(0, MotorType.kBrushless);
 
-        shooterMotorLeft.setIdleMode(IdleMode.kCoast);
-        shooterMotorRight.setIdleMode(IdleMode.kCoast);
+        leaderMotor.setIdleMode(IdleMode.kCoast);
+        followerMotor.setIdleMode(IdleMode.kCoast);
+        // TODO which one is inverted?
+        leaderMotor.setInverted(false);
+        followerMotor.setInverted(true); 
+        followerMotor.follow(leaderMotor);
 
-        shooterEncoder = shooterMotorLeft.getEncoder();
+        shooterEncoder = leaderMotor.getEncoder();
         shooterEncoder.setVelocityConversionFactor(0); // TODO shooter velocity conversion factor
   
         // TODO tune shooter feed forward and PID
@@ -38,18 +42,18 @@ public class HardwareShooter{
 
     public void setShooterSpeedRPM(double speedRpm) {
         if (Math.abs(speedRpm) < SHOOTER_MIN_RPM) {
-            shooterMotorLeft.setVoltage(+0);
+            leaderMotor.setVoltage(+0);
             return;
         }
 
         double voltage = shooterFF.calculate(speedRpm);
         voltage += shooterPID.calculate(speedRpm, getShooterVelocity());
         voltage = MathUtil.clamp(voltage, -SHOOTER_MAX_VOLTAGE, SHOOTER_MAX_VOLTAGE);
-        shooterMotorLeft.setVoltage(voltage);
+        leaderMotor.setVoltage(voltage);
     }
 
     public void setVoltage(double voltage) {
-        shooterMotorLeft.setVoltage(voltage);
+        leaderMotor.setVoltage(voltage);
     }
 
     public double getShooterVelocity() {
