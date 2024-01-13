@@ -14,7 +14,7 @@ public class ShootSequence extends SequentialCommandGroup{
     public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput dioSensorFlywheels) {
         
         addCommands(
-            new DeployArm(arm),
+            // new DeployArm(arm),
             new InstantCommand(intake :: out),
             new WaitForSensor(false, dioSensorFlywheels),
             new InstantCommand(intake :: stop),
@@ -23,7 +23,6 @@ public class ShootSequence extends SequentialCommandGroup{
             new WaitCommand(2),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop)
-    
         );
     }
 }
