@@ -93,7 +93,6 @@ public class RobotContainer {
     }
 
     public void startAuto(){
-        new WaitForSensor(true, reflectiveSensor).schedule();
         // if(autoCommandGroup != null) autoCommandGroup.cancel();
         // drivetrain.resetEncoders();
         // drivetrain.resetNAVx();

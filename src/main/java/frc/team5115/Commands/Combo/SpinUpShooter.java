@@ -1,28 +1,30 @@
 package frc.team5115.Commands.Combo;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Shooter;
 
 public class SpinUpShooter extends Command{
     final Shooter shooter;
-    final Timer timer;
+    final double rpm;
     boolean atSpeed;
     
-    public SpinUpShooter(Shooter shooter) {
+    public SpinUpShooter(Shooter shooter, double rpm) {
         this.shooter = shooter;
-        timer = new Timer();
+        this.rpm = rpm;
+    }
+
+    @Override
+    public void execute() {
+        // System.out.println("cw motor rpm: " + shooter.getSpeed());
     }
 
     @Override
     public void initialize() {
         shooter.fast();
-        timer.reset();
-        timer.start();
     }
 
     @Override
     public boolean isFinished() {
-        return timer.get() > 1.5; 
+        return shooter.getSpeed() > rpm;
     }
 }
