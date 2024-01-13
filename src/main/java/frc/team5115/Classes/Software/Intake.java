@@ -20,7 +20,6 @@ public class Intake extends SubsystemBase {
 
     public void stop(){
         hardwareIntake.set(0);
-        System.out.println("stopping intake");
     }
 
     public void fastOut(){

@@ -20,7 +20,6 @@ public class Shooter extends SubsystemBase {
 
     public void stop() {
         hardwareShooter.setNormalized(0);
-        System.out.println("stopping shooter");
     }
 
     public void fastBackwards() {
