@@ -3,22 +3,14 @@ package frc.team5115.Commands.Combo;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class WaitForSensor extends Command{
-    boolean detected;
+public class WaitForSensorChange extends Command{
     final boolean goalState;
     final DigitalInput sensor;
-    final int count;
-    
-    public WaitForSensor(boolean goalState, DigitalInput sensor) {
-        this.goalState = goalState;
-        this.sensor = sensor;
-        count = 1;
-    }
+    boolean detected;
 
-    public WaitForSensor(boolean goalState, DigitalInput sensor, int count) {
+    public WaitForSensorChange(boolean goalState, DigitalInput sensor) {
         this.goalState = goalState;
         this.sensor = sensor;
-        this.count = count;
     }
 
     @Override

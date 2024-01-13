@@ -23,7 +23,7 @@ import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Commands.Combo.WaitForSensor;
+import frc.team5115.Commands.Combo.WaitForSensorChange;
 
 public class RobotContainer {
     // private final Joystick joyDrive;
