@@ -19,6 +19,7 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -59,7 +60,9 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        
+        new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        .onTrue(new Vomit(true, shooter, intake))
+        .onFalse(new Vomit(false, shooter, intake));
     }
 
     public void disabledInit(){
