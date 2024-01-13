@@ -9,8 +9,7 @@ public class HardwareIntake{
     private final CANSparkMax motor;
 
     public HardwareIntake(){
-        //TODO intake canId
-        motor = new CANSparkMax(0, MotorType.kBrushless);
+        motor = new CANSparkMax(10, MotorType.kBrushless);
         motor.setIdleMode(IdleMode.kBrake);        
     }
 
