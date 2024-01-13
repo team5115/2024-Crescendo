@@ -11,15 +11,16 @@ public class Intake extends SubsystemBase {
     }
 
     public void in(){
-        hardwareIntake.set(0.3);
+        hardwareIntake.set(0.7);
     }
 
     public void out() {
-        hardwareIntake.set(-0.3);
+        hardwareIntake.set(-0.7);
     }
 
     public void stop(){
         hardwareIntake.set(0);
+        System.out.println("stopping intake");
     }
 
     public void fastOut(){

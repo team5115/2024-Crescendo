@@ -13,7 +13,7 @@ public class IntakeSequence extends SequentialCommandGroup{
     public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput dioSensorFlywheel) {
         
         addCommands(
-            new DeployArm(arm),
+            // new DeployArm(arm),
             new InstantCommand(intake :: in),
             new InstantCommand(shooter :: slow),
             new WaitForSensor(true, dioSensorFlywheel),
