@@ -28,8 +28,8 @@ public class HardwareArm extends SubsystemBase{
         this.i2c = i2c;
         
         // TODO arm canIDs
-        grabby = new CANSparkMax(9, MotorType.kBrushless);
-        armTurn = new CANSparkMax(10, MotorType.kBrushless);  
+        grabby = new CANSparkMax(0, MotorType.kBrushless);
+        armTurn = new CANSparkMax(0, MotorType.kBrushless);  
         armTurn.setIdleMode(IdleMode.kBrake);
         armTurn.setSmartCurrentLimit(80, 80);
         armAngle = new Angle(120); // ! The approx real starting angle of the arm when the robot starts

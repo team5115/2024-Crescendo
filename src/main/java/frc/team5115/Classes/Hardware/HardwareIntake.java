@@ -6,15 +6,15 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class HardwareIntake{
     
-    private final CANSparkMax motor;    
+    private final CANSparkMax motor;
 
     public HardwareIntake(){
-        //TODO intake canIds
+        //TODO intake canId
         motor = new CANSparkMax(0, MotorType.kBrushless);
         motor.setIdleMode(IdleMode.kBrake);        
     }
 
-    public void setIntakeSpeed(double speed){
+    public void set(double speed){
         motor.set(speed);
     }   
 }

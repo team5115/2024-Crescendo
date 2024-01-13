@@ -10,7 +10,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 public class HardwareShooter{
-    // TODO find shooter motor max voltage
     private static final double SHOOTER_MAX_VOLTAGE = 12;
     private static final double SHOOTER_MIN_RPM = 1;
 
@@ -28,11 +27,11 @@ public class HardwareShooter{
         followerMotor.setIdleMode(IdleMode.kCoast);
         // TODO which one is inverted?
         leaderMotor.setInverted(false);
-        followerMotor.setInverted(true); 
+        followerMotor.setInverted(true);
         followerMotor.follow(leaderMotor);
 
         shooterEncoder = leaderMotor.getEncoder();
-        shooterEncoder.setVelocityConversionFactor(0); // TODO shooter velocity conversion factor
+        shooterEncoder.setVelocityConversionFactor(1);
   
         // TODO tune shooter feed forward and PID
         shooterFF = new SimpleMotorFeedforward(0, 0, 0);
@@ -53,6 +52,10 @@ public class HardwareShooter{
 
     public void setVoltage(double voltage) {
         leaderMotor.setVoltage(voltage);
+    }
+
+    public void setNormalized(double speed) {
+        leaderMotor.set(speed);
     }
 
     public double getShooterVelocity() {
