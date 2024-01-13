@@ -11,18 +11,18 @@ public class Intake extends SubsystemBase {
     }
 
     public void in(){
-        hardwareIntake.setIntakeSpeed(0.3); // TODO find intake speed [0, +1]
+        hardwareIntake.set(0.3);
     }
 
     public void out() {
-        hardwareIntake.setIntakeSpeed(-0.3); // TODO find outtake speed [-1,0]
+        hardwareIntake.set(-0.3);
     }
 
     public void stop(){
-        hardwareIntake.setIntakeSpeed(0);
+        hardwareIntake.set(0);
     }
 
     public void fastOut(){
-        hardwareIntake.setIntakeSpeed(-1);
+        hardwareIntake.set(-1);
     }
 }
