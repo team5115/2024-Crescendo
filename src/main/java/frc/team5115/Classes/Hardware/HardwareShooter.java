@@ -21,9 +21,8 @@ public class HardwareShooter{
     private final PIDController shooterPID;
 
     public HardwareShooter() {
-        // TODO shooter can IDs
-        leaderMotor = new CANSparkMax(0, MotorType.kBrushless);
-        followerMotor = new CANSparkMax(0, MotorType.kBrushless);
+        leaderMotor = new CANSparkMax(7, MotorType.kBrushless);
+        followerMotor = new CANSparkMax(4, MotorType.kBrushless);
 
         leaderMotor.setIdleMode(IdleMode.kCoast);
         followerMotor.setIdleMode(IdleMode.kCoast);
