@@ -1,18 +1,23 @@
 package frc.team5115.Commands.Combo;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class WaitForSensor extends Command{
     boolean detected;
     final boolean goalState;
+    DigitalInput dioSensorFlywheel = new DigitalInput(0);
+
     
-    public WaitForSensor(boolean goalState) { // TODO pass in sensor
+    public WaitForSensor(boolean goalState, DigitalInput dioSensorFlywheel) { // done
         this.goalState = goalState;
+
     }
 
     @Override
     public void execute() {
-        detected = false;
+        detected = dioSensorFlywheel.get();
+
     }
 
     @Override

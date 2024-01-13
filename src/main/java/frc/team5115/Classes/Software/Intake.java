@@ -21,4 +21,8 @@ public class Intake extends SubsystemBase {
     public void stop(){
         hardwareIntake.setIntakeSpeed(0);
     }
+
+    public void fastOut(){
+        hardwareIntake.setIntakeSpeed(-1);
+    }
 }
