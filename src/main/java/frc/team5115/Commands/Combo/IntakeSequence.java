@@ -16,7 +16,8 @@ public class IntakeSequence extends SequentialCommandGroup{
             new InstantCommand(intake :: in),
             new InstantCommand(shooter :: slow),
             new WaitForSensor(true),
-            new Stow(intake, shooter, arm)
+            new InstantCommand(intake :: stop),
+            new InstantCommand(shooter :: stop)
         );
     }
 }
