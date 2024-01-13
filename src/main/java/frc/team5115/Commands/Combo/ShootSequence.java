@@ -20,8 +20,8 @@ public class ShootSequence extends SequentialCommandGroup{
             new SpinUpShooter(shooter),
             new InstantCommand(intake :: in),
             new WaitCommand(2),
-            // then, instead of stopping, we go to the ready to intake state
-            new InstantCommand(shooter :: slow)
+            new InstantCommand(intake :: stop),
+            new InstantCommand(shooter :: stop)
         );
     }
 }

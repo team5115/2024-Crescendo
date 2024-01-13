@@ -58,17 +58,8 @@ public class RobotContainer {
         configureButtonBindings();
     }
 
-    public void configureButtonBindings() {     
-        new JoystickButton(joyManips, XboxController.Button.kA.value)
-            .onTrue(new InstantCommand(shooter :: fast))
-            .onFalse(new InstantCommand(shooter :: stop));
-
-        new JoystickButton(joyManips, XboxController.Button.kY.value)
-            .onTrue(new InstantCommand(intake :: in))
-            .onFalse(new InstantCommand(intake :: stop));
-        new JoystickButton(joyManips, XboxController.Button.kX.value)
-            .onTrue(new InstantCommand(intake :: out))
-            .onFalse(new InstantCommand(intake :: stop));
+    public void configureButtonBindings() {
+        
     }
 
     public void disabledInit(){
@@ -111,10 +102,26 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        drivetrain.updateOdometry();
-        i2cHandler.updatePitch();
-        arm.updateController();
+        if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)) {
+            intake.in();
+        } else if (joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
+            intake.out();
+        } else {
+            intake.stop();
+        }
 
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
+        if (joyManips.getRawButton(XboxController.Button.kA.value)) {
+            shooter.fast();
+        } else if (joyManips.getRawButton(XboxController.Button.kB.value)) {
+            shooter.slow();
+        } else {
+            shooter.stop();
+        }
+
+        // drivetrain.updateOdometry();
+        // i2cHandler.updatePitch();
+        // arm.updateController();
+
+        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
     }
 }

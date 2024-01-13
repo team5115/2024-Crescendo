@@ -11,7 +11,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void fast() {
-        hardwareShooter.setShooterSpeedRPM(120); // TODO find correct shooter speed in RPMs
+        hardwareShooter.setShooterSpeedRPM(12); // TODO find correct fast shooter voltage
     }
 
     public void slow() {
