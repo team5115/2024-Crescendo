@@ -16,7 +16,7 @@ public class IntakeSequence extends SequentialCommandGroup{
             // new DeployArm(arm),
             new InstantCommand(intake :: in),
             new InstantCommand(shooter :: slow),
-            new WaitForSensor(true, dioSensorFlywheel),
+            new WaitForSensorChange(true, dioSensorFlywheel),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop)
         );
