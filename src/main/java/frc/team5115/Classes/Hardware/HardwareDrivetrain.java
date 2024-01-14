@@ -40,6 +40,26 @@ public class HardwareDrivetrain{
         //frontRightOld.setInverted(true);
     }
 
+    public ChassisSpeeds getChassisSpeeds(){ // for autobuilder pathplanner
+        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(Units.inchesToMeters(27.75));
+        ChassisSpeeds j = new ChassisSpeeds();
+        var wheelSpeeds = new SwerveDriveWheelSpeeds(getEncoderVelocity(BACK_LEFT_MOTOR_ID), getEncoderVelocity(FRONT_LEFT_MOTOR_ID));
+        ChassisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(wheelSpeeds);
+
+        return chassisSpeeds;
+    }
+
+    public void setWheelSpeeds(ChassisSpeeds speeds){ // pathplanner autobuilder
+        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(Units.inchesToMeters(27.0));
+        SwerveDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
+
+        double leftVelocity = wheelSpeeds.leftMetersPerSecond;
+        double rightVelocity = wheelSpeeds.rightMetersPerSecond;
+
+        // plugandFFDrive(leftVelocity, rightVelocity);
+
+    }
+    
     /**
      * Method to drive the robot using joystick info.
      *
