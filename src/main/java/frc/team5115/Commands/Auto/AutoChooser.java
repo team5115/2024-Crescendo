@@ -1,8 +1,10 @@
 package frc.team5115.Commands.Auto;
 
-// add imports
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class AutoChooser extends Commands {
+public class AutoChooser extends Command {
     private final SendableChooser<Command> autoChooser;
 
     public AutoChooser() {

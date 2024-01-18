@@ -3,20 +3,25 @@ package frc.team5115.Commands.Auto;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import org.photonvision.EstimatedRobotPose;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.PhotonVision;
 
 
-public class AutoBuilder extends Commands{
-    private final Drivetrain drivetrain;
-    private final HardwareDrivetrain hardwareDrivetrain;
-    private final PhotonVision photonvision;
+public class AutoBuilder extends Command{
 
     public AutoBuilder() {
 
         // Configure AutoBuilder 
 
-        AutoBuilder.configureHolonomic(
+        AutoBuilder.configureHolonomic( // fix error on this line*
                 this::getEstimatedPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -41,5 +46,25 @@ public class AutoBuilder extends Commands{
                 },
                 this // Reference to this subsystem to set requirements
         );
+    }
+    
+  
+
+    public Command getAutonomousCommand() {
+        // Load the path you want to follow using its name in the GUI
+        PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
+
+        // Create a path following command using AutoBuilder. This will also trigger event markers.
+        return AutoBuilder.FollowPathCommand(PathPlannerAuto path); // fix error on this line*
+    }
+
+    private static Command FollowPathCommand(PathPlannerAuto path) {
+        return PathPlannerAuto.getPathGroupFromAutoFile(SideAutoPt1); // fix error on this line*
+    }
+
+
+
+    public static SendableChooser<Command> buildAutoChooser() {
+        return null; // add return
     }
 }

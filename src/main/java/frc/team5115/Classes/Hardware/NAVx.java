@@ -50,13 +50,18 @@ public class NAVx implements Subsystem {
         resetYaw();
         resetPitch();
         checkForConnection();
+        System.out.println(getYawDeg());
     }
 
     /**
      * @return The yaw of the navx from the last reset, ranging from -180 to 180 degrees.
      */
     public double getYawDeg() {
-        return clampAngle(ahrs.getYaw() - yawAtReset);
+        return clampAngle(ahrs.getYaw()) - yawAtReset;
+    }
+
+    public double getYawDeg360() {
+        return 180-getYawDeg();
     }
 
     /**

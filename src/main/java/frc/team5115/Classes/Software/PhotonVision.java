@@ -69,6 +69,6 @@ public class PhotonVision extends SubsystemBase{
     }
 
     private AprilTag GenerateAprilTag(int id, double x, double y, double z, double rotationDegrees) {
-        return new AprilTag( id, new Pose3d( new Pose2d( x, y, z, Rotation2d.fromDegrees(rotationDegrees))));
+        return new AprilTag( id, new Pose3d( new Pose2d( x, y, Rotation2d.fromDegrees(rotationDegrees))));
     }
 }
