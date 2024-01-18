@@ -1,16 +1,28 @@
 package frc.team5115.Commands.Combo;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Shooter;
 
 public class SpinUpShooter extends Command{
     final Shooter shooter;
-    final double rpm;
+    double rpm;
+    double percentage;
     boolean atSpeed;
+
+    GenericEntry rpmEntry;
+    GenericEntry percentEntry;
     
-    public SpinUpShooter(Shooter shooter, double rpm) {
+    // public SpinUpShooter(Shooter shooter, double rpm) {
+    //     this.shooter = shooter;
+    //     this.rpm = rpm;
+    //     this.percentage = 0.9;
+    // }
+
+    public SpinUpShooter(Shooter shooter, double rpm, GenericEntry rpmEntry, GenericEntry percentageEntry) {
         this.shooter = shooter;
-        this.rpm = rpm;
+        this.rpmEntry = rpmEntry;
+        this.percentEntry = percentageEntry;
     }
 
     @Override
@@ -20,7 +32,9 @@ public class SpinUpShooter extends Command{
 
     @Override
     public void initialize() {
-        shooter.fast();
+        rpm = rpmEntry.getDouble(rpm);
+        percentage = percentEntry.getDouble(0.9);
+        shooter.customPercentage(percentage);
     }
 
     @Override

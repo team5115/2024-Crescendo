@@ -10,6 +10,10 @@ public class Shooter extends SubsystemBase {
         this.hardwareShooter = hardwareShooter;
     }
 
+    public void customPercentage(double percentage) {
+        hardwareShooter.setNormalized(percentage);
+    }
+
     public void fast() {
         hardwareShooter.setNormalized(0.9);
     }
