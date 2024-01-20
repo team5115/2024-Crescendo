@@ -38,9 +38,12 @@ public class RobotContainer {
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
+    private final GenericEntry rpmEntry;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
+        rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
+
         // rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         // doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
@@ -73,7 +76,7 @@ public class RobotContainer {
         .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, null, reflectiveSensor));
+        .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor));
         
     }
 
