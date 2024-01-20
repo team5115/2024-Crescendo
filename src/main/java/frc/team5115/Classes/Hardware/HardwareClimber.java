@@ -10,47 +10,47 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 public class HardwareClimber {
 
-    private static final double Kspring = 1 ;
-    private static final double Ks = 1 ;
-    private static final double Kvelocity = 1 ;
+    private static final double kSpring = 1;
+    private static final double kStatic = 1;
+    private static final double kVelocity = 1;
     public enum State { Above, Below, Centered }
 
-    CANSparkMax ClimberMotor;
-    RelativeEncoder ClimbEncoder;
+    CANSparkMax climberMotor;
+    RelativeEncoder climbEncoder;
     DigitalInput beambreak;
 
     int passes;
-    boolean dectected;
+    boolean detected;
 
     public HardwareClimber( int channel ){
-        ClimberMotor = new CANSparkMax(0, MotorType.kBrushless);
-        ClimbEncoder = ClimberMotor.getEncoder();
+        climberMotor = new CANSparkMax(0, MotorType.kBrushless);
+        climbEncoder = climberMotor.getEncoder();
         beambreak = new DigitalInput(channel);
     }
 
     public void update(){
-        if (dectected && !isDecting()){
+        if (detected && !isDetecting()){
             passes ++;
         }
-
-        dectected = isDecting();
+        
+        detected = isDetecting();
     }
 
-    public boolean isDecting(){
+    public boolean isDetecting(){
         return beambreak.get();
     }
     
     public double getAngle(){
-        return ClimbEncoder.getPosition();
+        return climbEncoder.getPosition();
     }
 
     public void setspeed(double desiredVelocity){
-        double voltage = Ks*Math.signum(desiredVelocity) + Kvelocity * desiredVelocity + Kspring * getAngle();
-        ClimberMotor.setVoltage(voltage);
-   }
+        double voltage = kStatic * Math.signum(desiredVelocity) + kVelocity * desiredVelocity + kSpring * getAngle();
+        climberMotor.setVoltage(voltage);
+    }
 
    public State getState(){
-        if (isDecting()){
+        if (isDetecting()){
             return State.Centered;
         }
         if (passes % 2 == 0){
