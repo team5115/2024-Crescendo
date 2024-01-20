@@ -22,17 +22,17 @@ public class HardwareClimber {
     int passes;
     boolean detected;
 
-    public HardwareClimber( int channel ){
-        climberMotor = new CANSparkMax(0, MotorType.kBrushless);
-        climbEncoder = climberMotor.getEncoder();
+    public HardwareClimber(int canId, int channel){
+        climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         beambreak = new DigitalInput(channel);
+        climbEncoder = climberMotor.getEncoder();
     }
 
     public void update(){
         if (detected && !isDetecting()){
             passes ++;
         }
-        
+
         detected = isDetecting();
     }
 
