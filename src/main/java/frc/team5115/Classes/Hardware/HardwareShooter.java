@@ -10,7 +10,7 @@ public class HardwareShooter{
     private final RelativeEncoder shooterEncoder;
 
     public HardwareShooter() {
-        cwMotor = new CANSparkMax(9, MotorType.kBrushless); // stuttering
+        cwMotor = new CANSparkMax(9, MotorType.kBrushless);
         ccwMotor = new CANSparkMax(11, MotorType.kBrushless);
         cwMotor.setClosedLoopRampRate(0.1);
         ccwMotor.setClosedLoopRampRate(0.1);
