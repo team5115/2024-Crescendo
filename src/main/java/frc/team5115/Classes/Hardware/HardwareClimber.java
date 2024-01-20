@@ -2,12 +2,10 @@ package frc.team5115.Classes.Hardware;
 
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-
-import edu.wpi.first.wpilibj.DigitalInput;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 public class HardwareClimber {
 
     private static final double kSpring = 1;
@@ -59,5 +57,3 @@ public class HardwareClimber {
         return State.Below;
     }
 }
-
-
