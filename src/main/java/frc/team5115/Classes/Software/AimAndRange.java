@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
 // using apriltags -- aim at target and get in range of target 
 
 public class AimAndRange extends SubsystemBase{
-    private final PhotonVision photonVision; // fix error on this line*
+    // private final PhotonVision photonVision; // fix error on this line*
 
     final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(24); // get measurments
     final double TARGET_HEIGHT_METERS = Units.feetToMeters(5); // get measurments

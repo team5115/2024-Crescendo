@@ -17,7 +17,7 @@ import frc.team5115.Constants.*;
 public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraL;
      private PhotonPoseEstimator photonPoseEstimatorL;
-
+     
     public PhotonVision() {
          photonCameraL = new PhotonCamera(VisionConstants.leftCameraName);
         ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
