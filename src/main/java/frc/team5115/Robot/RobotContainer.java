@@ -55,7 +55,7 @@ public class RobotContainer {
         intake = new Intake(hardwareIntake);
         shooter = new Shooter(hardwareShooter);
         reflectiveSensor = new DigitalInput(9);
-        // configureButtonBindings();
+        configureButtonBindings();
     }
 
     public void configureButtonBindings() {

@@ -31,7 +31,9 @@ public class Shooter extends SubsystemBase {
         cwFF = new SimpleMotorFeedforward(cwKs, cwKv, cwKa);
         ccwFF = new SimpleMotorFeedforward(ccwKs, ccwKv, ccwKa);
         cwPID = new PIDController(cwKp, 0, 0);
-        ccwPID = new PIDController(ccwKp, 0, 0);  
+        ccwPID = new PIDController(ccwKp, 0, 0); 
+        cwPID.setTolerance(20);
+        ccwPID.setTolerance(20); 
     }
 
     public void fast() {
@@ -54,12 +56,21 @@ public class Shooter extends SubsystemBase {
         return (hardwareShooter.getClockwiseVelocity() + hardwareShooter.getCounterClockwiseVelocity()) / 2.0;
     }
 
-    public void spinByPid(double rpm) {
+    public double getClockwiseSpeed() {
+        return hardwareShooter.getClockwiseVelocity();
+    }
+
+    public double getCounterClockwiseSpeed() {
+        return hardwareShooter.getCounterClockwiseVelocity();
+    }
+
+    public boolean spinByPid(double rpm) {
         double cwVolts = cwFF.calculate(rpm);
         double ccwVolts = ccwFF.calculate(rpm);
         cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity(), rpm);
         cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity(), rpm);
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
+        return cwPID.atSetpoint() && ccwPID.atSetpoint();
     }
 
     public SysIdRoutine sysIdRoutine(boolean cw) {

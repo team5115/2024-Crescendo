@@ -29,11 +29,16 @@ public class SpinUpShooter extends Command{
 
     @Override
     public void execute() {
-        shooter.spinByPid(rpm);
+        atSpeed = shooter.spinByPid(rpm);
     }
 
     @Override
     public boolean isFinished() {
-        return shooter.getAverageSpeed() > rpm;
+        return atSpeed;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("Goal speed: " + rpm + " | Final speed: " + shooter.getAverageSpeed() + " | delta: " + (shooter.getAverageSpeed() - rpm));
     }
 }
