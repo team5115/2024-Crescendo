@@ -84,22 +84,12 @@ public class HardwareDrivetrain{
     }
 
     public ChassisSpeeds getChassisSpeeds(){ 
-        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(new Translation2d(0.70485/2, 0.70485/2), new Translation2d(0.70485/2, -0.0485/2), new Translation2d(-0.70485/2, 0.70485/2), new Translation2d(-0.70485/2, -0.70485/2)); // in meters = 0.70485 - MetersPerSecond.of in inches - 27.75
-        ChassisSpeeds j = new ChassisSpeeds();
-        var wheelSpeeds =  kinematics.toChassisSpeeds();
-        ChassisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(wheelSpeeds);
-
-        return chassisSpeeds;
+        SwerveModuleState[] x = {frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState()};
+        return DriveConstants.kDriveKinematics.toChassisSpeeds(x);
     }
 
     public void setWheelSpeeds(ChassisSpeeds speeds){ 
-        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(new Translation2d(0.6858/2, 0.6858/2), new Translation2d(0.6858/2, -0.6858/2), new Translation2d(-0.6858/2, 0.6858/2), new Translation2d(-0.6858/2, -0.6858/2)); // in meters = 0.6858
-        SwerveDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-
-        double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-        double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-
-        drive(leftVelocity, rightVelocity, 0, true, true);
+        drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, true, false);
 
         // plugandFFDrive(leftVelocity, rightVelocity);
 
