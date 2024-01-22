@@ -3,17 +3,14 @@ package frc.team5115.Classes.Hardware;
 import static frc.team5115.Constants.*;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.units.Units;
-// import edu.wpi.first.units;
+import edu.wpi.first.units.Units.*;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Accessory.SwerveUtils;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.SwerveDriveWheelPositions;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
 /**
  * The drivetrain hardware subsystem. Provides methods to interact with the actual hardware of the drivetrain.
@@ -87,20 +84,22 @@ public class HardwareDrivetrain{
     }
 
     public ChassisSpeeds getChassisSpeeds(){ 
-        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(Inches.of(27.75)); // in meters = 0.70485 - MetersPerSecond.of
+        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(new Translation2d(0.70485/2, 0.70485/2), new Translation2d(0.70485/2, -0.0485/2), new Translation2d(-0.70485/2, 0.70485/2), new Translation2d(-0.70485/2, -0.70485/2)); // in meters = 0.70485 - MetersPerSecond.of in inches - 27.75
         ChassisSpeeds j = new ChassisSpeeds();
-        var wheelSpeeds = new SwerveDriveWheelSpeeds(getEncoderVelocity(BACK_LEFT_MOTOR_ID), getEncoderVelocity(FRONT_LEFT_MOTOR_ID));
+        var wheelSpeeds =  kinematics.toChassisSpeeds();
         ChassisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(wheelSpeeds);
 
         return chassisSpeeds;
     }
 
     public void setWheelSpeeds(ChassisSpeeds speeds){ 
-        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(Inches.of(27.0)); // in meters = 0.6858
+        SwerveDriveKinematics kinematics = new SwerveDriveKinematics(new Translation2d(0.6858/2, 0.6858/2), new Translation2d(0.6858/2, -0.6858/2), new Translation2d(-0.6858/2, 0.6858/2), new Translation2d(-0.6858/2, -0.6858/2)); // in meters = 0.6858
         SwerveDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
 
         double leftVelocity = wheelSpeeds.leftMetersPerSecond;
         double rightVelocity = wheelSpeeds.rightMetersPerSecond;
+
+        drive(leftVelocity, rightVelocity, 0, true, true);
 
         // plugandFFDrive(leftVelocity, rightVelocity);
 

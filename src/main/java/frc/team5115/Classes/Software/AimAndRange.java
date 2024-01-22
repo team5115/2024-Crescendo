@@ -8,7 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+=
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -54,7 +54,7 @@ public class AimAndRange extends SubsystemBase{
         if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
-            var result = camera.getLatestResult(); // fix error*
+            var result = photonCameraL.getLatestResult(); // fix error*
 
             if (result.hasTargets()) { // fix error*
                 // First calculate range
@@ -84,6 +84,15 @@ public class AimAndRange extends SubsystemBase{
         }
 
         // Use our forward/turn speeds to control the drivetrain
-        HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+        drive(forwardSpeed, rotationSpeed, 0, true, true);
+
     }
+
+
+    private void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'drive'");
+    }
+  
 }
