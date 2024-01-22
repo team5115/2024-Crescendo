@@ -7,8 +7,9 @@ public class Climber extends SubsystemBase {
     HardwareClimber leftClimber;
     HardwareClimber rightClimber;
     public Climber(){
-        leftClimber = new HardwareClimber(1);
-        rightClimber = new HardwareClimber(2);
-    }
+        leftClimber = new HardwareClimber(1,1);
+        rightClimber = new HardwareClimber(2,2);
 
+    }
+    
 }

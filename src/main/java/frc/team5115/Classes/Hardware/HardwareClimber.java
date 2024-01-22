@@ -20,8 +20,8 @@ public class HardwareClimber {
     private static final double Kvelocity = 1 ;
     int passes;
     boolean dectected;
-    public HardwareClimber( int channel ){
-        ClimberMotor = new CANSparkMax(0, MotorType.kBrushless);
+    public HardwareClimber( int channel,int deviceId ){
+        ClimberMotor = new CANSparkMax((deviceId), MotorType.kBrushless);
         ClimbEncoder = ClimberMotor.getEncoder();
         //ff = new SimpleMotorFeedforward(0, 0);
         beambreak = new DigitalInput(channel);
