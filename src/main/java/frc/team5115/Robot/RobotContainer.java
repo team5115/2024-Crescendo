@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
+import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -25,6 +27,7 @@ public class RobotContainer {
     // private final I2CHandler i2cHandler;
     // private final NAVx navx;
     // private final Arm arm;
+    // private final Climber climber;
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
@@ -49,6 +52,11 @@ public class RobotContainer {
         
         // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
         // arm = new Arm(hardwareArm);
+
+        // TODO set climber canIDs
+        // HardwareClimber leftClimber = new HardwareClimber(0, 0);
+        // HardwareClimber rightClimber = new HardwareClimber(0, 0);
+        // climber = new Climber(leftClimber, rightClimber);
 
         HardwareIntake hardwareIntake = new HardwareIntake();
         HardwareShooter hardwareShooter = new HardwareShooter();
@@ -81,12 +89,12 @@ public class RobotContainer {
     }
 
     public void startTest() {
-        boolean cw = false;
-        shooter.sysIdRoutine(cw).dynamic(Direction.kForward).withTimeout(10).andThen(
-            shooter.sysIdRoutine(cw).dynamic(Direction.kReverse).withTimeout(10).andThen(
-                shooter.sysIdRoutine(cw).quasistatic(Direction.kForward).withTimeout(10).andThen(
-                    shooter.sysIdRoutine(cw).quasistatic(Direction.kReverse).withTimeout(10)
-        ))).schedule();
+        // boolean cw = false;
+        // shooter.sysIdRoutine(cw).dynamic(Direction.kForward).withTimeout(10).andThen(
+        //     shooter.sysIdRoutine(cw).dynamic(Direction.kReverse).withTimeout(10).andThen(
+        //         shooter.sysIdRoutine(cw).quasistatic(Direction.kForward).withTimeout(10).andThen(
+        //             shooter.sysIdRoutine(cw).quasistatic(Direction.kReverse).withTimeout(10)
+        // ))).schedule();
     }
 
     public void testPeriodic() {

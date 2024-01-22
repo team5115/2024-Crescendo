@@ -19,9 +19,9 @@ public class HardwareClimber {
     int passes;
     boolean detected;
 
-    public HardwareClimber(int canId, int channel){
+    public HardwareClimber(int canId, int sensorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
-        beambreak = new DigitalInput(channel);
+        beambreak = new DigitalInput(sensorChannel);
         climbEncoder = climberMotor.getEncoder();
     }
 
@@ -41,7 +41,7 @@ public class HardwareClimber {
         return climbEncoder.getPosition();
     }
 
-    public void setspeed(double desiredVelocity){
+    public void setSpeed(double desiredVelocity){
         double voltage = kStatic * Math.signum(desiredVelocity) + kVelocity * desiredVelocity + kSpring * getAngle() + kGravity * Math.cos(getAngle());
         climberMotor.setVoltage(voltage);
     }

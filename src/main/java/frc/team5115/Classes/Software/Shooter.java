@@ -64,13 +64,12 @@ public class Shooter extends SubsystemBase {
         return hardwareShooter.getCounterClockwiseVelocity();
     }
 
-    public boolean spinByPid(double rpm) {
+    public void spinByPid(double rpm) {
         double cwVolts = cwFF.calculate(rpm);
         double ccwVolts = ccwFF.calculate(rpm);
         cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity(), rpm);
         cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity(), rpm);
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
-        return cwPID.atSetpoint() && ccwPID.atSetpoint();
     }
 
     public SysIdRoutine sysIdRoutine(boolean cw) {

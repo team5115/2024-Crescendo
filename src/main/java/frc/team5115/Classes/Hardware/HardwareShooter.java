@@ -6,6 +6,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -52,24 +53,26 @@ public class HardwareShooter extends SubsystemBase{
 
     public void setSysIdRoutine(boolean useCw) {
         if (useCw) {
-            setSysIdRoutine(cwMotor, "Clockwise Motor");
+            sysIdRoutine = generateSysIdRoutine(cwMotor, "Clockwise Motor", this);
         } else {
-            setSysIdRoutine(ccwMotor, "Counter-clockwise Motor");
+            sysIdRoutine = generateSysIdRoutine(ccwMotor, "Counter-clockwise Motor", this);
         }
     }
 
-    public void setSysIdRoutine(CANSparkMax motor, String name) {
+    public static SysIdRoutine generateSysIdRoutine(CANSparkMax motor, String name, Subsystem subsystem) {
         RelativeEncoder encoder = motor.getEncoder();
         Config config = new Config();
         Mechanism mechanism = new Mechanism(
             voltage -> {
                motor.set(voltage.magnitude() / RobotController.getBatteryVoltage()); 
             }, log -> {
-            log.motor(name).voltage(Units.Volts.of(motor.get() * RobotController.getBatteryVoltage()))
+                log.motor(name)
+                .voltage(Units.Volts.of(motor.get() * RobotController.getBatteryVoltage()))
                 .angularPosition(Units.Rotations.of(encoder.getPosition()))
                 .angularVelocity(Units.RPM.of(encoder.getVelocity()));
-        }, this);
-        sysIdRoutine = new SysIdRoutine(config, mechanism);
+            }, subsystem
+        );
+        return new SysIdRoutine(config, mechanism);
     }
 
     public SysIdRoutine getSysIdRoutine() {

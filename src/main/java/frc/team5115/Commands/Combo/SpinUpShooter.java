@@ -1,10 +1,12 @@
 package frc.team5115.Commands.Combo;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Shooter;
 
 public class SpinUpShooter extends Command{
+    final static double TOLERANCE = 20;
     final Shooter shooter;
     final GenericEntry rpmEntry;
     double rpm;
@@ -29,7 +31,8 @@ public class SpinUpShooter extends Command{
 
     @Override
     public void execute() {
-        atSpeed = shooter.spinByPid(rpm);
+        shooter.spinByPid(rpm);
+        atSpeed = MathUtil.isNear(rpm, shooter.getClockwiseSpeed(), TOLERANCE) && MathUtil.isNear(rpm, shooter.getCounterClockwiseSpeed(), TOLERANCE);
     }
 
     @Override
@@ -39,6 +42,8 @@ public class SpinUpShooter extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("Goal speed: " + rpm + " | Final speed: " + shooter.getAverageSpeed() + " | delta: " + (shooter.getAverageSpeed() - rpm));
+        double avg = shooter.getAverageSpeed();
+        double delta = avg - rpm;
+        System.out.println("Goal: " + rpm + " | CW: " + shooter.getClockwiseSpeed() + " | CCW: " + shooter.getCounterClockwiseSpeed() + " | Average: " + avg + " | Avg. Delta: " + delta);
     }
 }
