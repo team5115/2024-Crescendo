@@ -1,13 +1,12 @@
 package frc.team5115.Classes.Hardware;
 
-
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class HardwareClimber {
-
+    private static final double kgravity = 1;
     private static final double kSpring = 1;
     private static final double kStatic = 1;
     private static final double kVelocity = 1;
@@ -43,7 +42,7 @@ public class HardwareClimber {
     }
 
     public void setspeed(double desiredVelocity){
-        double voltage = kStatic * Math.signum(desiredVelocity) + kVelocity * desiredVelocity + kSpring * getAngle();
+        double voltage = kStatic * Math.signum(desiredVelocity) + kVelocity * desiredVelocity + kSpring * getAngle() + kgravity * Math.cos(getAngle());
         climberMotor.setVoltage(voltage);
     }
 
