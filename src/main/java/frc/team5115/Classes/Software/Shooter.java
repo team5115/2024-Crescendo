@@ -2,19 +2,36 @@ package frc.team5115.Classes.Software;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 
 public class Shooter extends SubsystemBase {    
+
+    private static final double cwKs = 0.14788;
+    private static final double cwKv = 0.12323;
+    private static final double cwKa = 0.031313;
+    private static final double cwKp = 0.018058;
+
+    private static final double ccwKs = 0.22671;
+    private static final double ccwKv = 0.12119;
+    private static final double ccwKa = 0.029654;
+    private static final double ccwKp = 0.019965;
+
     final HardwareShooter hardwareShooter;
-    final PIDController pid;
-    // final SimpleMotorFeedforward ff;
+
+    final SimpleMotorFeedforward cwFF;
+    final SimpleMotorFeedforward ccwFF;
+    final PIDController cwPID;
+    final PIDController ccwPID;
     
     public Shooter(HardwareShooter hardwareShooter) {
         this.hardwareShooter = hardwareShooter;
-        pid = new PIDController(0, 0, 0);
-        // ff = new SimpleMotorFeedforward(0, 0, 0);
+
+        cwFF = new SimpleMotorFeedforward(cwKs, cwKv, cwKa);
+        ccwFF = new SimpleMotorFeedforward(ccwKs, ccwKv, ccwKa);
+        cwPID = new PIDController(cwKp, 0, 0);
+        ccwPID = new PIDController(ccwKp, 0, 0);  
     }
 
     public void fast() {
@@ -33,14 +50,20 @@ public class Shooter extends SubsystemBase {
         hardwareShooter.setNormalized(-1);
     }
 
-    public void spinByPid(double rpm) {
-        double volts = 0;
-        // volts += ff.calculate(rpm);
-        volts += pid.calculate(getSpeed(), rpm);
-        hardwareShooter.setVoltage(volts);
+    public double getAverageSpeed() {
+        return (hardwareShooter.getClockwiseVelocity() + hardwareShooter.getCounterClockwiseVelocity()) / 2.0;
     }
 
-    public double getSpeed() {
-        return hardwareShooter.getShooterVelocity();
+    public void spinByPid(double rpm) {
+        double cwVolts = cwFF.calculate(rpm);
+        double ccwVolts = ccwFF.calculate(rpm);
+        cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity(), rpm);
+        cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity(), rpm);
+        hardwareShooter.setVoltage(cwVolts, ccwVolts);
+    }
+
+    public SysIdRoutine sysIdRoutine(boolean cw) {
+        hardwareShooter.setSysIdRoutine(cw);
+        return hardwareShooter.getSysIdRoutine();
     }
 }

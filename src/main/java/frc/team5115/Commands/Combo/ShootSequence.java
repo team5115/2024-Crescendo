@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Arm.DeployArm;
 
 public class ShootSequence extends SequentialCommandGroup{
     

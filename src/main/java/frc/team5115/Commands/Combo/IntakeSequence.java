@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Arm.DeployArm;
 
 public class IntakeSequence extends SequentialCommandGroup{
     

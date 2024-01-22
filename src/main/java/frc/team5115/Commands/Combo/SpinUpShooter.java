@@ -34,6 +34,6 @@ public class SpinUpShooter extends Command{
 
     @Override
     public boolean isFinished() {
-        return shooter.getSpeed() > rpm;
+        return shooter.getAverageSpeed() > rpm;
     }
 }

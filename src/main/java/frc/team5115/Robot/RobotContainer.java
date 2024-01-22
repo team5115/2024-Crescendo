@@ -6,24 +6,15 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.team5115.Classes.Accessory.I2CHandler;
-import frc.team5115.Classes.Hardware.HardwareArm;
-import frc.team5115.Classes.Hardware.HardwareDrivetrain;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
-import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Classes.Software.Arm;
-import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Commands.Combo.WaitForSensorChange;
 
 public class RobotContainer {
     // private final Joystick joyDrive;
@@ -64,7 +55,7 @@ public class RobotContainer {
         intake = new Intake(hardwareIntake);
         shooter = new Shooter(hardwareShooter);
         reflectiveSensor = new DigitalInput(9);
-        configureButtonBindings();
+        // configureButtonBindings();
     }
 
     public void configureButtonBindings() {
@@ -90,6 +81,12 @@ public class RobotContainer {
     }
 
     public void startTest() {
+        boolean cw = false;
+        shooter.sysIdRoutine(cw).dynamic(Direction.kForward).withTimeout(10).andThen(
+            shooter.sysIdRoutine(cw).dynamic(Direction.kReverse).withTimeout(10).andThen(
+                shooter.sysIdRoutine(cw).quasistatic(Direction.kForward).withTimeout(10).andThen(
+                    shooter.sysIdRoutine(cw).quasistatic(Direction.kReverse).withTimeout(10)
+        ))).schedule();
     }
 
     public void testPeriodic() {
