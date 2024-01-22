@@ -12,7 +12,7 @@ public class Climber extends SubsystemBase {
     double angle;
     public Climber(){
         leftClimber = new HardwareClimber(0, 1);
-        leftClimber = new HardwareClimber(0, 2);
+        rightClimber = new HardwareClimber(0, 2);
         pidController = new PIDController(1, 1, 1);
 
     }
