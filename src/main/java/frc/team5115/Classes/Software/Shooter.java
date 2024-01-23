@@ -9,7 +9,8 @@ public class Shooter extends SubsystemBase {
 
     // THESE CONSTANTS ARE FOR rotations/second
     // however, the rest of the code is in rpm
-    // so we divide by 60 in the ff constructors :)
+    // so we convert when using ff.calculate()
+    // also convert for PID on both parameters 
     private static final double cwKs = 0.14788;
     private static final double cwKv = 0.12323;
     private static final double cwKa = 0.031313;
@@ -30,10 +31,10 @@ public class Shooter extends SubsystemBase {
     public Shooter(HardwareShooter hardwareShooter) {
         this.hardwareShooter = hardwareShooter;
 
-        cwFF = new SimpleMotorFeedforward(cwKs/60.0, cwKv/60.0, cwKa/60.0);
-        ccwFF = new SimpleMotorFeedforward(ccwKs/60.0, ccwKv/60.0, ccwKa/60.0);
-        cwPID = new PIDController(cwKp/60.0, 0, 0);
-        ccwPID = new PIDController(ccwKp/60.0, 0, 0); 
+        cwFF = new SimpleMotorFeedforward(cwKs, cwKv, cwKa);
+        ccwFF = new SimpleMotorFeedforward(ccwKs, ccwKv, ccwKa);
+        cwPID = new PIDController(cwKp, 0, 0);
+        ccwPID = new PIDController(ccwKp, 0, 0); 
         cwPID.setTolerance(20);
         ccwPID.setTolerance(20);
     }
@@ -67,10 +68,12 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinByPid(double rpm) {
-        double cwVolts = cwFF.calculate(rpm);
-        double ccwVolts = ccwFF.calculate(rpm);
-        // cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity(), rpm);
-        // cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity(), rpm);
+        // divide by 60 on speeds to go to rot/sec
+        double rps = rpm / 60.0;
+        double cwVolts = cwFF.calculate(rps);
+        double ccwVolts = ccwFF.calculate(rps);
+        // cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
+        // cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
     }
 
