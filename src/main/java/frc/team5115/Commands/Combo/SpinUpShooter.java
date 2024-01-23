@@ -29,6 +29,9 @@ public class SpinUpShooter extends Command{
 
     @Override
     public void execute() {
+        // ! commanded value is multiplied by 1.1 because of offset and we would rather go above the goal than below
+        // from testing, the average rpm offset was around 50 rpm, and a percent error of between 0.3 and 0.1
+        // ideally, the feedforward values would be so good that we don't need this thing here
         shooter.spinByPid(rpm * 1.1);
         // shooter.printInfo();
         
