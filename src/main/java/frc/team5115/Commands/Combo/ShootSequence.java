@@ -11,16 +11,17 @@ import frc.team5115.Classes.Software.Shooter;
 
 public class ShootSequence extends SequentialCommandGroup{
     
-    public ShootSequence(GenericEntry rpmEntry, Intake intake, Shooter shooter, Arm arm, DigitalInput dioSensorFlywheels) {
+    public ShootSequence(GenericEntry rpmEntry, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         
         addCommands(
             // new DeployArm(arm),
             new InstantCommand(intake :: out),
-            new WaitForSensorChange(false, dioSensorFlywheels),
+            new WaitForSensorChange(false, sensor),
             new InstantCommand(intake :: stop),
-            new SpinUpShooter(shooter, rpmEntry, 3900).withTimeout(2.5),
+            new SpinUpShooter(shooter, rpmEntry, 3900).withTimeout(4),
             new InstantCommand(intake :: in),
-            new WaitCommand(1),
+            new WaitForSensorChange(true, sensor).withTimeout(0.5),
+            new WaitCommand(0.1),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop)
         );
