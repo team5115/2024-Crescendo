@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
@@ -89,12 +88,6 @@ public class RobotContainer {
     }
 
     public void startTest() {
-        // boolean cw = false;
-        // shooter.sysIdRoutine(cw).dynamic(Direction.kForward).withTimeout(10).andThen(
-        //     shooter.sysIdRoutine(cw).dynamic(Direction.kReverse).withTimeout(10).andThen(
-        //         shooter.sysIdRoutine(cw).quasistatic(Direction.kForward).withTimeout(10).andThen(
-        //             shooter.sysIdRoutine(cw).quasistatic(Direction.kReverse).withTimeout(10)
-        // ))).schedule();
     }
 
     public void testPeriodic() {

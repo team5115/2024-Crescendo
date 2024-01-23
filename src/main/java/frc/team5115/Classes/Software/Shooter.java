@@ -3,7 +3,6 @@ package frc.team5115.Classes.Software;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 
 public class Shooter extends SubsystemBase {    
@@ -70,10 +69,5 @@ public class Shooter extends SubsystemBase {
         cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity(), rpm);
         cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity(), rpm);
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
-    }
-
-    public SysIdRoutine sysIdRoutine(boolean cw) {
-        hardwareShooter.setSysIdRoutine(cw);
-        return hardwareShooter.getSysIdRoutine();
     }
 }
