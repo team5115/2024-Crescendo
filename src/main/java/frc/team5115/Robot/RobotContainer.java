@@ -14,14 +14,8 @@ import frc.team5115.Classes.Hardware.HardwareFeeder;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Classes.Software.Arm;
-import frc.team5115.Classes.Software.Drivetrain;
-import frc.team5115.Classes.Software.Feeder;
-import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.PhotonVision;
-import frc.team5115.Classes.Software.Shooter;
+import frc.team5115.Classes.Software.*;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
-// import paths 
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -40,17 +34,6 @@ public class RobotContainer {
 
 public RobotContainer() {
 
-    public registerPaths() {
-
-        Paths = new Paths();
-
-        // Register Named Commands for pathplanner
-
-        NamedCommands.registerCommand("Example Path", getPathGroupFromAutoFile.SideAutoPt1());
-     // NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
-     // NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
-    }
-}
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
@@ -73,8 +56,14 @@ public RobotContainer() {
         feeder = new Feeder(hardwareFeeder);
         intake = new Intake(hardwareIntake);
         shooter = new Shooter(hardwareShooter);
-
+        paths = new Paths();
         configureButtonBindings();
+    }
+
+    public void registerPaths() {
+    // Register Named Commands for pathplanner
+    NamedCommands.registerCommand("Example Path", getPathGroupFromAutoFile.SideAutoPt1());
+     // NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
     }
 
     public void configureButtonBindings() {     
@@ -136,3 +125,4 @@ public RobotContainer() {
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
     }
 
+}

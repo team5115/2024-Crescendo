@@ -1,11 +1,14 @@
 package frc.team5115.Classes.Software; 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTag;
@@ -16,7 +19,9 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.*;
 
@@ -33,9 +38,10 @@ public class PhotonVision extends SubsystemBase{
      private PhotonPoseEstimator photonPoseEstimatorR;
      private PhotonPoseEstimator photonPoseEstimatorB;
      private PhotonPoseEstimator photonPoseEstimatorF;
+     ArrayList<AprilTag> aprilTagList;
         
     public PhotonVision() {
-        ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
+        aprilTagList = new ArrayList<AprilTag>();
 
         //Left Camera
         photonCameraL = new PhotonCamera("Stereo_Vision_1");
@@ -105,6 +111,55 @@ public class PhotonVision extends SubsystemBase{
           target = result.getBestTarget();
 
 
+    }
+
+    /**
+ * 
+ */
+public void rah(){
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+                // First calculate range
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                target.pose.getY(),
+                                VisionConstants.cameraPitch,
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+                forwardSpeed = -forwardController.calculate(range, GOAL_RANGE_METERS);
+
+                // Also calculate angular power
+                // -1.0 required to ensure positive PID controller effort _increases_ yaw
+                rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0); 
+            } else {
+                // If we have no targets, stay still.
+                forwardSpeed = 0;
+                rotationSpeed = 0;
+            }
+        } else {
+            // Manual Driver Mode
+            forwardSpeed = -xboxController.getRightY();
+            rotationSpeed = xboxController.getLeftX();
+        }
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+        j.drive(forwardSpeed, rotationSpeed, 0, true, true);
+
+        double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
+    // Calculate a translation from the camera to the target.
+        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
+
+        Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {

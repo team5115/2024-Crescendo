@@ -162,7 +162,7 @@ public class Constants{
         public static final double cameraPosY = 0.346869443739;
         private static final double cameraPosZ = 0.0889001778004;
         private static final double cameraRoll = 0.0;
-        private static final double cameraPitch = 158.0;
+        public static final double cameraPitch = 158.0;
         private static final double cameraYaw = 22.5;
 
         public static final Transform3d robotToCamL = new Transform3d( new Translation3d(-cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, +cameraYaw)); 
