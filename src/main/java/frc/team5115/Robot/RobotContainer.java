@@ -21,6 +21,7 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
+// import paths 
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -34,9 +35,22 @@ public class RobotContainer {
     private final Feeder feeder;
     private final Intake intake;
     private final Shooter shooter;
+    private final Paths paths;
     private AutoCommandGroup autoCommandGroup;
 
-    public RobotContainer() {
+public RobotContainer() {
+
+    public registerPaths() {
+
+        Paths = new Paths();
+
+        // Register Named Commands for pathplanner
+
+        NamedCommands.registerCommand("Example Path", getPathGroupFromAutoFile.SideAutoPt1());
+     // NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
+     // NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
+    }
+}
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
@@ -121,4 +135,4 @@ public class RobotContainer {
 
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
     }
-}
+

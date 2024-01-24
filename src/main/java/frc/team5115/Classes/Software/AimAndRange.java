@@ -16,7 +16,7 @@ import org.photonvision.PhotonUtils;
 // using apriltags -- aim at target and get in range of target 
 
 public class AimAndRange extends SubsystemBase{
-    // private final PhotonVision photonVision; // fix error on this line*
+
 
     final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(24); // get measurments
     final double TARGET_HEIGHT_METERS = Units.feetToMeters(5); // get measurments
@@ -27,6 +27,7 @@ public class AimAndRange extends SubsystemBase{
     // How far from the target we want to be
     final double GOAL_RANGE_METERS = Units.feetToMeters(3); 
 
+    PhotonCamera camera = new PhotonCamera(null);
 
     // PID constants should be tuned per robot
     final double LINEAR_P = 0.1;
