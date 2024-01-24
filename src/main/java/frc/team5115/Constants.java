@@ -154,7 +154,7 @@ public class Constants{
 
     public static class VisionConstants {
         public static final String leftCameraName = "Stereo_Vision_1";
-        public static final String rightCameraName = "Microsoft_LifeCam_HD-3000";
+        public static final String rightCameraName = "Microsoft_LifeCam_HD-3000"; // update name after calibration
         public static final String frontCameraName = "Mirosoft_LifeCam_Cinema";
         public static final String backCameraName = "limelight"; // fix name according to limelight
 

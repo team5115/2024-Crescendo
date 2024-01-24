@@ -33,13 +33,13 @@ public class PhotonVision extends SubsystemBase{
         ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
 
         //Left Camera
-        photonCameraL = new PhotonCamera("HD_USB_Camera");
+        photonCameraL = new PhotonCamera("Stereo_Vision_1");
         // Back camera
         photonCameraB = new PhotonCamera("limelight");
         //Right camera 
         photonCameraR = new PhotonCamera("Microsoft_LifeCam_HD-3000");
         // Front camera
-        photonCameraF = new PhotonCamera("OV5647");
+        photonCameraF = new PhotonCamera("Mirosoft_LifeCam_Cinema");
 
         Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 

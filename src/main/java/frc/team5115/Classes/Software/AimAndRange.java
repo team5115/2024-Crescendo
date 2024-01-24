@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
-// using apriltags -- aim at target and get in range of target 
+
 
 public class AimAndRange extends SubsystemBase{
 
@@ -24,9 +24,9 @@ public class AimAndRange extends SubsystemBase{
     final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);  // get measurments
 
     // How far from the target we want to be
-    final double GOAL_RANGE_METERS = Units.feetToMeters(3); 
+    final double GOAL_RANGE_METERS = Units.feetToMeters(3); // change measurement based on gameplay
 
-    PhotonCamera camera = new PhotonCamera(null);
+    PhotonCamera camera = new photonCameraF("Mirosoft_LifeCam_Cinema");
 
     // PID constants should be tuned per robot
     final double LINEAR_P = 0.1;
@@ -39,31 +39,37 @@ public class AimAndRange extends SubsystemBase{
 
     XboxController xboxController = new XboxController(0);
 
-// Drive motors
+// Drive motors TODO
 
    /* {motor name} leftMotor = new {motor name}(0);
      {motor name} rightMotor = new {motor name}(1);
     SwerveDrive drive = new SwerveDrive(leftMotor, rightMotor);
 */
-    @Override
-    public void teleopPeriodic() { // fix error*
 
+// Calculate robot's field relative pose
+Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(), aprilTagFieldLayout.getTagPose(target.getFiducialId()), cameraToRobot);
+
+// Calculate robot's field relative pose
+Pose2D robotPose = PhotonUtils.estimateFieldToRobot(kCameraHeight, kTargetHeight, kCameraPitch, kTargetPitch, Rotation2d.fromDegrees(-target.getYaw()), gyro.getRotation2d(), targetPose, cameraToRobot);
+
+    @Override
+    public void teleopPeriodic() { 
         double forwardSpeed;
         double rotationSpeed;
 
         if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
-            var result = photonCameraL.getLatestResult(); // fix error*
+            var result = photonCameraL.getLatestResult(); 
 
-            if (result.hasTargets()) { // fix error*
+            if (result.hasTargets()) { 
                 // First calculate range
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
                                 CAMERA_HEIGHT_METERS,
                                 TARGET_HEIGHT_METERS,
                                 CAMERA_PITCH_RADIANS,
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); // fix error*
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
                 // Use this range as the measurement we give to the PID controller.
                 // -1.0 required to ensure positive PID controller effort _increases_ range
@@ -71,7 +77,7 @@ public class AimAndRange extends SubsystemBase{
 
                 // Also calculate angular power
                 // -1.0 required to ensure positive PID controller effort _increases_ yaw
-                rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0); // fix error*
+                rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0); 
             } else {
                 // If we have no targets, stay still.
                 forwardSpeed = 0;
@@ -87,6 +93,11 @@ public class AimAndRange extends SubsystemBase{
        // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
         drive(forwardSpeed, rotationSpeed, 0, true, true);
 
+        double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
+    // Calculate a translation from the camera to the target.
+        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
+
+        Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
     }
 
 

@@ -126,7 +126,7 @@ public class AutoBuilder extends Command{
     //     private AutoBuilder = AutoBuilder;
     //     // Configure AutoBuilder 
 
-    //     AutoBuilder.configureHolonomic( // fix error on this line*
+    //     AutoBuilder.configureHolonomic( 
     //             this::getEstimatedPose, // Robot pose supplier
     //             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
     //             this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
