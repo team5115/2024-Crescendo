@@ -1,6 +1,9 @@
 package frc.team5115.Classes.Hardware;
 
 import static frc.team5115.Constants.*;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -60,11 +63,10 @@ public class HardwareDrivetrain{
         return backRight.getState().speedMetersPerSecond;
 
         default:
-         throw new Error("Not working yet");
+         throw new Error("Not working yet buddy");
         }
          
     }
-
     public double getEncoder(int motorID){
         switch(motorID) {
             case BACK_LEFT_MOTOR_ID:
@@ -80,6 +82,8 @@ public class HardwareDrivetrain{
         default:
          throw new Error("Not working yet bucko");
         }
+
+
          
     }
 
@@ -167,6 +171,24 @@ public class HardwareDrivetrain{
         backRight.setDesiredState(swerveModuleStates[3]);
     }
 
+    public void getAutonomousCommand(){
+        getAutonomousCommand();
+
+
+    }
+
+
+    public void FollowPathCommand(){
+
+
+    }
+
+    public void buildAutoChooser(){
+        buildAutoChooser(); 
+        AutoBuilder.buildAutoChooser();
+
+
+    }
     /**
      * Sets the wheels into an X formation to prevent movement.
      */

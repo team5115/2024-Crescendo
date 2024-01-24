@@ -4,7 +4,7 @@ import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import org.photonvision.EstimatedRobotPose;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.PhotonVision;
 
+import com.pathplanner.lib.auto.AutoBuilder.QuadFunction;
+import com.pathplanner.lib.auto.AutoBuilder.TriFunction;
+import com.pathplanner.lib.auto.AutoBuilderException;
 import com.pathplanner.lib.commands.*;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -49,7 +52,7 @@ import org.json.simple.parser.JSONParser;
 public class AutoBuilder extends Command{
 
 /** Utility class used to build auto routines */
-    public class AutoBuilder {
+
 
   private static boolean configured = false;
 
@@ -111,7 +114,7 @@ public class AutoBuilder extends Command{
                 path,
                 constraints,
                 poseSupplier,
-                getChassisSpeeds,
+                robotRelativeSpeedsSupplier,
                 robotRelativeOutput,
                 config,
                 rotationDelayDistance,
@@ -161,13 +164,24 @@ public class AutoBuilder extends Command{
         PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
 
         // Create a path following command using AutoBuilder. This will also trigger event markers.
-        return AutoBuilder.FollowPathCommand(Pathplanner path); 
+        return AutoBuilder.FollowPathCommand(path); 
     }
 
 
 
-    public static SendableChooser<Command> buildAutoChooser() {
-        return null; // add return autochooser
+  
+private static Command FollowPathCommand(PathPlannerPath path) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'FollowPathCommand'");
     }
+
+
+
+
+
+public static SendableChooser<Command> buildAutoChooser() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'buildAutoChooser'");
 }
+
 }

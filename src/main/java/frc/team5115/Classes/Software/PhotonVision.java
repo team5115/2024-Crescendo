@@ -6,6 +6,8 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -23,6 +25,9 @@ public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraR;
      private PhotonCamera photonCameraB;
      private PhotonCamera photonCameraF;
+     static PhotonTrackedTarget target;
+
+     public AprilTagFieldLayout fieldLayout;
 
      private PhotonPoseEstimator photonPoseEstimatorL;
      private PhotonPoseEstimator photonPoseEstimatorR;
@@ -34,11 +39,11 @@ public class PhotonVision extends SubsystemBase{
 
         //Left Camera
         photonCameraL = new PhotonCamera("Stereo_Vision_1");
-        // Back camera
+        //Back camera
         photonCameraB = new PhotonCamera("limelight");
         //Right camera 
         photonCameraR = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-        // Front camera
+        //Front camera
         photonCameraF = new PhotonCamera("Mirosoft_LifeCam_Cinema");
 
         Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
@@ -78,7 +83,7 @@ public class PhotonVision extends SubsystemBase{
         aprilTagList.add(GenerateAprilTag(16, +182.73, +146.19, +52.00, 240));
 
 
-        AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
+         fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
 
                // PhotonposeEstimators constructors:
                PhotonPoseEstimator PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,photonCameraR, robotToCam);
@@ -94,6 +99,10 @@ public class PhotonVision extends SubsystemBase{
          PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
          photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
          photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
+
+         var result = photonCameraL.getLatestResult();
+
+          target = result.getBestTarget();
 
 
     }

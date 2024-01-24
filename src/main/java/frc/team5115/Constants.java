@@ -158,8 +158,8 @@ public class Constants{
         public static final String frontCameraName = "Mirosoft_LifeCam_Cinema";
         public static final String backCameraName = "limelight"; // fix name according to limelight
 
-        private static final double cameraPosX = 0.277813055626;
-        private static final double cameraPosY = 0.346869443739;
+        public static final double cameraPosX = 0.277813055626;
+        public static final double cameraPosY = 0.346869443739;
         private static final double cameraPosZ = 0.0889001778004;
         private static final double cameraRoll = 0.0;
         private static final double cameraPitch = 158.0;
