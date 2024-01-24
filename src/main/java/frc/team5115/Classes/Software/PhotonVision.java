@@ -8,19 +8,40 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.*;
 
 public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraL;
+     private PhotonCamera photonCameraR;
+     private PhotonCamera photonCameraB;
+     private PhotonCamera photonCameraF;
+
      private PhotonPoseEstimator photonPoseEstimatorL;
-     
+     private PhotonPoseEstimator photonPoseEstimatorR;
+     private PhotonPoseEstimator photonPoseEstimatorB;
+     private PhotonPoseEstimator photonPoseEstimatorF;
+        
     public PhotonVision() {
-         photonCameraL = new PhotonCamera(VisionConstants.leftCameraName);
         ArrayList<AprilTag> aprilTagList = new ArrayList<AprilTag>();
+
+        //Left Camera
+        photonCameraL = new PhotonCamera("HD_USB_Camera");
+        // Back camera
+        photonCameraB = new PhotonCamera("limelight");
+        //Right camera 
+        photonCameraR = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+        // Front camera
+        photonCameraF = new PhotonCamera("OV5647");
+
+        Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 
         // Add all the april tags
         
@@ -56,8 +77,25 @@ public class PhotonVision extends SubsystemBase{
         aprilTagList.add(GenerateAprilTag(15, +182.73, +177.10, +52.00, 120));
         aprilTagList.add(GenerateAprilTag(16, +182.73, +146.19, +52.00, 240));
 
+
         AprilTagFieldLayout fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
-         photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT, photonCameraL, VisionConstants.robotToCamL);
+
+               // PhotonposeEstimators constructors:
+               PhotonPoseEstimator PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,photonCameraR, robotToCam);
+
+               PhotonPoseEstimator photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraL, robotToCam);
+
+               PhotonPoseEstimator photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraF, robotToCam);
+
+               PhotonPoseEstimator photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraB, robotToCam);
+
+      
+         photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraL, VisionConstants.robotToCamL);
+         PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
+
+
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
@@ -66,6 +104,16 @@ public class PhotonVision extends SubsystemBase{
         //Trusting the left camera more, no idea on how to use filters to get the most information out of both cameras 2-6-2022
         if(photonPoseEstimatorL.update().isPresent()) return photonPoseEstimatorL.update();
         return Optional.empty();
+
+      /*   if(photonPoseEstimatorR.update().isPresent()) return photonPoseEstimatorR.update();
+        return Optional.empty();
+
+        if(photonPoseEstimatorB.update().isPresent()) return photonPoseEstimatorB.update();
+        return Optional.empty();
+
+        if(photonPoseEstimatorF.update().isPresent()) return photonPoseEstimatorF.update();
+        return Optional.empty();
+        */
     }
 
     private AprilTag GenerateAprilTag(int id, double x, double y, double z, double rotationDegrees) {

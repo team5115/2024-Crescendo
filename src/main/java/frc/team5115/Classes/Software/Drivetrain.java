@@ -44,8 +44,14 @@ public class Drivetrain extends SubsystemBase {
             navx.getYawRotation2D(),
             hardwareDrivetrain.getModulePositions(),
             getStartingPoseGuess());
+            addVisionMeasurement();
 
         System.out.println("Angle from navx" + navx.getYawDeg());
+    }
+
+    private void addVisionMeasurement() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addVisionMeasurement'");
     }
 
     private Pose2d getStartingPoseGuess() {
