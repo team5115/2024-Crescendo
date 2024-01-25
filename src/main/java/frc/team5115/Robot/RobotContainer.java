@@ -52,9 +52,9 @@ public class RobotContainer {
         // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
         // arm = new Arm(hardwareArm);
 
-        // TODO set climber canIDs
-        // HardwareClimber leftClimber = new HardwareClimber(0, 0);
-        // HardwareClimber rightClimber = new HardwareClimber(0, 0);
+        // TODO set climber canIDs, sensor channels, and PWM channels
+        // HardwareClimber leftClimber = new HardwareClimber(0, 0, 0);
+        // HardwareClimber rightClimber = new HardwareClimber(0, 0, 0);
         // climber = new Climber(leftClimber, rightClimber);
 
         HardwareIntake hardwareIntake = new HardwareIntake();

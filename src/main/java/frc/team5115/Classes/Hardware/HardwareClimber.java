@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
 
 public class HardwareClimber {
     private static final double kGravity = 0;
@@ -15,14 +16,18 @@ public class HardwareClimber {
     CANSparkMax climberMotor;
     RelativeEncoder climbEncoder;
     DigitalInput beambreak;
+    Servo actuator;
 
     int passes;
     boolean detected;
 
-    public HardwareClimber(int canId, int sensorChannel){
+    public HardwareClimber(int canId, int sensorChannel, int actuatorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         beambreak = new DigitalInput(sensorChannel);
+        actuator = new Servo(actuatorChannel);
+        actuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
         climbEncoder = climberMotor.getEncoder();
+        actuator.setSpeed(-1);
     }
 
     public void update(){
@@ -46,7 +51,15 @@ public class HardwareClimber {
         climberMotor.setVoltage(voltage);
     }
 
-   public State getState(){
+    public void extendPin() {
+        actuator.setSpeed(+1);
+    }
+
+    public void retractPin() {
+        actuator.setSpeed(-1);
+    }
+
+    public State getState(){
         if (isDetecting()){
             return State.Centered;
         }
