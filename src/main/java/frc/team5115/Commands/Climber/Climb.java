@@ -15,7 +15,7 @@ public class Climb extends Command {
         // end early if we are not already deployed
         if (climber.eitherDetecting()) {
             System.out.println("Cannot climb unless both climber beam breaks are not detecting");
-            end(true);
+            cancel();
         }
         // maybe we won't do PID, then we would just set the voltage here
     }
