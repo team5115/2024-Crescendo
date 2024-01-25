@@ -9,7 +9,10 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -116,7 +119,13 @@ public class PhotonVision extends SubsystemBase{
     /**
  * 
  */
-public void rah(){
+
+ public PhotonPipelineResult getResult(){
+        return photonCameraF.getLatestResult(); 
+ }
+
+public double getRange(){
+        ArrayList<Double> x = new ArrayList<>();
         AprilTag target = new AprilTag(0, null);
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
@@ -133,33 +142,17 @@ public void rah(){
                                 VisionConstants.cameraPitch,
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
+                return (range);
+                
                 // Use this range as the measurement we give to the PID controller.
                 // -1.0 required to ensure positive PID controller effort _increases_ range
-                forwardSpeed = -forwardController.calculate(range, GOAL_RANGE_METERS);
-
-                // Also calculate angular power
-                // -1.0 required to ensure positive PID controller effort _increases_ yaw
-                rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0); 
-            } else {
-                // If we have no targets, stay still.
-                forwardSpeed = 0;
-                rotationSpeed = 0;
-            }
-        } else {
-            // Manual Driver Mode
-            forwardSpeed = -xboxController.getRightY();
-            rotationSpeed = xboxController.getLeftX();
         }
+
+        else return Double.NaN;
 
         // Use our forward/turn speeds to control the drivetrain
        // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
-        j.drive(forwardSpeed, rotationSpeed, 0, true, true);
-
-        double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
-    // Calculate a translation from the camera to the target.
-        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
-
-        Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
+       
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {

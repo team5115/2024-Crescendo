@@ -56,14 +56,32 @@ public class AimAndRange extends SubsystemBase{
         double forwardSpeed;
         double rotationSpeed;
 
-        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.fieldLayout.getTagPose(PhotonVision.target.getFiducialId()), VisionConstants.robotToCamL);
-
         if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
-            
-    }
 
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.fieldLayout.getTagPose(PhotonVision.target.getFiducialId()), VisionConstants.robotToCamL);
+
+        forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+
+        // Also calculate angular power
+        // -1.0 required to ensure positive PID controller effort _increases_ yaw
+        rotationSpeed = -turnController.calculate(photonVision.getResult().getBestTarget().getYaw(), 0); 
+    } 
+ else {
+    // Manual Driver Mode
+    forwardSpeed = -xboxController.getRightY();
+    rotationSpeed = xboxController.getLeftX();
+}
+
+
+ j.drive(forwardSpeed, rotationSpeed, 0, true, true);
+
+        double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
+    // Calculate a translation from the camera to the target.
+        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
+
+        Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
 
 
 }
