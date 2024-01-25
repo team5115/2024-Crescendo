@@ -171,8 +171,7 @@ public class AutoBuilder extends Command{
 
   
 private static Command FollowPathCommand(PathPlannerPath path) {
-    configureHolonomic();
-    AutoBuilder.pathFollowingCommandBuilder(path);
+    pathFollowingCommandBuilder.apply(path);
     throw new UnsupportedOperationException("Unimplemented method 'FollowPathCommand'");
     }
 

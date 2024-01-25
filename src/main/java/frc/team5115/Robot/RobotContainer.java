@@ -23,6 +23,7 @@ import frc.team5115.Commands.Auto.AutoCommandGroup;
 
 public class RobotContainer {
     private final Joystick joyDrive;
+    private final AutoBuilder autoBuilder;
     private final Joystick joyManips;
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
@@ -49,7 +50,8 @@ public RobotContainer() {
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         PhotonVision photonVision = new PhotonVision();
-        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx);
+        autoBuilder = new AutoBuilder();
+        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
         
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
         arm = new Arm(hardwareArm);
@@ -62,10 +64,10 @@ public RobotContainer() {
         shooter = new Shooter(hardwareShooter);
         paths = new Paths();
         configureButtonBindings();
-        AutoBuilder.configureHolonomic()
     }
 
     public static void registerCommand() {
+        // Where should the commands come from? (Hint Autobuilder/Drivetrain)
     // Register Named Commands for pathplanner
       NamedCommands.registerCommand("Example Path", PathPlannerPath.fromPathFile("Example Path"));
       NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());

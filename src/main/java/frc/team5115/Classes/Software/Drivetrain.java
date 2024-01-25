@@ -13,9 +13,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Commands.Auto.*;
 import frc.team5115.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
@@ -23,13 +25,14 @@ public class Drivetrain extends SubsystemBase {
     private final PhotonVision photonVision;
     private final NAVx navx;
     private final HolonomicDriveController holonomicDriveController;
+    public AutoBuilder autoBuilder;
     private SwerveDrivePoseEstimator poseEstimator;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, PhotonVision photonVision, NAVx navx) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, PhotonVision photonVision, NAVx navx, AutoBuilder autoBuilder) {
         this.photonVision = photonVision;
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
-
+        this.autoBuilder = autoBuilder;
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -58,9 +61,7 @@ public class Drivetrain extends SubsystemBase {
         return null; // TODO make starting pose guess
     }
 
-    public void configureHolonomic(){
 
-    }
 
     /**
 	 * Sets the encoder values to 0.
@@ -95,6 +96,14 @@ public class Drivetrain extends SubsystemBase {
             poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
             System.out.println("vision is really working");
         }
+    }
+
+//What should it return?
+
+    public void pathplanner(){
+            //put stuff in
+            autoBuilder.configureHolonomic(null, null, null, null, null, null, navx);
+            autoBuilder.getAutonomousCommand();
     }
 
 	/**
