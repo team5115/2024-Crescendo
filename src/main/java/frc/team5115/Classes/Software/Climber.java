@@ -13,9 +13,9 @@ public class Climber extends SubsystemBase {
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
         this.leftClimber = leftClimber;
         this.rightClimber = rightClimber;
-        pidController = new PIDController(1, 1, 1);
-
+        pidController = new PIDController(0, 0, 0);
     }
+    
     public void MoveUp(double angle){
         double leftOutput = pidController.calculate(leftClimber.getAngle(), angle);
         leftClimber.setSpeed(leftOutput);

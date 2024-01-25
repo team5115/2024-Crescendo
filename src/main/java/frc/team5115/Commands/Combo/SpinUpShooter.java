@@ -33,7 +33,6 @@ public class SpinUpShooter extends Command{
         // from testing, the average rpm offset was around 50 rpm, and a percent error of between 0.3 and 0.1
         // ideally, the feedforward values would be so good that we don't need this thing here
         shooter.spinByPid(rpm * 1.1);
-        // shooter.printInfo();
         
         atSpeed = 
             Math.abs(shooter.getClockwiseSpeed()) > rpm &&
@@ -47,14 +46,20 @@ public class SpinUpShooter extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        // double avg = shooter.getAverageSpeed();
-        // double delta = avg - rpm;
-        // double percentError = (avg - rpm) / rpm;
-        // System.out.println("Goal: " + rpm
-        // + " | CW: " + shooter.getClockwiseSpeed()
-        // + " | CCW: " + shooter.getCounterClockwiseSpeed()
-        // + " | Average: " + avg
-        // + " | Avg. Delta: " + delta
-        // + " | Avg. Percent Error: " + percentError);
+        if (interrupted) {
+            System.out.println("!!!! SpinUpShooter interrupted !!!!");
+        }
+    }
+
+    private void printInfo() {
+        double avg = shooter.getAverageSpeed();
+        double delta = avg - rpm;
+        double percentError = (avg - rpm) / rpm;
+        System.out.println("Goal: " + rpm
+        + " | CW: " + shooter.getClockwiseSpeed()
+        + " | CCW: " + shooter.getCounterClockwiseSpeed()
+        + " | Average: " + avg
+        + " | Avg. Delta: " + delta
+        + " | Avg. Percent Error: " + percentError);
     }
 }

@@ -6,10 +6,10 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class HardwareClimber {
-    private static final double kGravity = 1;
-    private static final double kSpring = 1;
-    private static final double kStatic = 1;
-    private static final double kVelocity = 1;
+    private static final double kGravity = 0;
+    private static final double kSpring = 0;
+    private static final double kStatic = 0;
+    private static final double kVelocity = 0;
     public enum State { Above, Below, Centered }
 
     CANSparkMax climberMotor;

@@ -75,7 +75,6 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor));
-        
     }
 
     public void disabledInit(){
