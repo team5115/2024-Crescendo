@@ -13,6 +13,8 @@ import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
+import frc.team5115.Commands.Climber.Climb;
+import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.Vomit;
@@ -75,6 +77,12 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor));
+
+        // new JoystickButton(joyManips, XboxController.Button.kX.value)
+        // .onTrue(new DeployClimber(climber));
+
+        // new JoystickButton(joyManips, XboxController.Button.kY.value)
+        // .onTrue(new Climb(climber));
     }
 
     public void disabledInit(){
@@ -117,22 +125,6 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        // if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)) {
-        //     intake.in();
-        // } else if (joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
-        //     intake.out();
-        // } else {
-        //     intake.stop();
-        // }
-
-        // if (joyManips.getRawButton(XboxController.Button.kA.value)) {
-        //     shooter.fast();
-        // } else if (joyManips.getRawButton(XboxController.Button.kB.value)) {
-        //     shooter.slow();
-        // } else {
-        //     shooter.stop();
-        // }
-
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
         // arm.updateController();

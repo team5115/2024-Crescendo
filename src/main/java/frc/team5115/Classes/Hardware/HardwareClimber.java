@@ -62,6 +62,7 @@ public class HardwareClimber {
         actuator.setSpeed(-1);
     }
 
+    // i don't think we need this anymore :()
     public State getState(){
         if (isDetecting()){
             return State.Centered;
