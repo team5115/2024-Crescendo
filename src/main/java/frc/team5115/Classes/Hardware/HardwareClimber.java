@@ -3,6 +3,8 @@ package frc.team5115.Classes.Hardware;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class HardwareClimber {
@@ -21,6 +23,7 @@ public class HardwareClimber {
 
     public HardwareClimber(int canId, int sensorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
+        climberMotor.setIdleMode(IdleMode.kBrake);
         beambreak = new DigitalInput(sensorChannel);
         climbEncoder = climberMotor.getEncoder();
     }
