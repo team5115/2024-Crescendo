@@ -26,11 +26,14 @@ public class AimAndRange extends SubsystemBase{
     HardwareDrivetrain j;
     NAVx gyro;
     PhotonVision photonVision;
+    int x = 0;
 
     public AimAndRange(){  
         gyro = new NAVx();
         j = new HardwareDrivetrain(gyro);
         photonVision = new PhotonVision();
+        x=1;
+
     }
 
 
@@ -50,10 +53,11 @@ public class AimAndRange extends SubsystemBase{
 
 
 // Calculate robot's field relative pose
-
-    public void teleopPeriodic(double GOAL_RANGE_METERS) { 
+   @Override
+    public void periodic() { 
         double forwardSpeed;
         double rotationSpeed;
+        double GOAL_RANGE_METERS = 57;
 
         if (xboxController.getAButton()) {
             // Vision-alignment mode
@@ -78,7 +82,7 @@ public class AimAndRange extends SubsystemBase{
 
         double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
     // Calculate a translation from the camera to the target.
-        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
+        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
 
         Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
 

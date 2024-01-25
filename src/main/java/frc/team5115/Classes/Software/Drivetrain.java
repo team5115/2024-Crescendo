@@ -58,6 +58,10 @@ public class Drivetrain extends SubsystemBase {
         return null; // TODO make starting pose guess
     }
 
+    public void configureHolonomic(){
+
+    }
+
     /**
 	 * Sets the encoder values to 0.
 	 */

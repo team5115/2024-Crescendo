@@ -1,5 +1,8 @@
 package frc.team5115.Robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -14,6 +17,7 @@ import frc.team5115.Classes.Hardware.HardwareFeeder;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Commands.Auto.*;
 import frc.team5115.Classes.Software.*;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
 
@@ -58,12 +62,13 @@ public RobotContainer() {
         shooter = new Shooter(hardwareShooter);
         paths = new Paths();
         configureButtonBindings();
+        AutoBuilder.configureHolonomic()
     }
 
-    public void registerPaths() {
+    public static void registerCommand() {
     // Register Named Commands for pathplanner
-    NamedCommands.registerCommand("Example Path", getPathGroupFromAutoFile.SideAutoPt1());
-     // NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
+      NamedCommands.registerCommand("Example Path", PathPlannerPath.fromPathFile("Example Path"));
+      NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
     }
 
     public void configureButtonBindings() {     
