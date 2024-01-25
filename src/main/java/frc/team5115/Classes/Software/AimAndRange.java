@@ -51,8 +51,7 @@ public class AimAndRange extends SubsystemBase{
 
 // Calculate robot's field relative pose
 
-    @Override
-    public void teleopPeriodic() { 
+    public void teleopPeriodic(double GOAL_RANGE_METERS) { 
         double forwardSpeed;
         double rotationSpeed;
 
@@ -84,4 +83,5 @@ public class AimAndRange extends SubsystemBase{
         Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
 
 
+}
 }
