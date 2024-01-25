@@ -3,6 +3,8 @@ package frc.team5115.Classes.Hardware;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 
@@ -23,6 +25,7 @@ public class HardwareClimber {
 
     public HardwareClimber(int canId, int sensorChannel, int actuatorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
+        climberMotor.setIdleMode(IdleMode.kBrake);
         beambreak = new DigitalInput(sensorChannel);
         actuator = new Servo(actuatorChannel);
         actuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
