@@ -1,16 +1,14 @@
 package frc.team5115.Classes.Hardware;
 
 import static frc.team5115.Constants.*;
-import edu.wpi.first.math.filter.SlewRateLimiter;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.util.WPIUtilJNI;
 import frc.team5115.Constants.DriveConstants;
-import frc.team5115.Classes.Accessory.SwerveUtils;
-import edu.wpi.first.math.geometry.Pose2d;
 /**
  * The drivetrain hardware subsystem. Provides methods to interact with the actual hardware of the drivetrain.
  */
@@ -24,12 +22,6 @@ public class HardwareDrivetrain{
 
     // Slew rate filter variables for controlling lateral acceleration
     private double m_currentRotation = 0.0;
-    private double m_currentTranslationDir = 0.0;
-    private double m_currentTranslationMag = 0.0;
-
-    private SlewRateLimiter m_magLimiter = new SlewRateLimiter(1);
-    private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(1);
-    private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
     /**
     * `HardwareDrivetrain` constructor.

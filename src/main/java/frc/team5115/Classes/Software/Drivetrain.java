@@ -1,8 +1,5 @@
 package frc.team5115.Classes.Software;
 
-import java.util.Optional;
-
-
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -12,12 +9,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team5115.Constants;
+import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;

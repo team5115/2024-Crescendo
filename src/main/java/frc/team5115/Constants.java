@@ -1,15 +1,14 @@
 package frc.team5115;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
-
-import com.pathplanner.lib.path.PathConstraints;
-import com.revrobotics.CANSparkBase.IdleMode;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 public class Constants{
 
@@ -44,11 +43,6 @@ public class Constants{
     public static final double DRIVE_MOTOR_MAX_VOLTAGE = 12;
 
     public static final double TARGET_ANGLE = 1;
-
-    public static final class Paths{
-        // TODO set the path planner constraints
-        private static final PathConstraints constraints = new PathConstraints(4.0, 3.0, 1, 1);
-    }
 
     // Copyright (c) FIRST and other WPILib contributors.
     // Open Source Software; you can modify and/or share it under the terms of
