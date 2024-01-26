@@ -114,7 +114,6 @@ public class RobotContainer {
     public void autoPeriod() {
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
-        // arm.updateController();
     }
 
     public void startTeleop(){
@@ -127,7 +126,6 @@ public class RobotContainer {
     public void teleopPeriodic() {
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
-        // arm.updateController();
 
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
     }

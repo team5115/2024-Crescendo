@@ -79,10 +79,6 @@ public class Arm extends SubsystemBase{
         return hardwareArm.getArmAngle();
     }
 
-    public void spin(double speed) {
-        hardwareArm.spinGrabbers(speed);
-    }
-
     public void deploy() {
         isDeployed = true;
         setpoint.angle = HardwareArm.STOWED_ANGLE;

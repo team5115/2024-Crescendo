@@ -12,8 +12,7 @@ import frc.team5115.Classes.Accessory.I2CHandler;
 public class HardwareArm extends SubsystemBase{
     public static final double STOWED_ANGLE = 140.0;
     public static final double DEPLOYED_ANGLE = 0.0;
-    private final CANSparkMax armTurn;
-    private final CANSparkMax grabby;
+    private final CANSparkMax turn;
     
     private final NAVx navx;
     private final I2CHandler i2c;
@@ -30,23 +29,18 @@ public class HardwareArm extends SubsystemBase{
         this.i2c = i2c;
         
         // TODO arm canIDs
-        grabby = new CANSparkMax(0, MotorType.kBrushless);
-        armTurn = new CANSparkMax(0, MotorType.kBrushless);  
-        armTurn.setIdleMode(IdleMode.kBrake);
-        armTurn.setSmartCurrentLimit(80, 80);
+        turn = new CANSparkMax(0, MotorType.kBrushless);  
+        turn.setIdleMode(IdleMode.kBrake);
+        turn.setSmartCurrentLimit(80, 80);
         armAngle = new Angle(STOWED_ANGLE);
-        armTurn.setInverted(true);
-    }
-
-    public void spinGrabbers(double speedNormalized) {
-        grabby.set(speedNormalized);
+        turn.setInverted(true);
     }
 
     public void setTurn(double speed){
         if(speed != speed) {
             speed = 0;
         }
-        armTurn.setVoltage(Math.max(ff.calculate(getArmAngle().getRadians(-Math.PI), speed), -10));
+        turn.setVoltage(Math.max(ff.calculate(getArmAngle().getRadians(-Math.PI), speed), -10));
     }
 
     public void stop(){
@@ -54,11 +48,11 @@ public class HardwareArm extends SubsystemBase{
     }
     
     public double getTurnCurrent(){
-        return armTurn.getOutputCurrent();
+        return turn.getOutputCurrent();
     }
     
     public boolean getFault(CANSparkMax.FaultID f){
-       return armTurn.getFault(f);
+       return turn.getFault(f);
     }
     
     /**
@@ -71,6 +65,6 @@ public class HardwareArm extends SubsystemBase{
     }
 
     public void setIdleMode(IdleMode mode) {
-        armTurn.setIdleMode(mode);
+        turn.setIdleMode(mode);
     }
 }
