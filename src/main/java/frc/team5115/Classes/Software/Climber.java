@@ -37,12 +37,10 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean bothDetecting() {
-        // TODO bothDetecting() in Climber.java
-        return false; // delete this line
+        return leftClimber.isDetecting() && rightClimber.isDetecting();
     }
 
     public boolean eitherDetecting() {
-        // TODO eitherDetecting() in Climber.java
-        return false; // delete this line
+        return leftClimber.isDetecting() || rightClimber.isDetecting(); 
     }
 }
