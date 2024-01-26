@@ -171,8 +171,8 @@ public class AutoBuilder extends Command{
 
   
 private static Command FollowPathCommand(PathPlannerPath path) {
-    pathFollowingCommandBuilder.apply(path);
-    throw new UnsupportedOperationException("Unimplemented method 'FollowPathCommand'");
+    return pathFollowingCommandBuilder.apply(path);
+    //throw new UnsupportedOperationException("Unimplemented method 'FollowPathCommand'");
     }
 
 
