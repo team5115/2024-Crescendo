@@ -33,6 +33,10 @@ public class HardwareClimber {
     public boolean isDetecting(){
         return beambreak.get();
     }
+
+    public void setVoltZero(){
+        climberMotor.setVoltage(0);
+    }
     
     public double getAngle(){
         return climbEncoder.getPosition();

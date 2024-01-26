@@ -28,7 +28,9 @@ public class Climber extends SubsystemBase {
     }
 
     public void stop(){
-        // TODO finish this
+        leftClimber.setVoltZero();
+        rightClimber.setVoltZero();
+
     }
 
    
