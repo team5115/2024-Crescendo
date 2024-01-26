@@ -53,7 +53,8 @@ public class I2CHandler extends SubsystemBase {
         double[] gravity = getGravity();
         final double radians = Math.atan2(-gravity[1], -gravity[0]);
         final double degrees = Math.toDegrees(radians);
-        pitch = degrees - 90; // offset because of how it's oriented on the robot ig
+        // TODO modfiy bno pitch offset based on orientation on robot
+        pitch = degrees - 90; // ! offset because of how it's oriented on the robot
     }
 
     public double getPitch() {

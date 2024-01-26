@@ -13,7 +13,6 @@ public class Vomit extends SequentialCommandGroup{
             addCommands(
                 new InstantCommand(shooter :: fastBackwards),
                 new InstantCommand(intake :: fastOut)
-        
             );
         }
         else{

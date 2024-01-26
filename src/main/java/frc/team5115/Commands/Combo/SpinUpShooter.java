@@ -7,24 +7,39 @@ import frc.team5115.Classes.Software.Shooter;
 public class SpinUpShooter extends Command{
     final Shooter shooter;
     final GenericEntry rpmEntry;
+    final boolean debug;
     double rpm;
     boolean atSpeed;
 
-    // public SpinUpShooter(Shooter shooter, double rpm, GenericEntry rpmEntry, GenericEntry percentageEntry) {
-    //     this.shooter = shooter;
-    //     this.rpmEntry = rpmEntry;
-    //     this.percentEntry = percentageEntry;
-    // }
+    /**
+     * Construct a SpinUpShooter command given a shooter subsystem and a commanded RPM to spin up to
+     * @param shooter 
+     * @param rpm is the commanded RPM to spin the shooter up to
+     */
+    public SpinUpShooter(Shooter shooter, double rpm) {
+        this(shooter, null, rpm, false);
+    }
 
-    public SpinUpShooter(Shooter shooter, GenericEntry rpmEntry, double defaultRpm) {
+    /**
+     * Construct a SpinUpShooter command given a shooter subsystem,
+     * a shuffleboard entry to get the commanded RPM from, and a default RPM
+     * @param shooter
+     * @param rpmEntry a Shuffleboard entry that will give the commanded RPM at runtime
+     * @param defaultRpm the default RPM
+     * @param debug is whether or not to print debug info during runtime
+     */
+    public SpinUpShooter(Shooter shooter, GenericEntry rpmEntry, double defaultRpm, boolean debug) {
         this.shooter = shooter;
         this.rpmEntry = rpmEntry;
         this.rpm = defaultRpm;
+        this.debug = debug;
     }
 
     @Override
     public void initialize() {
-        rpm = rpmEntry.getDouble(rpm);
+        if (rpmEntry != null) {
+            rpm = rpmEntry.getDouble(rpm);
+        }
     }
 
     @Override
@@ -37,6 +52,8 @@ public class SpinUpShooter extends Command{
         atSpeed = 
             Math.abs(shooter.getClockwiseSpeed()) > rpm &&
             Math.abs(shooter.getCounterClockwiseSpeed()) > rpm;
+
+        if (debug) printInfo();
     }
 
     @Override
@@ -47,7 +64,7 @@ public class SpinUpShooter extends Command{
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            System.out.println("!!!! SpinUpShooter interrupted !!!!");
+            System.out.println("SpinUpShooter command interrupted!");
         }
     }
 
