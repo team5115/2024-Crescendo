@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Accessory.SwerveUtils;
+import edu.wpi.first.math.geometry.Pose2d;
 /**
  * The drivetrain hardware subsystem. Provides methods to interact with the actual hardware of the drivetrain.
  */
@@ -40,6 +41,34 @@ public class HardwareDrivetrain{
         //frontRightOld.setInverted(true);
     }
 
+    public ChassisSpeeds discretize(
+                  double vxMetersPerSecond,
+                  double vyMetersPerSecond,
+                  double omegaRadiansPerSecond,
+                  double dtSeconds) {
+                var desiredDeltaPose =
+                    new Pose2d(
+                        vxMetersPerSecond * dtSeconds,
+                        vyMetersPerSecond * dtSeconds,
+                        new Rotation2d(omegaRadiansPerSecond * dtSeconds));
+                var twist = new Pose2d().log(desiredDeltaPose);
+                return new ChassisSpeeds(twist.dx / dtSeconds, twist.dy / dtSeconds, twist.dtheta / dtSeconds);
+              }
+    public ChassisSpeeds discretize(
+                ChassisSpeeds x,
+                double dtSeconds) {
+                    double vxMetersPerSecond = x.vxMetersPerSecond;
+                    double vyMetersPerSecond = x.vyMetersPerSecond;
+                    double omegaRadiansPerSecond = x.omegaRadiansPerSecond;
+              var desiredDeltaPose =
+                  new Pose2d(
+                      vxMetersPerSecond * dtSeconds,
+                      vyMetersPerSecond * dtSeconds,
+                      new Rotation2d(omegaRadiansPerSecond * dtSeconds));
+              var twist = new Pose2d().log(desiredDeltaPose);
+              return new ChassisSpeeds(twist.dx / dtSeconds, twist.dy / dtSeconds, twist.dtheta / dtSeconds);
+            }
+
     /**
      * Method to drive the robot using joystick info.
      *
@@ -55,62 +84,25 @@ public class HardwareDrivetrain{
         double xSpeedCommanded;
         double ySpeedCommanded;
 
-        if (rateLimit) {
-            // Convert XY to polar for rate limiting
-            double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
-            double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
-
-            // Calculate the direction slew rate based on an estimate of the lateral acceleration
-            double directionSlewRate;
-            if (m_currentTranslationMag != 0.0) {
-                directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
-            } else {
-                directionSlewRate = 500.0; //some high number that means the slew rate is effectively instantaneous
-            }
-            
-
-            double currentTime = WPIUtilJNI.now() * 1e-6;
-            double elapsedTime = currentTime - m_prevTime;
-            double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
-            if (angleDif < 0.45*Math.PI) {
-                m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-                m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-            }
-            else if (angleDif > 0.85*Math.PI) {
-                if (m_currentTranslationMag > 1e-4) { //some small number to avoid floating-point errors with equality checking
-                // keep currentTranslationDir unchanged
-                m_currentTranslationMag = m_magLimiter.calculate(0.0);
-                }
-                else {
-                m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
-                m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-                }
-            }
-            else {
-                m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-                m_currentTranslationMag = m_magLimiter.calculate(0.0);
-            }
-            m_prevTime = currentTime;
-            
-            xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
-            ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
-            m_currentRotation = m_rotLimiter.calculate(rot);
-
-        } else {
-            xSpeedCommanded = xSpeed;
-            ySpeedCommanded = ySpeed;
-            m_currentRotation = rot;
-        }
+        xSpeedCommanded = xSpeed;
+        ySpeedCommanded = ySpeed;
+        m_currentRotation = rot;
 
         // Convert the commanded speeds into the correct units for the drivetrain
-        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-        double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
 
-        SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
+        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond+rotDelivered/20;
+        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
+
+
+        System.out.println(gyro.getYawDeg360());
+        ChassisSpeeds x = 
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getYawDeg()))
-                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getYawDeg360()))
+                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+        x = discretize(x, 0.02);
+
+        SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(x);
         SwerveDriveKinematics.desaturateWheelSpeeds(
             swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
             

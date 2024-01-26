@@ -2,7 +2,6 @@ package frc.team5115.Classes.Software;
 
 import java.util.Optional;
 
-import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -13,20 +12,20 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
-    private final PhotonVision photonVision;
     private final NAVx navx;
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, PhotonVision photonVision, NAVx navx) {
-        this.photonVision = photonVision;
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
 
@@ -49,44 +48,44 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Pose2d getStartingPoseGuess() {
-        return null; // TODO make starting pose guess
+            return new Pose2d();
     }
 
     /**
 	 * Sets the encoder values to 0.
 	 */
     public void resetEncoders() {
+        navx.resetNAVx();
         hardwareDrivetrain.resetEncoders();
     }
     
-    public void SwerveDrive(double forward, double turn, double right, boolean rookieMode){
+    public void SwerveDrive(double forward, double turn, double right, boolean rookieMode, boolean fieldOriented){
+
+        if(Math.abs(forward)< 0.1){
+            forward = 0;
+        }
+        if(Math.abs(turn)< 0.1){
+            turn = 0;
+        }
+        if(Math.abs(right)< 0.1){
+            right = 0;
+        }        
         if(rookieMode){
             right *= 0.1;
             turn *= 0.1;
-            forward *= 0.1;
+            forward *= -0.1;
         }else{
             right *= 0.2;
             turn *= 0.2;
-            forward *= 0.2;
+            forward *= -0.2;
         }
-        hardwareDrivetrain.drive(forward, right, turn, false, false);
+        hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
     }
 
 	/**
 	 * Updates the odometry of the robot.
      * should run every robot tick
 	 */
-    public void updateOdometry() {
-        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
-
-        Optional<EstimatedRobotPose> result = photonVision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
-            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-            System.out.println("vision is really working");
-        }
-    }
-
 	/**
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
