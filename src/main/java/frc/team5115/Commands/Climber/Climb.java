@@ -5,9 +5,10 @@ import frc.team5115.Classes.Software.Climber;
 
 public class Climb extends Command {
     final Climber climber;
-    
-    public Climb(Climber climber) {
+    final double angle;
+    public Climb(Climber climber, double angle) {
         this.climber = climber;
+        this.angle = angle;
     }
 
     @Override
@@ -16,22 +17,18 @@ public class Climb extends Command {
         if (climber.eitherDetecting()) {
             System.out.println("Cannot climb unless both climber beam breaks are not detecting");
             cancel();
+            return;
         }
-        // maybe we won't do PID, then we would just set the voltage here
     }
 
     @Override
     public void execute() {
         // run those PID loops!
+        climber.loopPids(angle);
     }
 
     @Override
     public boolean isFinished() {
         return climber.bothDetecting();
-    }
-    
-    @Override
-    public void end(boolean interrupted) {
-        
     }
 }
