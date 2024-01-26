@@ -51,4 +51,9 @@ public class HardwareClimber {
         actuator.setSpeed(-1);
     }
 
+    public double getVelocity(){
+        return climbEncoder.getVelocity();
+    }
+
 }
+    
