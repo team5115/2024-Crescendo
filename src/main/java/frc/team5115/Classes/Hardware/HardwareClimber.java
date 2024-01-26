@@ -20,9 +20,6 @@ public class HardwareClimber {
     DigitalInput beambreak;
     Servo actuator;
 
-    int passes;
-    boolean detected;
-
     public HardwareClimber(int canId, int sensorChannel, int actuatorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         climberMotor.setIdleMode(IdleMode.kBrake);
@@ -31,14 +28,6 @@ public class HardwareClimber {
         actuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
         climbEncoder = climberMotor.getEncoder();
         actuator.setSpeed(-1);
-    }
-
-    public void update(){
-        if (detected && !isDetecting()){
-            passes ++;
-        }
-
-        detected = isDetecting();
     }
 
     public boolean isDetecting(){
@@ -62,14 +51,9 @@ public class HardwareClimber {
         actuator.setSpeed(-1);
     }
 
-    // i don't think we need this anymore :()
-    public State getState(){
-        if (isDetecting()){
-            return State.Centered;
-        }
-        if (passes % 2 == 0){
-            return State.Above;
-        }
-        return State.Below;
+    public double getVelocity(){
+        return climbEncoder.getVelocity();
     }
+
 }
+    
