@@ -6,24 +6,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.team5115.Classes.Accessory.I2CHandler;
-import frc.team5115.Classes.Hardware.HardwareArm;
-import frc.team5115.Classes.Hardware.HardwareDrivetrain;
+import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
-import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Classes.Software.Arm;
-import frc.team5115.Classes.Software.Drivetrain;
+import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Commands.Climber.Climb;
+import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Commands.Combo.WaitForSensorChange;
 
 public class RobotContainer {
     // private final Joystick joyDrive;
@@ -34,13 +28,17 @@ public class RobotContainer {
     // private final I2CHandler i2cHandler;
     // private final NAVx navx;
     // private final Arm arm;
+    // private final Climber climber;
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
+    private final GenericEntry rpmEntry;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
+        rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
+
         // rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         // doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
@@ -55,6 +53,11 @@ public class RobotContainer {
         
         // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
         // arm = new Arm(hardwareArm);
+
+        // TODO set climber canIDs, sensor channels, and PWM channels
+        // HardwareClimber leftClimber = new HardwareClimber(0, 0, 0);
+        // HardwareClimber rightClimber = new HardwareClimber(0, 0, 0);
+        // climber = new Climber(leftClimber, rightClimber);
 
         HardwareIntake hardwareIntake = new HardwareIntake();
         HardwareShooter hardwareShooter = new HardwareShooter();
@@ -73,8 +76,13 @@ public class RobotContainer {
         .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, null, reflectiveSensor));
-        
+        .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor));
+
+        // new JoystickButton(joyManips, XboxController.Button.kX.value)
+        // .onTrue(new DeployClimber(climber));
+
+        // new JoystickButton(joyManips, XboxController.Button.kY.value)
+        // .onTrue(new Climb(climber));
     }
 
     public void disabledInit(){
@@ -117,22 +125,6 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        // if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)) {
-        //     intake.in();
-        // } else if (joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
-        //     intake.out();
-        // } else {
-        //     intake.stop();
-        // }
-
-        // if (joyManips.getRawButton(XboxController.Button.kA.value)) {
-        //     shooter.fast();
-        // } else if (joyManips.getRawButton(XboxController.Button.kB.value)) {
-        //     shooter.slow();
-        // } else {
-        //     shooter.stop();
-        // }
-
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
         // arm.updateController();

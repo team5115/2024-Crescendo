@@ -11,7 +11,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void in(){
-        hardwareIntake.set(0.7);
+        hardwareIntake.set(0.5);
     }
 
     public void out() {
