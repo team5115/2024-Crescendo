@@ -19,7 +19,7 @@ public class Arm extends SubsystemBase{
     private static final double TURN_PID_KD = 0.0;
     
     private final HardwareArm hardwareArm;
-    private Angle setpoint;
+    private final Angle setpoint;
 
     private PIDController turnController = new PIDController(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
     private boolean isDeployed;

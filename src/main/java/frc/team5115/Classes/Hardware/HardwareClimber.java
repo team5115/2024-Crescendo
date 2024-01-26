@@ -15,10 +15,10 @@ public class HardwareClimber {
     private static final double kVelocity = 0;
     public enum State { Above, Below, Centered }
 
-    CANSparkMax climberMotor;
-    RelativeEncoder climbEncoder;
-    DigitalInput beambreak;
-    Servo actuator;
+    final CANSparkMax climberMotor;
+    final RelativeEncoder climbEncoder;
+    final DigitalInput beambreak;
+    final Servo actuator;
 
     public HardwareClimber(int canId, int sensorChannel, int actuatorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);

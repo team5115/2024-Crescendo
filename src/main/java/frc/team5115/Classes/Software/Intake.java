@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 
 public class Intake extends SubsystemBase {
-    HardwareIntake hardwareIntake;
+    final HardwareIntake hardwareIntake;
     
     public Intake(HardwareIntake hardwareIntake){
         this.hardwareIntake = hardwareIntake;
