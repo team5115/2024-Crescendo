@@ -1,21 +1,37 @@
 package frc.team5115.Commands.Climber;
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Climber;
 
 public class DeployClimber extends Command {
     final Climber climber;
-    public DeployClimber(Climber climber) {
+    private double time;
+    private final Timer timer;
+    public DeployClimber(Climber climber, double time) {
         this.climber = climber;
+        this.time = time;
+        timer = new Timer();
     }
 
     @Override
     public void initialize() {
         // deploy the climber because it is only a simple thing...
+        timer.reset();
+        climber.retractPins();
+        climber.stop();
     }
 
     @Override
+    public void execute() {
+       if(climber.bothZeroVel()){
+            timer.start();    
+        } else {
+            timer.reset();
+        }
+    }
+    
+    @Override
     public boolean isFinished() {
-        return true;
+        return timer.get() > time;
     }
 }
