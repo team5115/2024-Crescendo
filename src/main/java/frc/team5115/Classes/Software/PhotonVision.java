@@ -124,6 +124,10 @@ public class PhotonVision extends SubsystemBase{
         return photonCameraF.getLatestResult(); 
  }
 
+ public boolean isTargetPresent(){
+    return photonCameraF.getLatestResult().hasTargets();
+ }
+
 public double getRange(){
         ArrayList<Double> x = new ArrayList<>();
         AprilTag target = new AprilTag(0, null);
