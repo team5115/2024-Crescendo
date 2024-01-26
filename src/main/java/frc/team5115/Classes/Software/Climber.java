@@ -31,10 +31,7 @@ public class Climber extends SubsystemBase {
         // TODO finish this
     }
 
-    public boolean bothZeroVel(){
-        // TODO 
-        return false;
-    }
+   
     public void retractPins() {
         leftClimber.retractPin();
         rightClimber.retractPin();

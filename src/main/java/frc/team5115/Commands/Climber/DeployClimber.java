@@ -23,13 +23,13 @@ public class DeployClimber extends Command {
 
     @Override
     public void execute() {
-       if(climber.bothZeroVel()){
+       if(climber.bothStopped()){
             timer.start();    
         } else {
             timer.reset();
         }
     }
-    
+
     @Override
     public boolean isFinished() {
         return timer.get() > time;
