@@ -10,6 +10,8 @@ import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Accessory.I2CHandler;
 
 public class HardwareArm extends SubsystemBase{
+    public static final double STOWED_ANGLE = 140.0;
+    public static final double DEPLOYED_ANGLE = 0.0;
     private final CANSparkMax armTurn;
     private final CANSparkMax grabby;
     
@@ -32,7 +34,7 @@ public class HardwareArm extends SubsystemBase{
         armTurn = new CANSparkMax(0, MotorType.kBrushless);  
         armTurn.setIdleMode(IdleMode.kBrake);
         armTurn.setSmartCurrentLimit(80, 80);
-        armAngle = new Angle(120); // ! The approx real starting angle of the arm when the robot starts
+        armAngle = new Angle(STOWED_ANGLE);
         armTurn.setInverted(true);
     }
 

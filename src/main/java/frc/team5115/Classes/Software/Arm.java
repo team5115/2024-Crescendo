@@ -27,7 +27,7 @@ public class Arm extends SubsystemBase{
     public Arm(HardwareArm hardwareArm){
         this.hardwareArm = hardwareArm;
         turnController.setTolerance(TURN_PID_TOLERANCE);
-        setpoint = new Angle(100); // ! The starting setpoint for when the robot turns on
+        setpoint = new Angle(HardwareArm.STOWED_ANGLE);
     }
 
     public Angle getSetpoint() {
@@ -40,14 +40,6 @@ public class Arm extends SubsystemBase{
      */
     public void setSetpoint(Angle newSetpoint) {
         setpoint.angle = newSetpoint.getDegrees(MIN_DEGREES);
-    }
-
-    public void turnUp() {
-        setpoint.angle += 9*0.02;
-    }
-
-    public void turnDown() {
-        setpoint.angle -= 9*0.02;
     }
 
     public void disableBrake(){
@@ -93,12 +85,12 @@ public class Arm extends SubsystemBase{
 
     public void deploy() {
         isDeployed = true;
-        setpoint.angle = 5;
+        setpoint.angle = HardwareArm.STOWED_ANGLE;
     }
 
     public void stow() {
         isDeployed = false;
-        setpoint.angle = 90;
+        setpoint.angle = HardwareArm.DEPLOYED_ANGLE;
     }
 
     public boolean isDeployed() {
