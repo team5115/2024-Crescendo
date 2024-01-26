@@ -9,6 +9,7 @@ public class Climber extends SubsystemBase {
     final HardwareClimber rightClimber;
     final PIDController leftPid;
     final PIDController rightPid;
+    final static double stopedVelocity = 1;
     double angle;
 
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
@@ -26,6 +27,13 @@ public class Climber extends SubsystemBase {
         rightClimber.setSpeed(rightOutput);
     }
 
+    public void stop(){
+        leftClimber.setVoltZero();
+        rightClimber.setVoltZero();
+
+    }
+
+   
     public void retractPins() {
         leftClimber.retractPin();
         rightClimber.retractPin();
@@ -42,5 +50,9 @@ public class Climber extends SubsystemBase {
 
     public boolean eitherDetecting() {
         return leftClimber.isDetecting() || rightClimber.isDetecting(); 
+    }
+
+    public boolean bothStopped(){
+        return Math.abs(leftClimber.getVelocity()) < stopedVelocity && Math.abs(rightClimber.getVelocity()) < stopedVelocity;
     }
 }
