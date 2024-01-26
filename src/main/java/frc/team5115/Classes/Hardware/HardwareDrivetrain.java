@@ -98,7 +98,7 @@ public class HardwareDrivetrain{
         // plugandFFDrive(leftVelocity, rightVelocity);
 
     }
-    // search on wpilib/chief delphi to find new swervedrivewheelspeeds code and new units code*
+
 
     public ChassisSpeeds discretize(
                   double vxMetersPerSecond,
@@ -186,7 +186,6 @@ public class HardwareDrivetrain{
     public void buildAutoChooser(){
         buildAutoChooser(); 
         AutoBuilder.buildAutoChooser();
-
 
     }
     /**

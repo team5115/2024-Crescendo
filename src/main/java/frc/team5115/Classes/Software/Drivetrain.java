@@ -102,7 +102,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void pathplanner(){
             //put stuff in
-            autoBuilder.configureHolonomic(null, null, null, null, null, null, navx);
+            autoBuilder.configureHolonomic(getPose, null, null, null, null, null, navx);
             autoBuilder.getAutonomousCommand();
     }
 
