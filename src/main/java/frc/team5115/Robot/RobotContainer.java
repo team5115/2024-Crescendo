@@ -13,6 +13,7 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
+import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -72,7 +73,7 @@ public class RobotContainer {
         .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor));
+        .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
 
         // new JoystickButton(joyManips, XboxController.Button.kX.value)
         // .onTrue(new DeployClimber(climber));
@@ -90,10 +91,14 @@ public class RobotContainer {
         // arm.stop();
     }
 
+    SpinUpShooter spinCommand;
     public void startTest() {
+        spinCommand = new SpinUpShooter(shooter, rpmEntry.getDouble(3900));
     }
 
     public void testPeriodic() {
+        if (joyManips.getRawButton(1) && !spinCommand.isScheduled()) spinCommand.schedule();
+        else if (joyManips.getRawButton(2) && spinCommand.isScheduled()) spinCommand.cancel();
     }
 
     public void startAuto(){

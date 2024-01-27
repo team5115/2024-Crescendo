@@ -14,12 +14,12 @@ public class Shooter extends SubsystemBase {
     private static final double cwKs = 0.14788;
     private static final double cwKv = 0.12323;
     private static final double cwKa = 0.031313;
-    private static final double cwKp = 0.018058;
+    private static final double cwKp = 0; //0.018058;
 
     private static final double ccwKs = 0.22671;
     private static final double ccwKv = 0.12119;
     private static final double ccwKa = 0.029654;
-    private static final double ccwKp = 0.019965;
+    private static final double ccwKp = 0; //0.019965;
 
     final HardwareShooter hardwareShooter;
 
@@ -37,10 +37,6 @@ public class Shooter extends SubsystemBase {
         ccwPID = new PIDController(ccwKp, 0, 0); 
         cwPID.setTolerance(20);
         ccwPID.setTolerance(20);
-    }
-
-    public void fast() {
-        hardwareShooter.setNormalized(0.9);
     }
 
     public void slow() {
@@ -72,12 +68,8 @@ public class Shooter extends SubsystemBase {
         double rps = rpm / 60.0;
         double cwVolts = cwFF.calculate(rps);
         double ccwVolts = ccwFF.calculate(rps);
-        // cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
-        // cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
+        cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
+        cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
-    }
-
-    public void printInfo() {
-        System.out.println("CW: " + getClockwiseSpeed() + " | CCW: " + getCounterClockwiseSpeed());
     }
 }

@@ -14,15 +14,23 @@ public class Intake extends SubsystemBase {
         hardwareIntake.set(0.5);
     }
 
+    public void fastIn() {
+        hardwareIntake.set(+1);
+    }
+
     public void out() {
-        hardwareIntake.set(-0.7);
+        hardwareIntake.set(-0.35);
+    }
+    
+    public void fastOut(){
+        hardwareIntake.set(-1);
     }
 
     public void stop(){
         hardwareIntake.set(0);
     }
 
-    public void fastOut(){
-        hardwareIntake.set(-1);
+    public void setPercent(double percent) {
+        hardwareIntake.set(percent);
     }
 }
