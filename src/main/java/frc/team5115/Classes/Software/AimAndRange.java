@@ -34,8 +34,8 @@ public class AimAndRange extends SubsystemBase{
     NAVx gyro;
     PhotonVision photonVision;
     int x = 0;
-    SwerveDrivePoseEstimator poseEstimator;
 
+    
     public AimAndRange(Drivetrain d){  
         gyro = new NAVx();
         j = new HardwareDrivetrain(gyro);
