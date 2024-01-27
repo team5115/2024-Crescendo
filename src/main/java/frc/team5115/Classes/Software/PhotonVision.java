@@ -9,6 +9,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
+import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -123,6 +124,20 @@ public class PhotonVision extends SubsystemBase{
  public PhotonPipelineResult getResult(){
         return photonCameraF.getLatestResult(); 
  }
+public Pose3d j2(){
+AprilTag target = new AprilTag(0, null);
+var result = photonCameraF.getLatestResult(); 
+ for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+       return target.pose;
+}
+
+        Pose3d y = new Pose3d();
+        Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
+        
 
  public boolean isTargetPresent(){
     return photonCameraF.getLatestResult().hasTargets();

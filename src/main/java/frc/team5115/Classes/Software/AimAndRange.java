@@ -5,17 +5,23 @@ import frc.team5115.Classes.Hardware.*;
 import frc.team5115.Classes.Software.PhotonVision;
 import org.photonvision.PhotonPoseEstimator;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team5115.Classes.Software.Drivetrain;
 
 import frc.team5115.Constants.*;
-
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -24,15 +30,18 @@ import org.photonvision.PhotonUtils;
 
 public class AimAndRange extends SubsystemBase{
     HardwareDrivetrain j;
+    Drivetrain d;
     NAVx gyro;
     PhotonVision photonVision;
     int x = 0;
+    SwerveDrivePoseEstimator poseEstimator;
 
-    public AimAndRange(){  
+    public AimAndRange(Drivetrain d){  
         gyro = new NAVx();
         j = new HardwareDrivetrain(gyro);
         photonVision = new PhotonVision();
         x=1;
+        this.d = d;
 
     }
 
@@ -58,14 +67,14 @@ public class AimAndRange extends SubsystemBase{
         double forwardSpeed;
         double rotationSpeed;
         double GOAL_RANGE_METERS = 57;
-
+        
         if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
 
         if(photonVision.isTargetPresent()){
-        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.fieldLayout.getTagPose(PhotonVision.target.getFiducialId()), VisionConstants.robotToCamL);
-
+                            
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2(), VisionConstants.robotToCamL.times(-1));
         forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
 
         // Also calculate angular power
@@ -86,11 +95,16 @@ public class AimAndRange extends SubsystemBase{
 
     j.drive(forwardSpeed, rotationSpeed, 0, true, true);
 
-        double distanceToTarget = PhotonUtils.getDistanceToPose(robotPose, targetPose);
-    // Calculate a translation from the camera to the target.
-        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
+        Pose3d y = photonVision.j2();
+        Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
 
-        Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, targetPose);
+        double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);
+    // Calculate a translation from the camera to the target.
+        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(GOAL_RANGE_METERS, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
+
+        Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
+
+        
 
 
 }

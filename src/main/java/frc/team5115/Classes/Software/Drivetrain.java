@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -17,6 +18,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
+
+import com.pathplanner.lib.util.*;
+import com.pathplanner.lib.util.*;
 import frc.team5115.Commands.Auto.*;
 import frc.team5115.Constants.DriveConstants;
 
@@ -24,6 +28,7 @@ public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final PhotonVision photonVision;
     private final NAVx navx;
+    HolonomicPathFollowerConfig x;
     private final HolonomicDriveController holonomicDriveController;
     public AutoBuilder autoBuilder;
     private SwerveDrivePoseEstimator poseEstimator;
@@ -33,6 +38,9 @@ public class Drivetrain extends SubsystemBase {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
         this.autoBuilder = autoBuilder;
+        x = new HolonomicPathFollowerConfig(new PIDConstants(1, 0, 0),
+            new PIDConstants(1, 0, 0),
+       DriveConstants.kMaxSpeedMetersPerSecond, (DriveConstants.kTrackWidth/2),  new ReplanningConfig());
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -98,12 +106,17 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
+    public void resetPose(Pose2d x){
+        Pose2d pose1 = x;
+        poseEstimator.resetPosition(pose1.getRotation(), hardwareDrivetrain.getModulePositions(), pose1);
+    }
+
 //What should it return?
 
-    public void pathplanner(){
+    public Command pathplanner(){
             //put stuff in
-            autoBuilder.configureHolonomic(null, null, null, null, null, null, navx);
-            autoBuilder.getAutonomousCommand();
+            AutoBuilder.configureHolonomic(poseEstimator::getEstimatedPosition, this::resetPose, hardwareDrivetrain::getChassisSpeeds, hardwareDrivetrain::setWheelSpeeds, x, hardwareDrivetrain::isRed, hardwareDrivetrain);
+            return autoBuilder.getAutonomousCommand();
     }
 
 	/**

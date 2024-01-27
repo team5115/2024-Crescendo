@@ -2,6 +2,8 @@ package frc.team5115.Classes.Hardware;
 
 import static frc.team5115.Constants.*;
 
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -11,14 +13,17 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.Units.*;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.team5115.Classes.Accessory.SwerveUtils;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
 /**
  * The drivetrain hardware subsystem. Provides methods to interact with the actual hardware of the drivetrain.
  */
-public class HardwareDrivetrain{    
+public class HardwareDrivetrain extends SubsystemBase{    
     private final NAVx gyro;
 
     SwerveDriveModule frontLeft = new SwerveDriveModule(FRONT_LEFT_MOTOR_ID, FRONT_LEFT_TURN_MOTOR_ID, Math.toRadians(90));
@@ -99,6 +104,11 @@ public class HardwareDrivetrain{
 
     }
     // search on wpilib/chief delphi to find new swervedrivewheelspeeds code and new units code*
+
+    public boolean isRed(){
+        return false;
+    }
+
 
     public ChassisSpeeds discretize(
                   double vxMetersPerSecond,

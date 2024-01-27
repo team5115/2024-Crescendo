@@ -66,11 +66,11 @@ public RobotContainer() {
         configureButtonBindings();
     }
 
-    public static void registerCommand() {
+    public void registerCommand() {
         // Where should the commands come from? (Hint Autobuilder/Drivetrain)
     // Register Named Commands for pathplanner
-      NamedCommands.registerCommand("Example Path", PathPlannerPath.fromPathFile("Example Path"));
-      NamedCommands.registerCommand("", getPathGroupFromAutoFile.exampleCommand());
+
+      NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
     }
 
     public void configureButtonBindings() {     
