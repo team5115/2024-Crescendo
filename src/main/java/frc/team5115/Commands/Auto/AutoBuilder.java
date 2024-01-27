@@ -18,6 +18,7 @@ import frc.team5115.Classes.Software.PhotonVision;
 import com.pathplanner.lib.auto.AutoBuilder.QuadFunction;
 import com.pathplanner.lib.auto.AutoBuilder.TriFunction;
 import com.pathplanner.lib.auto.AutoBuilderException;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.*;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -160,6 +161,7 @@ public class AutoBuilder extends Command{
 
     public Command getAutonomousCommand() {
 
+        
         // Load the path you want to follow using its name in the GUI
         PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
 

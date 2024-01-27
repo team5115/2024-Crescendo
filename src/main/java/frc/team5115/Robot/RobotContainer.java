@@ -1,5 +1,7 @@
 package frc.team5115.Robot;
 
+import org.photonvision.PhotonVersion;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -36,6 +38,7 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Paths paths;
     private AutoCommandGroup autoCommandGroup;
+    private PhotonVision photonVision;
 
 public RobotContainer() {
 
@@ -49,10 +52,10 @@ public RobotContainer() {
         i2cHandler = new I2CHandler();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        PhotonVision photonVision = new PhotonVision();
+        
         autoBuilder = new AutoBuilder();
         drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
-        
+        photonVision = new PhotonVision();
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
         arm = new Arm(hardwareArm);
 
@@ -128,6 +131,7 @@ public RobotContainer() {
         drivetrain.updateOdometry();
         i2cHandler.updatePitch();
         arm.updateController();
+        photonVision.getRange();
 
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
     }
