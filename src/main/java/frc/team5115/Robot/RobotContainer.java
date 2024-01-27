@@ -93,12 +93,12 @@ public class RobotContainer {
 
     SpinUpShooter spinCommand;
     public void startTest() {
-        spinCommand = new SpinUpShooter(shooter, rpmEntry.getDouble(3900));
+        spinCommand = new SpinUpShooter(shooter, rpmEntry, 3900, true, true);
     }
 
     public void testPeriodic() {
-        if (joyManips.getRawButton(1) && !spinCommand.isScheduled()) spinCommand.schedule();
-        else if (joyManips.getRawButton(2) && spinCommand.isScheduled()) spinCommand.cancel();
+        if (joyManips.getRawButton(3) && !spinCommand.isScheduled()) spinCommand.schedule();
+        else if (joyManips.getRawButton(4) && spinCommand.isScheduled()) spinCommand.cancel();
     }
 
     public void startAuto(){

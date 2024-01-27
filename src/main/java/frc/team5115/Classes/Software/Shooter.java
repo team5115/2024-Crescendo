@@ -11,15 +11,18 @@ public class Shooter extends SubsystemBase {
     // however, the rest of the code is in rpm
     // so we convert when using ff.calculate()
     // also convert for PID on both parameters 
-    private static final double cwKs = 0.14788;
-    private static final double cwKv = 0.12323;
-    private static final double cwKa = 0.031313;
-    private static final double cwKp = 0; //0.018058;
+    private static final double cwKs = 0.19894;
+    private static final double cwKv = 0.12456;
+    private static final double cwKa = 0.037234;
+    private static final double cwKp = 39.338;
+    private static final double cwKd = 1.6206;
 
-    private static final double ccwKs = 0.22671;
-    private static final double ccwKv = 0.12119;
-    private static final double ccwKa = 0.029654;
-    private static final double ccwKp = 0; //0.019965;
+    private static final double ccwKs = 0.14687;
+    private static final double ccwKv = 0.12423;
+    private static final double ccwKa = 0.037858;
+    private static final double ccwKp = 39.512;
+    private static final double ccwKd = 1.6387;
+
 
     final HardwareShooter hardwareShooter;
 
@@ -33,8 +36,8 @@ public class Shooter extends SubsystemBase {
 
         cwFF = new SimpleMotorFeedforward(cwKs, cwKv, cwKa);
         ccwFF = new SimpleMotorFeedforward(ccwKs, ccwKv, ccwKa);
-        cwPID = new PIDController(cwKp, 0, 0);
-        ccwPID = new PIDController(ccwKp, 0, 0); 
+        cwPID = new PIDController(cwKp, 0, cwKd);
+        ccwPID = new PIDController(ccwKp, 0, ccwKd); 
         cwPID.setTolerance(20);
         ccwPID.setTolerance(20);
     }
@@ -68,8 +71,8 @@ public class Shooter extends SubsystemBase {
         double rps = rpm / 60.0;
         double cwVolts = cwFF.calculate(rps);
         double ccwVolts = ccwFF.calculate(rps);
-        cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
-        cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
+        // cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
+        // cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
     }
 }

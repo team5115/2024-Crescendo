@@ -8,6 +8,7 @@ public class SpinUpShooter extends Command{
     final Shooter shooter;
     final GenericEntry rpmEntry;
     final boolean debug;
+    final boolean testMode;
     double rpm;
     boolean atSpeed;
 
@@ -17,7 +18,7 @@ public class SpinUpShooter extends Command{
      * @param rpm is the commanded RPM to spin the shooter up to
      */
     public SpinUpShooter(Shooter shooter, double rpm) {
-        this(shooter, null, rpm, false);
+        this(shooter, null, rpm, false, false);
     }
 
     /**
@@ -28,11 +29,12 @@ public class SpinUpShooter extends Command{
      * @param defaultRpm the default RPM
      * @param debug is whether or not to print debug info during runtime
      */
-    public SpinUpShooter(Shooter shooter, GenericEntry rpmEntry, double defaultRpm, boolean debug) {
+    public SpinUpShooter(Shooter shooter, GenericEntry rpmEntry, double defaultRpm, boolean debug, boolean testMode) {
         this.shooter = shooter;
         this.rpmEntry = rpmEntry;
         this.rpm = defaultRpm;
         this.debug = debug;
+        this.testMode = testMode;
     }
 
     @Override
@@ -58,13 +60,16 @@ public class SpinUpShooter extends Command{
 
     @Override
     public boolean isFinished() {
-        return atSpeed;
+        return atSpeed && !testMode;
     }
 
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
             System.out.println("SpinUpShooter command interrupted!");
+        }
+        if (testMode) {
+            shooter.stop();
         }
         System.out.println("SpinUpShooter ENDED");
     }
