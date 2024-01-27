@@ -103,7 +103,7 @@ public class HardwareDrivetrain extends SubsystemBase{
         // plugandFFDrive(leftVelocity, rightVelocity);
 
     }
-    // search on wpilib/chief delphi to find new swervedrivewheelspeeds code and new units code*
+
 
     public boolean isRed(){
         return false;
@@ -196,7 +196,6 @@ public class HardwareDrivetrain extends SubsystemBase{
     public void buildAutoChooser(){
         buildAutoChooser(); 
         AutoBuilder.buildAutoChooser();
-
 
     }
     /**
