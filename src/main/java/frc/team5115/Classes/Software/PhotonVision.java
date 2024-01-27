@@ -52,9 +52,9 @@ public class PhotonVision extends SubsystemBase{
         //Back camera
         photonCameraB = new PhotonCamera("limelight");
         //Right camera 
-        photonCameraR = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+        photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
         //Front camera
-        photonCameraF = new PhotonCamera("Mirosoft_LifeCam_Cinema");
+        photonCameraF = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
         Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 
