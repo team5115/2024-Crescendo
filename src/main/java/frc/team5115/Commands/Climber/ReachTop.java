@@ -3,11 +3,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Climber;
 
-public class DeployClimber extends Command {
+public class ReachTop extends Command {
     final Climber climber;
     private double time;
     private final Timer timer;
-    public DeployClimber(Climber climber, double time) {
+    public ReachTop(Climber climber, double time) {
         this.climber = climber;
         this.time = time;
         timer = new Timer();
@@ -20,7 +20,7 @@ public class DeployClimber extends Command {
 
     @Override
     public void execute() {
-       if(climber.bothStopped()){
+       if(climber.isFullyDeployed()){
             timer.start();    
         } else {
             timer.reset();

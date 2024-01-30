@@ -17,22 +17,28 @@ public class HardwareClimber {
 
     final CANSparkMax climberMotor;
     final RelativeEncoder climbEncoder;
-    final DigitalInput beambreak;
+    final DigitalInput bottomSensor;
+    final DigitalInput topSensor;
     final Servo actuator;
 
 
-    public HardwareClimber(int canId, int sensorChannel, int actuatorChannel){
+    public HardwareClimber(int canId, int bottomChannel, int topChannel, int actuatorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         climberMotor.setIdleMode(IdleMode.kBrake);
-        beambreak = new DigitalInput(sensorChannel);
+        bottomSensor = new DigitalInput(bottomChannel);
+        topSensor = new DigitalInput(topChannel);
         actuator = new Servo(actuatorChannel);
         actuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
         climbEncoder = climberMotor.getEncoder();
         actuator.setSpeed(-1);
     }
 
-    public boolean isDetecting(){
-        return beambreak.get();
+    public boolean isBotttomDetecting(){
+        return bottomSensor.get();
+    }
+
+    public boolean isTopDetecting(){
+        return topSensor.get();
     }
 
     public void setVoltZero(){

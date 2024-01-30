@@ -8,7 +8,7 @@ public class LatchSequence extends SequentialCommandGroup {
         
         addCommands(
             new ReleaseLatch(climber, 0.075),
-            new DeployClimber(climber, 0.2)
+            new ReachTop(climber, 0.2)
         );
     }
 }

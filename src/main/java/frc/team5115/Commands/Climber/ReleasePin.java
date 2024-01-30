@@ -15,7 +15,6 @@ public class ReleasePin extends Command {
 
     @Override
     public void initialize() {
-        // deploy the climber because it is only a simple thing...
         timer.reset();
         climber.retractPins();
         climber.stop();

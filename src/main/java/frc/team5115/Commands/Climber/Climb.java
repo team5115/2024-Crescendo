@@ -14,11 +14,12 @@ public class Climb extends Command {
     @Override
     public void initialize() {
         // end early if we are not already deployed
-        if (climber.eitherDetecting()) {
-            System.out.println("Cannot climb unless both climber beam breaks are not detecting");
+        if (!climber.isFullyDeployed()) {
+            System.out.println("Cannot climb unless fully deployed");
             cancel();
             return;
         }
+
     }
 
     @Override
@@ -29,6 +30,6 @@ public class Climb extends Command {
 
     @Override
     public boolean isFinished() {
-        return climber.bothDetecting();
+        return climber.isFullyClimbed();
     }
 }
