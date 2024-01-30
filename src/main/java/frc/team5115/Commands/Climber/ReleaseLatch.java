@@ -7,6 +7,7 @@ public class ReleaseLatch extends Command {
     final Climber climber;
     private double time;
     private final Timer timer;
+
     public ReleaseLatch(Climber climber, double time) {
         this.climber = climber;
         this.time = time;
@@ -17,14 +18,13 @@ public class ReleaseLatch extends Command {
     public void initialize() {
         timer.reset();
         climber.latchSpeed();
-
     }
 
     @Override
     public void execute() {
-        if(climber.checkVelocity()){
+        if(climber.bothUnlatched()){
             timer.start();    
-         } else {
+        } else {
             timer.reset();
         }
     }

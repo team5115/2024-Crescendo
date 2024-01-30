@@ -52,8 +52,8 @@ public class HardwareClimber {
         actuator.setSpeed(+1);
     }
 
-    public void setPercentage(){
-        climberMotor.set(0.2);
+    public void setPercentage(double percentage){
+        climberMotor.set(percentage);
     }
 
     public void retractPin() {

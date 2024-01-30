@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 
 public class Climber extends SubsystemBase {
-    final static double STOPPED_TOLERANCE = 1; // TODO determine stopped tolerance (RPM)
+    final static double STOPPED_MAX_VEL = 1; // TODO determine stopped tolerance (RPM)
+    final static double UNLATCHED_MIN_VEL = 15; // TODO determine unlatched tolerance (RPM)
     final HardwareClimber leftClimber;
     final HardwareClimber rightClimber;
     final PIDController leftPid;
     final PIDController rightPid;
-    final static double LATCHVEL = 15; // TODO detremine unlatched velosictyu 
     double angle;
 
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
@@ -34,8 +34,8 @@ public class Climber extends SubsystemBase {
     }
 
     public void latchSpeed(){
-        leftClimber.setPercentage();
-        rightClimber.setPercentage();
+        leftClimber.setPercentage(0.2);
+        rightClimber.setPercentage(0.2);
     }
    
     public void retractPins() {
@@ -57,10 +57,10 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean bothStopped(){
-        return Math.abs(leftClimber.getVelocity()) < STOPPED_TOLERANCE && Math.abs(rightClimber.getVelocity()) < STOPPED_TOLERANCE;
+        return Math.abs(leftClimber.getVelocity()) < STOPPED_MAX_VEL && Math.abs(rightClimber.getVelocity()) < STOPPED_MAX_VEL;
     }
 
-    public boolean checkVelocity(){
-        return Math.abs(leftClimber.getVelocity()) > LATCHVEL && Math.abs(rightClimber.getVelocity()) > LATCHVEL;
+    public boolean bothUnlatched(){
+        return Math.abs(leftClimber.getVelocity()) > UNLATCHED_MIN_VEL && Math.abs(rightClimber.getVelocity()) > UNLATCHED_MIN_VEL;
     }
 }
