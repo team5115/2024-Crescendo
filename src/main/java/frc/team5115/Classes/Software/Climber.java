@@ -5,12 +5,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 
 public class Climber extends SubsystemBase {
-    final static double UNLATCHED_MIN_VEL = 15; // TODO determine unlatched tolerance (RPM)
     final HardwareClimber leftClimber;
     final HardwareClimber rightClimber;
     final PIDController leftPid;
     final PIDController rightPid;
-    double angle;
 
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
         this.leftClimber = leftClimber;
@@ -19,11 +17,11 @@ public class Climber extends SubsystemBase {
         rightPid = new PIDController(0, 0, 0);
     }
     
-    public void loopPids(double angle){
-        double leftOutput = leftPid.calculate(leftClimber.getAngle(), angle);
+    public void loopPids(double[] setpoints){
+        double leftOutput = leftPid.calculate(leftClimber.getRotations(), setpoints[0]);
+        double rightOutput = rightPid.calculate(rightClimber.getRotations(), setpoints[1]);
+        
         leftClimber.setSpeed(leftOutput);
-
-        double rightOutput = rightPid.calculate(rightClimber.getAngle(), angle);
         rightClimber.setSpeed(rightOutput);
     }
 
@@ -32,12 +30,13 @@ public class Climber extends SubsystemBase {
         rightClimber.setPercentage(0);
     }
 
+    // TODO determine latch release speed
     public void latchSpeed(){
         leftClimber.setPercentage(0.2);
         rightClimber.setPercentage(0.2);
     }
 
-    // TODO determine slow release speed on deploy from latch to hold position
+    // TODO determine slow release speed
     public void letOutSlow() {
         leftClimber.setPercentage(-0.2);
         rightClimber.setPercentage(-0.2);
@@ -53,8 +52,8 @@ public class Climber extends SubsystemBase {
         rightClimber.extendPin();
     }
 
-    public double getAverageAngle() {
-        return (leftClimber.getAngle() + rightClimber.getAngle()) / 2.0;
+    public double[] getRotations() {
+        return new double[] {leftClimber.getRotations(), rightClimber.getRotations()};
     }
 
     public boolean isRightBottom(){
@@ -63,29 +62,21 @@ public class Climber extends SubsystemBase {
 
     public boolean isLeftBottom(){
         return leftClimber.isBotttomDetecting();
-
     }
 
     public boolean isRightTop(){
         return rightClimber.isTopDetecting();
-
     }
 
     public boolean isLeftTop(){
         return leftClimber.isTopDetecting();
-
     }
 
     public boolean isFullyDeployed(){
         return isRightTop() && isLeftTop() && !isLeftBottom() && !isRightBottom();
     }
-
     
     public boolean isFullyClimbed(){
         return !isRightTop() && !isLeftTop() && isLeftBottom() && isRightBottom();
-    }
-
-    public boolean bothUnlatched(){
-        return Math.abs(leftClimber.getVelocity()) > UNLATCHED_MIN_VEL && Math.abs(rightClimber.getVelocity()) > UNLATCHED_MIN_VEL;
     }
 }

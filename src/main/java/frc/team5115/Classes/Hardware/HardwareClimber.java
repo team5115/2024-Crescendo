@@ -13,7 +13,6 @@ public class HardwareClimber {
     private static final double kSpring = 0;
     private static final double kStatic = 0;
     private static final double kVelocity = 0;
-    public enum State { Above, Below, Centered }
 
     final CANSparkMax climberMotor;
     final RelativeEncoder climbEncoder;
@@ -41,21 +40,21 @@ public class HardwareClimber {
         return topSensor.get();
     }
     
-    public double getAngle(){
+    public double getRotations(){
         return climbEncoder.getPosition();
     }
 
     public void setSpeed(double desiredVelocity){
-        double voltage = kStatic * Math.signum(desiredVelocity) + kVelocity * desiredVelocity + kSpring * getAngle() + kGravity * Math.cos(getAngle());
+        double voltage = kStatic * Math.signum(desiredVelocity) + kVelocity * desiredVelocity + kSpring * getRotations() + kGravity * Math.cos(getRotations());
         climberMotor.setVoltage(voltage);
-    }
-
-    public void extendPin() {
-        actuator.setSpeed(+1);
     }
 
     public void setPercentage(double percentage){
         climberMotor.set(percentage);
+    }
+
+    public void extendPin() {
+        actuator.setSpeed(+1);
     }
 
     public void retractPin() {

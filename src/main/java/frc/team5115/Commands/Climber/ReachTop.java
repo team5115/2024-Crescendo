@@ -12,7 +12,7 @@ public class ReachTop extends Command {
 
     @Override
     public void initialize() {
-        climber.stop();
+        climber.letOutSlow();
     }
 
     @Override
