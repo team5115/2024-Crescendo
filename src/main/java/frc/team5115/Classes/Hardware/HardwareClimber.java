@@ -20,6 +20,7 @@ public class HardwareClimber {
     final DigitalInput beambreak;
     final Servo actuator;
 
+
     public HardwareClimber(int canId, int sensorChannel, int actuatorChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         climberMotor.setIdleMode(IdleMode.kBrake);
@@ -49,6 +50,10 @@ public class HardwareClimber {
 
     public void extendPin() {
         actuator.setSpeed(+1);
+    }
+
+    public void setPercentage(){
+        climberMotor.set(0.2);
     }
 
     public void retractPin() {

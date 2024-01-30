@@ -10,6 +10,7 @@ public class Climber extends SubsystemBase {
     final HardwareClimber rightClimber;
     final PIDController leftPid;
     final PIDController rightPid;
+    final static double LATCHVEL = 15; // TODO detremine unlatched velosictyu 
     double angle;
 
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
@@ -30,6 +31,11 @@ public class Climber extends SubsystemBase {
     public void stop(){
         leftClimber.setVoltZero();
         rightClimber.setVoltZero();
+    }
+
+    public void latchSpeed(){
+        leftClimber.setPercentage();
+        rightClimber.setPercentage();
     }
    
     public void retractPins() {
@@ -52,5 +58,9 @@ public class Climber extends SubsystemBase {
 
     public boolean bothStopped(){
         return Math.abs(leftClimber.getVelocity()) < STOPPED_TOLERANCE && Math.abs(rightClimber.getVelocity()) < STOPPED_TOLERANCE;
+    }
+
+    public boolean checkVelocity(){
+        return Math.abs(leftClimber.getVelocity()) > LATCHVEL && Math.abs(rightClimber.getVelocity()) > LATCHVEL;
     }
 }
