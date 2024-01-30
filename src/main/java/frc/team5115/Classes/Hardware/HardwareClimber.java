@@ -40,10 +40,6 @@ public class HardwareClimber {
     public boolean isTopDetecting(){
         return topSensor.get();
     }
-
-    public void setVoltZero(){
-        climberMotor.setVoltage(0);
-    }
     
     public double getAngle(){
         return climbEncoder.getPosition();

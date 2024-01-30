@@ -29,13 +29,19 @@ public class Climber extends SubsystemBase {
     }
 
     public void stop(){
-        leftClimber.setVoltZero();
-        rightClimber.setVoltZero();
+        leftClimber.setPercentage(0);
+        rightClimber.setPercentage(0);
     }
 
     public void latchSpeed(){
         leftClimber.setPercentage(0.2);
         rightClimber.setPercentage(0.2);
+    }
+
+    // TODO determine slow release speed on deploy from latch to hold position
+    public void letOutSlow() {
+        leftClimber.setPercentage(-0.2);
+        rightClimber.setPercentage(-0.2);
     }
    
     public void retractPins() {
@@ -46,6 +52,10 @@ public class Climber extends SubsystemBase {
     public void extendPins() {
         leftClimber.extendPin();
         rightClimber.extendPin();
+    }
+
+    public double getAverageAngle() {
+        return (leftClimber.getAngle() + rightClimber.getAngle()) / 2.0;
     }
 
     public boolean isRightBottom(){

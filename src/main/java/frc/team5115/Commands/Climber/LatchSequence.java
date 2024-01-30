@@ -1,14 +1,16 @@
 package frc.team5115.Commands.Climber;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.team5115.Classes.Software.Climber;
 
 public class LatchSequence extends SequentialCommandGroup {
-     public LatchSequence(Climber climber) {
-        
+     public LatchSequence(Climber climber, BooleanSupplier isFinishedSupplier) {
         addCommands(
             new ReleaseLatch(climber, 0.075),
-            new ReachTop(climber, 0.2)
+            new ReachTop(climber),
+            new HoldClimbers(climber, isFinishedSupplier)
         );
     }
 }
