@@ -47,12 +47,12 @@ public class PhotonVision extends SubsystemBase{
     public PhotonVision() {
         aprilTagList = new ArrayList<AprilTag>();
 
-        //Left Camera
-        photonCameraL = new PhotonCamera("Stereo_Vision_1");
+        //Left 
+    //    photonCameraL = new PhotonCamera("Stereo_Vision_1");
         //Back camera
-        photonCameraB = new PhotonCamera("limelight");
+    //    photonCameraB = new PhotonCamera("limelight");
         //Right camera 
-        photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
+   //     photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
         //Front camera
         photonCameraF = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
@@ -110,9 +110,7 @@ public class PhotonVision extends SubsystemBase{
          photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
          photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
 
-         var result = photonCameraL.getLatestResult();
 
-          target = result.getBestTarget();
 
 
     }
@@ -167,11 +165,23 @@ public double getRange(){
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
 
-        else return Double.NaN;
+
+         return 0;
 
         // Use our forward/turn speeds to control the drivetrain
        // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
        
+    }
+
+    public double getID(){
+
+        if(photonCameraF.hasTargets()){ 
+        double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
+        return (FidicualID);
+
+        }
+        return 0;
+
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
