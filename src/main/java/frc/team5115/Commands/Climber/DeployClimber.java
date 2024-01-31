@@ -7,7 +7,7 @@ public class DeployClimber extends SequentialCommandGroup {
      public DeployClimber(Climber climber) {
         addCommands(
             new ReleaseLatches(climber, 0.5),
-            new ReachTop(climber)
+            new WaitForDeployed(climber)
         );
     }
 }

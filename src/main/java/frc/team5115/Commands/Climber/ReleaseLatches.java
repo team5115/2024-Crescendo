@@ -35,6 +35,6 @@ public class ReleaseLatches extends Command {
 
     @Override
     public void end(boolean interrupted){
-        climber.letOutSlow();
+        climber.stop();
     }
 }
