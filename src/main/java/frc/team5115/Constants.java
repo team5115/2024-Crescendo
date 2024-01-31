@@ -158,9 +158,10 @@ public class Constants{
         public static final String frontCameraName = "Microsoft_LifeCam_HD-3000";
         public static final String backCameraName = "limelight"; // fix name according to limelight
 
+        
+        private static final double cameraPosZ = 0.0889001778004;
         public static final double cameraPosX = 0.0;
         public static final double cameraPosY = 0.2413;
-        private static final double cameraPosZ = 0.0889001778004;
         private static final double cameraRoll = 0.0;
         public static final double cameraPitch = 0.0;
         private static final double cameraYaw = 0.0;
