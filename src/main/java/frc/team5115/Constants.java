@@ -158,12 +158,12 @@ public class Constants{
         public static final String frontCameraName = "Microsoft_LifeCam_HD-3000";
         public static final String backCameraName = "limelight"; // fix name according to limelight
 
-        public static final double cameraPosX = 0.277813055626;
-        public static final double cameraPosY = 0.346869443739;
+        public static final double cameraPosX = 0.0;
+        public static final double cameraPosY = 0.2413;
         private static final double cameraPosZ = 0.0889001778004;
         private static final double cameraRoll = 0.0;
-        public static final double cameraPitch = 158.0;
-        private static final double cameraYaw = 22.5;
+        public static final double cameraPitch = 0.0;
+        private static final double cameraYaw = 0.0;
 
         public static final Transform3d robotToCamL = new Transform3d( new Translation3d(-cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, +cameraYaw)); 
         public static final Transform3d robotToCamR = new Transform3d( new Translation3d(+cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, -cameraYaw)); 

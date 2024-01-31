@@ -34,9 +34,9 @@ public RobotContainer() {
     
     public void teleopPeriodic() {
 
-      //  System.out.println(photonVision.getRange());
+        System.out.println(photonVision.getRange());
 
-        System.out.println(photonVision.getID());
+     //   System.out.println(photonVision.getID());
  }
 
 }
