@@ -57,11 +57,11 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean isRightBottom(){
-        return rightClimber.isBotttomDetecting();
+        return rightClimber.isBottomDetecting();
     }
 
     public boolean isLeftBottom(){
-        return leftClimber.isBotttomDetecting();
+        return leftClimber.isBottomDetecting();
     }
 
     public boolean isRightTop(){

@@ -32,7 +32,7 @@ public class HardwareClimber {
         actuator.setSpeed(-1);
     }
 
-    public boolean isBotttomDetecting(){
+    public boolean isBottomDetecting(){
         return bottomSensor.get();
     }
 

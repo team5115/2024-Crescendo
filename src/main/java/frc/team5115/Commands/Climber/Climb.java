@@ -15,10 +15,9 @@ public class Climb extends Command {
 
     @Override
     public void initialize() {
-        double[] startPoints = climber.getRotations();
-        setpoints = new double[2];
-        setpoints[0] = startPoints[0] + desiredRotationDelta;
-        setpoints[1] = startPoints[1] + desiredRotationDelta;
+        setpoints = climber.getRotations();
+        setpoints[0] += desiredRotationDelta;
+        setpoints[1] += desiredRotationDelta;
     }
 
     @Override
@@ -29,5 +28,10 @@ public class Climb extends Command {
     @Override
     public boolean isFinished() {
         return climber.isFullyClimbed();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        climber.stop();
     }
 }

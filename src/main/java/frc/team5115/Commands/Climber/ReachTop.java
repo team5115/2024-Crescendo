@@ -19,4 +19,9 @@ public class ReachTop extends Command {
     public boolean isFinished() {
         return climber.isFullyDeployed();
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        climber.stop();
+    }
 }

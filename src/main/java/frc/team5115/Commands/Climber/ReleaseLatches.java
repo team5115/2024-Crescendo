@@ -16,18 +16,21 @@ public class ReleaseLatches extends Command {
     @Override
     public void initialize() {
         climber.latchSpeed();
-
-        double[] startPoints = climber.getRotations();
-        setpoints = new double[2];
-        setpoints[0] = startPoints[0] + desiredRotationDelta;
-        setpoints[1] = startPoints[1] + desiredRotationDelta;
+        setpoints = climber.getRotations();
+        setpoints[0] += desiredRotationDelta;
+        setpoints[1] += desiredRotationDelta;
     }
 
     @Override
     public boolean isFinished() {
         double[] current = climber.getRotations();
-        // ! these greater than signs may need to be less than signs...
-        return current[0] > setpoints[0] && current[1] > setpoints[1];
+        if (desiredRotationDelta > 0) {
+            return current[0] > setpoints[0] && current[1] > setpoints[1];
+        } else if (desiredRotationDelta < 0) {
+            return current[0] < setpoints[0] && current[1] < setpoints[1];
+        } else {
+            return true;
+        }
     }
 
     @Override
