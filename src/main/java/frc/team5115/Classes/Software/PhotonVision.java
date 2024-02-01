@@ -155,7 +155,7 @@ public double getRange(){
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
                                 VisionConstants.cameraPosY,
-                                1,
+                                16.154,
                                 VisionConstants.cameraPitch,
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
@@ -173,16 +173,16 @@ public double getRange(){
        
     }
 
-//     public double getID(){
+    public double getID(){
 
-//         if(photonCameraF.hasTargets()){ 
-//         double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
-//         return (FidicualID);
+        if(photonCameraF.hasTargets()){ 
+        double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
+        return (FidicualID);
 
-//         }
-//         return 0;
+        }
+        return 0;
 
-//     }
+    }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         // The team assignment of the first grid the robot looks at is the team assignment of the robot
