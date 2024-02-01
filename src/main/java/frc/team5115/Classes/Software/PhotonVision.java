@@ -1,7 +1,5 @@
 package frc.team5115.Classes.Software; 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -9,25 +7,21 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
-import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
-
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team5115.Constants.*;
+import frc.team5115.Constants.FieldConstants;
+import frc.team5115.Constants.VisionConstants;
 
 public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraL;
@@ -144,7 +138,7 @@ var result = photonCameraF.getLatestResult();
     return photonCameraF.getLatestResult().hasTargets();
  }
 
-public double getRange(){
+public double getLeftRange(){
         ArrayList<Double> x = new ArrayList<>();
         AprilTag target = new AprilTag(0, null);
         var result = photonCameraF.getLatestResult(); 
@@ -157,9 +151,9 @@ public double getRange(){
                 // First calculate range
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraPosY,
+                                VisionConstants.cameraLeftPosY,
                                 target.pose.getY(),
-                                VisionConstants.cameraPitch,
+                                VisionConstants.cameraLeftPitch,
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
                 return (range);
@@ -172,6 +166,78 @@ public double getRange(){
 
         // Use our forward/turn speeds to control the drivetrain
        // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+public double getRightRange(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraRightPosY,
+                                target.pose.getY(),
+                                VisionConstants.cameraRightPitch,
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (range);
+        }
+
+        else return Double.NaN;
+       
+    }
+
+public double getFrontRange(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraFrontPosY,
+                                target.pose.getY(),
+                                VisionConstants.cameraFrontPitch,
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (range);
+        }
+
+        else return Double.NaN;
+       
+    }
+
+public double getBackRange(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraBackPosY,
+                                target.pose.getY(),
+                                VisionConstants.cameraBackPitch,
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (range);
+        }
+
+        else return Double.NaN;
        
     }
 

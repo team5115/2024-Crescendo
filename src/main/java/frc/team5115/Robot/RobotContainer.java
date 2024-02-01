@@ -131,7 +131,7 @@ public RobotContainer() {
         drivetrain.updateOdometry();
         i2cHandler.updatePitch();
         arm.updateController();
-        photonVision.getRange();
+        photonVision.getFrontRange();
 
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
     }

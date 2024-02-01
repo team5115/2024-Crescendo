@@ -75,7 +75,7 @@ public class AimAndRange extends SubsystemBase{
         if(photonVision.isTargetPresent()){
                             
         Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2(), VisionConstants.robotToCamL.times(-1));
-        forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+        forwardSpeed = -forwardController.calculate(photonVision.getFrontRange(), GOAL_RANGE_METERS);
 
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
