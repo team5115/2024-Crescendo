@@ -169,7 +169,7 @@ public double getLeftRange(){
        
     }
 
-public double getRightRange(){
+public double getRange(double posY, double pitch){
         ArrayList<Double> x = new ArrayList<>();
         AprilTag target = new AprilTag(0, null);
         var result = photonCameraF.getLatestResult(); 
@@ -181,57 +181,9 @@ public double getRightRange(){
                 }
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraRightPosY,
+                                posY,
                                 target.pose.getY(),
-                                VisionConstants.cameraRightPitch,
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
-
-                return (range);
-        }
-
-        else return Double.NaN;
-       
-    }
-
-public double getFrontRange(){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(0, null);
-        var result = photonCameraF.getLatestResult(); 
-            if (result.hasTargets()) { 
-                for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                        }
-                }
-                double range =
-                        PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraFrontPosY,
-                                target.pose.getY(),
-                                VisionConstants.cameraFrontPitch,
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
-
-                return (range);
-        }
-
-        else return Double.NaN;
-       
-    }
-
-public double getBackRange(){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(0, null);
-        var result = photonCameraF.getLatestResult(); 
-            if (result.hasTargets()) { 
-                for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                        }
-                }
-                double range =
-                        PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraBackPosY,
-                                target.pose.getY(),
-                                VisionConstants.cameraBackPitch,
+                                pitch,
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
                 return (range);
