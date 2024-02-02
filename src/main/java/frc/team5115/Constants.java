@@ -1,15 +1,15 @@
 package frc.team5115;
 
+import com.pathplanner.lib.path.PathConstraints;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
-
-import com.pathplanner.lib.path.PathConstraints;
-import com.revrobotics.CANSparkBase.IdleMode;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 public class Constants{
 
@@ -156,17 +156,41 @@ public class Constants{
         public static final String leftCameraName = "Stereo_Vision_1";
         public static final String rightCameraName = "Mirosoft_LifeCam_Cinema"; 
         public static final String frontCameraName = "Microsoft_LifeCam_HD-3000";
-        public static final String backCameraName = "limelight"; // fix name according to limelight
+        public static final String backCameraName = "OV5647"; 
 
-        public static final double cameraPosX = 0.277813055626;
-        public static final double cameraPosY = 0.346869443739;
-        private static final double cameraPosZ = 0.0889001778004;
-        private static final double cameraRoll = 0.0;
-        public static final double cameraPitch = 158.0;
-        private static final double cameraYaw = 22.5;
+        public static final double cameraLeftPosX = 0;
+        public static final double cameraLeftPosY = 0;
+        private static final double cameraLeftPosZ = 0;
+        private static final double cameraLeftRoll = 0;
+        public static final double cameraLeftPitch = 0;
+        private static final double cameraLeftYaw = 0;
 
-        public static final Transform3d robotToCamL = new Transform3d( new Translation3d(-cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, +cameraYaw)); 
-        public static final Transform3d robotToCamR = new Transform3d( new Translation3d(+cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, -cameraYaw)); 
+        //TODO get the pos.... 
+        
+        public static final double cameraRightPosX = 0;
+        public static final double cameraRightPosY = 0;
+        public static final double cameraRightZ = 0;
+        public static final double cameraRightRoll = 0;
+        public static final double cameraRightPitch = 0;
+        public static final double cameraRightYaw = 0;
+
+        public static final double cameraFrontPosX =  0.277813055626;
+        public static final double cameraFrontPosY = 0.346869443739;
+        public static final double cameraFrontPosZ = 0.0889001778004;
+        public static final double cameraFrontRoll = 0.0;
+        public static final double cameraFrontPitch = 158.0;
+        public static final double cameraFrontYaw = 22.5;
+
+        public static final double cameraBackPosX = 0;
+        public static final double cameraBackPosY = 0;
+        public static final double cameraBackPosZ = 0;
+        public static final double cameraBackRoll = 0;
+        public static final double cameraBackPitch = 0;
+        public static final double cameraBackYaw = 0;
+
+
+        public static final Transform3d robotToCamL = new Transform3d( new Translation3d(-cameraFrontPosX, -cameraFrontPosY, cameraFrontPosZ), new Rotation3d(cameraFrontRoll, cameraFrontPitch, +cameraFrontYaw)); 
+        public static final Transform3d robotToCamR = new Transform3d( new Translation3d(+cameraFrontPosX, -cameraFrontPosY, cameraFrontPosZ), new Rotation3d(cameraFrontRoll, cameraFrontPitch, -cameraFrontYaw));
         
     }
 

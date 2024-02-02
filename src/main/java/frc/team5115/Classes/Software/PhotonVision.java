@@ -1,7 +1,5 @@
 package frc.team5115.Classes.Software; 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -9,25 +7,21 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
-import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
-
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team5115.Constants.*;
+import frc.team5115.Constants.FieldConstants;
+import frc.team5115.Constants.VisionConstants;
 
 public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraL;
@@ -61,36 +55,37 @@ public class PhotonVision extends SubsystemBase{
         // Add all the april tags
         
 // Blue alliance amp station 
-        aprilTagList.add(GenerateAprilTag(1, +593.68, +9.68, +53.38, 120)); // x, y, z, rotation
-        aprilTagList.add(GenerateAprilTag(2, +637.21, +34.79, +53.38, 120)); 
+        aprilTagList.add(GenerateAprilTag(1, Units.inchesToMeters(593.68), Units.inchesToMeters(+9.68), Units.inchesToMeters(+53.38), Units.inchesToMeters(120))); // x, y, z, rotation
+        aprilTagList.add(GenerateAprilTag(2, Units.inchesToMeters(+637.21), Units.inchesToMeters(+34.79), Units.inchesToMeters(+53.38), Units.inchesToMeters(120))); 
 
 // Red alliance speaker
-        aprilTagList.add(GenerateAprilTag(3, +652.73, +196.17, +57.13, 180));
-        aprilTagList.add(GenerateAprilTag(4, +652.73, +218.42, +57.13, 180));
+        aprilTagList.add(GenerateAprilTag(3, Units.inchesToMeters(+652.73), Units.inchesToMeters(+196.17), Units.inchesToMeters(+57.13), Units.inchesToMeters(180)));
+        aprilTagList.add(GenerateAprilTag(4, Units.inchesToMeters(+652.73), Units.inchesToMeters(+218.42), Units.inchesToMeters(+57.13), Units.inchesToMeters(180)));
 
 // Source on red alliance
-        aprilTagList.add(GenerateAprilTag(5, +578.77, +323.00, +53.38, 270));
+        aprilTagList.add(GenerateAprilTag(5, Units.inchesToMeters(+578.77), Units.inchesToMeters(+323.00), Units.inchesToMeters(+53.38), Units.inchesToMeters(270)));
 
 // Source on blue alliance
-        aprilTagList.add(GenerateAprilTag(6, +72.5, +323.00, +53.38, 270));
+        aprilTagList.add(GenerateAprilTag(6, Units.inchesToMeters(+72.5), Units.inchesToMeters(+323.00), Units.inchesToMeters(+53.38), Units.inchesToMeters(270)));
 
 // Blue alliance speaker
-        aprilTagList.add(GenerateAprilTag(7, -1.50, +218.42, +57.13, 000));
-        aprilTagList.add(GenerateAprilTag(8, -1.50, +196.17, +57.13, 000));
+        aprilTagList.add(GenerateAprilTag(7, Units.inchesToMeters(-1.50), Units.inchesToMeters(+218.42), Units.inchesToMeters(+57.13), Units.inchesToMeters(000)));
+        aprilTagList.add(GenerateAprilTag(8, Units.inchesToMeters(-1.50), Units.inchesToMeters(+196.17), Units.inchesToMeters(+57.13), Units.inchesToMeters(000)));
 
 // Red alliance amp station
-        aprilTagList.add(GenerateAprilTag(9, +14.02, +34.79, +53.38, 60));
-        aprilTagList.add(GenerateAprilTag(10, +57.54, +9.68, +53.38, 60));
+        aprilTagList.add(GenerateAprilTag(9, Units.inchesToMeters(+14.02), Units.inchesToMeters(+34.79), Units.inchesToMeters(+53.38), Units.inchesToMeters(60)));
+        aprilTagList.add(GenerateAprilTag(10, Units.inchesToMeters(+57.54), Units.inchesToMeters(+9.68), Units.inchesToMeters(+53.38), Units.inchesToMeters(60)));
 
 // Red alliance stage
-        aprilTagList.add(GenerateAprilTag(11, +468.69, +146.19, +52.00, 300));
-        aprilTagList.add(GenerateAprilTag(12, +468.69, +177.10, +52.00, 60));
-        aprilTagList.add(GenerateAprilTag(13, +441.74, +161.62, +52.00, 180));
+        aprilTagList.add(GenerateAprilTag(11, Units.inchesToMeters(+468.69), Units.inchesToMeters(+146.19), Units.inchesToMeters(+52.00), Units.inchesToMeters(300)));
+        aprilTagList.add(GenerateAprilTag(12, Units.inchesToMeters(+468.69), Units.inchesToMeters(+177.10), Units.inchesToMeters(+52.00), Units.inchesToMeters(60)));
+        aprilTagList.add(GenerateAprilTag(13, Units.inchesToMeters(+441.74), Units.inchesToMeters(+161.62), Units.inchesToMeters(+52.00), Units.inchesToMeters(180)));
 
 // Blue alliance stage
-        aprilTagList.add(GenerateAprilTag(14, +209.48, +161.62, +52.00, 000));
-        aprilTagList.add(GenerateAprilTag(15, +182.73, +177.10, +52.00, 120));
-        aprilTagList.add(GenerateAprilTag(16, +182.73, +146.19, +52.00, 240));
+        aprilTagList.add(GenerateAprilTag(14, Units.inchesToMeters(+209.48), Units.inchesToMeters(+161.62), Units.inchesToMeters(+52.00), 000));
+        aprilTagList.add(GenerateAprilTag(15, Units.inchesToMeters(+182.73), Units.inchesToMeters(+177.10), Units.inchesToMeters(+52.00), Units.inchesToMeters(120)));
+        aprilTagList.add(GenerateAprilTag(16, Units.inchesToMeters(+182.73), Units.inchesToMeters(+146.19), Units.inchesToMeters(+52.00), Units.inchesToMeters(240)));
+
 
 
          fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
@@ -143,7 +138,7 @@ var result = photonCameraF.getLatestResult();
     return photonCameraF.getLatestResult().hasTargets();
  }
 
-public double getRange(){
+public double getLeftRange(){
         ArrayList<Double> x = new ArrayList<>();
         AprilTag target = new AprilTag(0, null);
         var result = photonCameraF.getLatestResult(); 
@@ -156,9 +151,9 @@ public double getRange(){
                 // First calculate range
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraPosY,
+                                VisionConstants.cameraLeftPosY,
                                 target.pose.getY(),
-                                VisionConstants.cameraPitch,
+                                VisionConstants.cameraLeftPitch,
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
                 return (range);
@@ -171,6 +166,30 @@ public double getRange(){
 
         // Use our forward/turn speeds to control the drivetrain
        // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+public double getRange(double posY, double pitch){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                posY,
+                                target.pose.getY(),
+                                pitch,
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (range);
+        }
+
+        else return Double.NaN;
        
     }
 
