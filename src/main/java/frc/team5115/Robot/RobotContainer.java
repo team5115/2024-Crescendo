@@ -36,7 +36,7 @@ public RobotContainer() {
 
         System.out.println(photonVision.getRange());
 
-        System.out.println(photonVision.getID());
+        //System.out.println(photonVision.getID());
  }
 
 }
