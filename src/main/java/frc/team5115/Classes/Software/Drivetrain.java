@@ -1,5 +1,13 @@
 package frc.team5115.Classes.Software;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -14,9 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
-import com.pathplanner.lib.util.*;
-import frc.team5115.Commands.Auto.*;
-import frc.team5115.Constants.DriveConstants;
+import frc.team5115.Commands.Auto.AutoBuilder;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
@@ -25,6 +31,7 @@ public class Drivetrain extends SubsystemBase {
     private final HolonomicDriveController holonomicDriveController;
     public AutoBuilder autoBuilder;
     private SwerveDrivePoseEstimator poseEstimator;
+    private final PhotonVision photonVision;
    
     public Drivetrain(HardwareDrivetrain hardwareDrivetrain, PhotonVision photonVision, NAVx navx, AutoBuilder autoBuilder) {
         this.photonVision = photonVision;

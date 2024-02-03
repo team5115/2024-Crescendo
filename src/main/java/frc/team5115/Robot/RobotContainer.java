@@ -1,45 +1,34 @@
 package frc.team5115.Robot;
 
-import org.photonvision.PhotonVersion;
-
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.team5115.Classes.Hardware.HardwareIntake;
-import frc.team5115.Classes.Hardware.HardwareShooter;
-import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Combo.IntakeSequence;
-import frc.team5115.Commands.Combo.ShootSequence;
-import frc.team5115.Commands.Combo.SpinUpShooter;
-import frc.team5115.Commands.Combo.Vomit;
-
+import frc.team5115.Classes.Accessory.I2CHandler;
+import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Commands.Auto.*;
-import frc.team5115.Classes.Software.*;
+import frc.team5115.Classes.Software.Drivetrain;
+import frc.team5115.Classes.Software.Paths;
+import frc.team5115.Classes.Software.PhotonVision;
+import frc.team5115.Commands.Auto.AutoBuilder;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
-import frc.team5115.Constants.VisionConstants;
 
 public class RobotContainer {
-    private final Joystick joyDrive;
+    // private final Joystick joyDrive;
     private final AutoBuilder autoBuilder;
-    private final Joystick joyManips;
-    // private final Drivetrain drivetrain;
+    // private final Joystick joyManips;
+    private final Drivetrain drivetrain;
     // private final GenericEntry rookie;
     // private final GenericEntry doAuto;
-    // private final I2CHandler i2cHandler;
-    // private final NAVx navx;
+    private final I2CHandler i2cHandler;
+    private final NAVx navx;
     // private final Arm arm;
     // private final Climber climber;
-    private final Intake intake;
-    private final Shooter shooter;
+    // private final Intake intake;
+    // private final Shooter shooter;
 
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
@@ -57,13 +46,9 @@ public RobotContainer() {
         // doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
         // joyDrive = new Joystick(0);
-        joyManips = new Joystick(1);
-        // navx = new NAVx();
-        // i2cHandler = new I2CHandler();
-
-        // HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        // PhotonVision photonVision = new PhotonVision();
-        // drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx);
+        // joyManips = new Joystick(1);
+        navx = new NAVx();
+        i2cHandler = new I2CHandler();
         
         // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
         // arm = new Arm(hardwareArm);
@@ -73,19 +58,17 @@ public RobotContainer() {
         // HardwareClimber rightClimber = new HardwareClimber(0, 0, 0, 0);
         // climber = new Climber(leftClimber, rightClimber);
 
-        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         
+        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         autoBuilder = new AutoBuilder();
-        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
         photonVision = new PhotonVision();
-        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
-        arm = new Arm(hardwareArm);
+        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
 
 
-        HardwareIntake hardwareIntake = new HardwareIntake();
-        HardwareShooter hardwareShooter = new HardwareShooter();
-        intake = new Intake(hardwareIntake);
-        shooter = new Shooter(hardwareShooter);
+        // HardwareIntake hardwareIntake = new HardwareIntake();
+        // HardwareShooter hardwareShooter = new HardwareShooter();
+        // intake = new Intake(hardwareIntake);
+        // shooter = new Shooter(hardwareShooter);
 
         reflectiveSensor = new DigitalInput(9);
         paths = new Paths();
@@ -94,15 +77,15 @@ public RobotContainer() {
 
     public void configureButtonBindings() {     
       
-        new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(true, shooter, intake))
-        .onFalse(new Vomit(false, shooter, intake));
+        // new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        // .onTrue(new Vomit(true, shooter, intake))
+        // .onFalse(new Vomit(false, shooter, intake));
       
-        new JoystickButton(joyManips, XboxController.Button.kA.value)
-        .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
+        // new JoystickButton(joyManips, XboxController.Button.kA.value)
+        // .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
 
-        new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
+        // new JoystickButton(joyManips, XboxController.Button.kB.value)
+        // .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
 
         // new JoystickButton(joyManips, XboxController.Button.kX.value)
         // .onTrue(new DeployClimber(climber));
@@ -126,14 +109,14 @@ public RobotContainer() {
         // arm.stop();
     }
 
-    SpinUpShooter spinCommand;
+    // SpinUpShooter spinCommand;
     public void startTest() {
-        spinCommand = new SpinUpShooter(shooter, rpmEntry, 3900, true, true);
+        // spinCommand = new SpinUpShooter(shooter, rpmEntry, 3900, true, true);
     }
 
     public void testPeriodic() {
-        if (joyManips.getRawButton(3) && !spinCommand.isScheduled()) spinCommand.schedule();
-        else if (joyManips.getRawButton(4) && spinCommand.isScheduled()) spinCommand.cancel();
+        // if (joyManips.getRawButton(3) && !spinCommand.isScheduled()) spinCommand.schedule();
+        // else if (joyManips.getRawButton(4) && spinCommand.isScheduled()) spinCommand.cancel();
     }
 
     public void startAuto(){
@@ -167,7 +150,7 @@ public RobotContainer() {
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
 
         i2cHandler.updatePitch();
-        arm.updateController();
+        // arm.updateController();
         photonVision.getRange();
         //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
              
