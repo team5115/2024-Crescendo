@@ -1,36 +1,40 @@
 package frc.team5115.Classes.Software;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team5115.Classes.Hardware.HardwareIntake;
 
 public class Intake extends SubsystemBase {
-    final HardwareIntake hardwareIntake;
+    final CANSparkMax motor;
     
-    public Intake(HardwareIntake hardwareIntake){
-        this.hardwareIntake = hardwareIntake;
+    public Intake(int canId){
+        motor = new CANSparkMax(canId, MotorType.kBrushless);
+        motor.setIdleMode(IdleMode.kBrake);
     }
 
     public void in(){
-        hardwareIntake.set(0.5);
+        motor.set(0.5);
     }
 
     public void fastIn() {
-        hardwareIntake.set(+1);
+        motor.set(+1);
     }
 
     public void out() {
-        hardwareIntake.set(-0.35);
+        motor.set(-0.35);
     }
     
     public void fastOut(){
-        hardwareIntake.set(-1);
+        motor.set(-1);
     }
 
     public void stop(){
-        hardwareIntake.set(0);
+        motor.set(0);
     }
 
     public void setPercent(double percent) {
-        hardwareIntake.set(percent);
+        motor.set(percent);
     }
 }

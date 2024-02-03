@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Classes.Accessory.I2CHandler;
 import frc.team5115.Classes.Hardware.HardwareArm;
-import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
@@ -67,10 +66,9 @@ public class RobotContainer {
         // climb = new Climb(climber, 12);
         // deployClimber = new DeployClimber(climber, 0.5);
 
-        HardwareIntake hardwareIntake = new HardwareIntake();
-        HardwareShooter hardwareShooter = new HardwareShooter();
-        intake = new Intake(hardwareIntake);
+        HardwareShooter hardwareShooter = new HardwareShooter(9, 11);
         shooter = new Shooter(hardwareShooter);
+        intake = new Intake(0);
         reflectiveSensor = new DigitalInput(9);
         configureButtonBindings();
     }

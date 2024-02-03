@@ -12,9 +12,9 @@ public class HardwareShooter extends SubsystemBase{
     private final RelativeEncoder cwEncoder;
     private final RelativeEncoder ccwEncoder;
 
-    public HardwareShooter() {
-        cwMotor = new CANSparkMax(9, MotorType.kBrushless);
-        ccwMotor = new CANSparkMax(11, MotorType.kBrushless);
+    public HardwareShooter(int clockwiseCanId, int counterclockwiseCanId) {
+        cwMotor = new CANSparkMax(clockwiseCanId, MotorType.kBrushless);
+        ccwMotor = new CANSparkMax(counterclockwiseCanId, MotorType.kBrushless);
         cwMotor.setClosedLoopRampRate(0.1);
         ccwMotor.setClosedLoopRampRate(0.1);
         cwEncoder = cwMotor.getEncoder();
