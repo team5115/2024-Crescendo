@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "START top to top"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "top to middle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "middle to bottom"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

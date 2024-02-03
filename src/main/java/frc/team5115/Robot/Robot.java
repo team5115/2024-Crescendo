@@ -23,8 +23,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        robotContainer.disabledInit();
-        robotContainer.stopEverything();
+
         //CameraServer.startAutomaticCapture();
     }
 
@@ -35,16 +34,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
       //  CameraServer.startAutomaticCapture();
-        robotContainer.startAuto();
     }
 
 
     public void autonomousPeriodic() {
-        robotContainer.autoPeriod();
     }
 
     public void teleopInit () {
-        robotContainer.startTeleop();
         //CameraServer.startAutomaticCapture();
     }
     
@@ -54,11 +50,9 @@ public class Robot extends TimedRobot {
     }
 
     public void testInit () {
-        robotContainer.startTest();
     }
 
     public void testPeriodic () {
-        robotContainer.testPeriodic();
     }
 
     public void practiceInit(){

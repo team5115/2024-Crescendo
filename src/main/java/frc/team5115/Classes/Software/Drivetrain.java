@@ -9,21 +9,31 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
+import com.pathplanner.lib.util.*;
+import frc.team5115.Commands.Auto.*;
+import frc.team5115.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
+    HolonomicPathFollowerConfig x;
     private final HolonomicDriveController holonomicDriveController;
+    public AutoBuilder autoBuilder;
     private SwerveDrivePoseEstimator poseEstimator;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, PhotonVision photonVision, NAVx navx, AutoBuilder autoBuilder) {
+        this.photonVision = photonVision;
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
-
+        this.autoBuilder = autoBuilder;
+        x = new HolonomicPathFollowerConfig(new PIDConstants(1, 0, 0),
+            new PIDConstants(1, 0, 0),
+       DriveConstants.kMaxSpeedMetersPerSecond, (DriveConstants.kTrackWidth/2),  new ReplanningConfig());
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -38,13 +48,21 @@ public class Drivetrain extends SubsystemBase {
             navx.getYawRotation2D(),
             hardwareDrivetrain.getModulePositions(),
             getStartingPoseGuess());
+            addVisionMeasurement();
 
         System.out.println("Angle from navx" + navx.getYawDeg());
+    }
+
+    private void addVisionMeasurement() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addVisionMeasurement'");
     }
 
     private Pose2d getStartingPoseGuess() {
             return new Pose2d();
     }
+
+
 
     /**
 	 * Sets the encoder values to 0.
@@ -81,6 +99,31 @@ public class Drivetrain extends SubsystemBase {
 	 * Updates the odometry of the robot.
      * should run every robot tick
 	 */
+    public void updateOdometry() {
+        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
+
+        Optional<EstimatedRobotPose> result = photonVision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            System.out.println("vision is really working");
+        }
+    }
+
+    public void resetPose(Pose2d x){
+        Pose2d pose1 = x;
+        poseEstimator.resetPosition(pose1.getRotation(), hardwareDrivetrain.getModulePositions(), pose1);
+    }
+
+//What should it return?
+
+    public Command pathplanner(){
+            //put stuff in
+            AutoBuilder.configureHolonomic(poseEstimator::getEstimatedPosition, this::resetPose, hardwareDrivetrain::getChassisSpeeds, hardwareDrivetrain::setWheelSpeeds, x, hardwareDrivetrain::isRed, hardwareDrivetrain);
+            return autoBuilder.getAutonomousCommand();
+    }
+
+
 	/**
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
@@ -119,4 +162,5 @@ public class Drivetrain extends SubsystemBase {
     public double getYawDeg() {
         return navx.getPitchDeg();
     }
+
 }

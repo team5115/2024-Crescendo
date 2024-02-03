@@ -1,5 +1,10 @@
 package frc.team5115.Robot;
 
+import org.photonvision.PhotonVersion;
+
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,8 +21,15 @@ import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
 
+import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Commands.Auto.*;
+import frc.team5115.Classes.Software.*;
+import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Constants.VisionConstants;
+
 public class RobotContainer {
-    // private final Joystick joyDrive;
+    private final Joystick joyDrive;
+    private final AutoBuilder autoBuilder;
     private final Joystick joyManips;
     // private final Drivetrain drivetrain;
     // private final GenericEntry rookie;
@@ -28,11 +40,16 @@ public class RobotContainer {
     // private final Climber climber;
     private final Intake intake;
     private final Shooter shooter;
+
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
 
-    public RobotContainer() {
+    private final Paths paths;
+    private AutoCommandGroup autoCommandGroup;
+    private PhotonVision photonVision;
+
+public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
 
@@ -56,19 +73,31 @@ public class RobotContainer {
         // HardwareClimber rightClimber = new HardwareClimber(0, 0, 0, 0);
         // climber = new Climber(leftClimber, rightClimber);
 
+        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
+        
+        autoBuilder = new AutoBuilder();
+        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
+        photonVision = new PhotonVision();
+        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
+        arm = new Arm(hardwareArm);
+
+
         HardwareIntake hardwareIntake = new HardwareIntake();
         HardwareShooter hardwareShooter = new HardwareShooter();
         intake = new Intake(hardwareIntake);
         shooter = new Shooter(hardwareShooter);
+
         reflectiveSensor = new DigitalInput(9);
+        paths = new Paths();
         configureButtonBindings();
     }
 
-    public void configureButtonBindings() {
+    public void configureButtonBindings() {     
+      
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(true, shooter, intake))
         .onFalse(new Vomit(false, shooter, intake));
-
+      
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
 
@@ -80,6 +109,12 @@ public class RobotContainer {
 
         // new JoystickButton(joyManips, XboxController.Button.kY.value)
         // .onTrue(new Climb(climber));
+    }
+  
+    public void registerCommand() {
+        // Where should the commands come from? (Hint Autobuilder/Drivetrain)
+        // Register Named Commands for pathplanner
+        NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
     }
 
     public void disabledInit(){
@@ -125,9 +160,19 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
 
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
+
+        i2cHandler.updatePitch();
+        arm.updateController();
+        photonVision.getRange();
+        //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
+             
+        System.out.println(photonVision.getRange());
+
+        //System.out.println(photonVision.getID());
     }
 }
