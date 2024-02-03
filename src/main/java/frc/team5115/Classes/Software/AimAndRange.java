@@ -1,30 +1,18 @@
 package frc.team5115.Classes.Software; 
 
-import frc.team5115.Constants;
-import frc.team5115.Classes.Hardware.*;
-import frc.team5115.Classes.Software.PhotonVision;
-import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team5115.Classes.Software.Drivetrain;
-
-import frc.team5115.Constants.*;
-import java.util.Optional;
-
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
+import frc.team5115.Constants.VisionConstants;
+import frc.team5115.Classes.Hardware.HardwareDrivetrain;
+import frc.team5115.Classes.Hardware.NAVx;
 
 
 
