@@ -158,12 +158,12 @@ public class Constants{
         public static final String frontCameraName = "Microsoft_LifeCam_HD-3000";
         public static final String backCameraName = "OV5647"; 
 
-        public static final double cameraLeftPosX = 0;
-        public static final double cameraLeftPosY = 0;
-        private static final double cameraLeftPosZ = 0;
-        private static final double cameraLeftRoll = 0;
-        public static final double cameraLeftPitch = 0;
-        private static final double cameraLeftYaw = 0;
+        private static final double cameraPosZ = 0.2413; // 0.2413
+        public static final double cameraPosX = 0.0;
+        public static final double cameraPosY = 0.0889001778004; // 0.0889001778004
+        private static final double cameraRoll = 0.0;
+        public static final double cameraPitch = 40;
+        public static final double cameraYaw = 1;
 
         //TODO get the pos.... 
         

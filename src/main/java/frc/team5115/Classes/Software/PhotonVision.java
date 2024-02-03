@@ -9,11 +9,9 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -41,12 +39,12 @@ public class PhotonVision extends SubsystemBase{
     public PhotonVision() {
         aprilTagList = new ArrayList<AprilTag>();
 
-        //Left Camera
-        photonCameraL = new PhotonCamera("Stereo_Vision_1");
+        //Left 
+    //    photonCameraL = new PhotonCamera("Stereo_Vision_1");
         //Back camera
-        photonCameraB = new PhotonCamera("limelight");
+    //    photonCameraB = new PhotonCamera("limelight");
         //Right camera 
-        photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
+   //     photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
         //Front camera
         photonCameraF = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
@@ -55,37 +53,36 @@ public class PhotonVision extends SubsystemBase{
         // Add all the april tags
         
 // Blue alliance amp station 
-        aprilTagList.add(GenerateAprilTag(1, Units.inchesToMeters(593.68), Units.inchesToMeters(+9.68), Units.inchesToMeters(+53.38), Units.inchesToMeters(120))); // x, y, z, rotation
-        aprilTagList.add(GenerateAprilTag(2, Units.inchesToMeters(+637.21), Units.inchesToMeters(+34.79), Units.inchesToMeters(+53.38), Units.inchesToMeters(120))); 
+        aprilTagList.add(GenerateAprilTag(1, Units.inchesToMeters(593.68), Units.inchesToMeters(+9.68), Units.inchesToMeters(+53.38), (120))); // x, y, z, rotation
+        aprilTagList.add(GenerateAprilTag(2, Units.inchesToMeters(+637.21), Units.inchesToMeters(+34.79), Units.inchesToMeters(+53.38), (120))); 
 
 // Red alliance speaker
-        aprilTagList.add(GenerateAprilTag(3, Units.inchesToMeters(+652.73), Units.inchesToMeters(+196.17), Units.inchesToMeters(+57.13), Units.inchesToMeters(180)));
-        aprilTagList.add(GenerateAprilTag(4, Units.inchesToMeters(+652.73), Units.inchesToMeters(+218.42), Units.inchesToMeters(+57.13), Units.inchesToMeters(180)));
+        aprilTagList.add(GenerateAprilTag(3, Units.inchesToMeters(+652.73), Units.inchesToMeters(+196.17), Units.inchesToMeters(+57.13),(180)));
+        aprilTagList.add(GenerateAprilTag(4, Units.inchesToMeters(+652.73), Units.inchesToMeters(+218.42), Units.inchesToMeters(+57.13),(180)));
 
 // Source on red alliance
-        aprilTagList.add(GenerateAprilTag(5, Units.inchesToMeters(+578.77), Units.inchesToMeters(+323.00), Units.inchesToMeters(+53.38), Units.inchesToMeters(270)));
+        aprilTagList.add(GenerateAprilTag(5, Units.inchesToMeters(+578.77), Units.inchesToMeters(+323.00), Units.inchesToMeters(+53.38),(270)));
 
 // Source on blue alliance
-        aprilTagList.add(GenerateAprilTag(6, Units.inchesToMeters(+72.5), Units.inchesToMeters(+323.00), Units.inchesToMeters(+53.38), Units.inchesToMeters(270)));
+        aprilTagList.add(GenerateAprilTag(6, Units.inchesToMeters(+72.5), Units.inchesToMeters(+323.00), Units.inchesToMeters(+53.38), (270)));
 
 // Blue alliance speaker
-        aprilTagList.add(GenerateAprilTag(7, Units.inchesToMeters(-1.50), Units.inchesToMeters(+218.42), Units.inchesToMeters(+57.13), Units.inchesToMeters(000)));
-        aprilTagList.add(GenerateAprilTag(8, Units.inchesToMeters(-1.50), Units.inchesToMeters(+196.17), Units.inchesToMeters(+57.13), Units.inchesToMeters(000)));
+        aprilTagList.add(GenerateAprilTag(7, Units.inchesToMeters(-1.50), Units.inchesToMeters(+218.42), Units.inchesToMeters(+57.13), (000)));
+        aprilTagList.add(GenerateAprilTag(8, Units.inchesToMeters(-1.50), Units.inchesToMeters(+196.17), Units.inchesToMeters(+57.13), (000)));
 
 // Red alliance amp station
-        aprilTagList.add(GenerateAprilTag(9, Units.inchesToMeters(+14.02), Units.inchesToMeters(+34.79), Units.inchesToMeters(+53.38), Units.inchesToMeters(60)));
-        aprilTagList.add(GenerateAprilTag(10, Units.inchesToMeters(+57.54), Units.inchesToMeters(+9.68), Units.inchesToMeters(+53.38), Units.inchesToMeters(60)));
+        aprilTagList.add(GenerateAprilTag(9, Units.inchesToMeters(+14.02), Units.inchesToMeters(+34.79), Units.inchesToMeters(+53.38), (60)));
+        aprilTagList.add(GenerateAprilTag(10, Units.inchesToMeters(+57.54), Units.inchesToMeters(+9.68), Units.inchesToMeters(+53.38), (60)));
 
 // Red alliance stage
-        aprilTagList.add(GenerateAprilTag(11, Units.inchesToMeters(+468.69), Units.inchesToMeters(+146.19), Units.inchesToMeters(+52.00), Units.inchesToMeters(300)));
-        aprilTagList.add(GenerateAprilTag(12, Units.inchesToMeters(+468.69), Units.inchesToMeters(+177.10), Units.inchesToMeters(+52.00), Units.inchesToMeters(60)));
-        aprilTagList.add(GenerateAprilTag(13, Units.inchesToMeters(+441.74), Units.inchesToMeters(+161.62), Units.inchesToMeters(+52.00), Units.inchesToMeters(180)));
+        aprilTagList.add(GenerateAprilTag(11, Units.inchesToMeters(+468.69), Units.inchesToMeters(+146.19), Units.inchesToMeters(+52.00), (300)));
+        aprilTagList.add(GenerateAprilTag(12, Units.inchesToMeters(+468.69), Units.inchesToMeters(+177.10), Units.inchesToMeters(+52.00), (60)));
+        aprilTagList.add(GenerateAprilTag(13, Units.inchesToMeters(+441.74), Units.inchesToMeters(+161.62), Units.inchesToMeters(+52.00), (180)));
 
 // Blue alliance stage
         aprilTagList.add(GenerateAprilTag(14, Units.inchesToMeters(+209.48), Units.inchesToMeters(+161.62), Units.inchesToMeters(+52.00), 000));
-        aprilTagList.add(GenerateAprilTag(15, Units.inchesToMeters(+182.73), Units.inchesToMeters(+177.10), Units.inchesToMeters(+52.00), Units.inchesToMeters(120)));
-        aprilTagList.add(GenerateAprilTag(16, Units.inchesToMeters(+182.73), Units.inchesToMeters(+146.19), Units.inchesToMeters(+52.00), Units.inchesToMeters(240)));
-
+        aprilTagList.add(GenerateAprilTag(15, Units.inchesToMeters(+182.73), Units.inchesToMeters(+177.10), Units.inchesToMeters(+52.00), (120)));
+        aprilTagList.add(GenerateAprilTag(16, Units.inchesToMeters(+182.73), Units.inchesToMeters(+146.19), Units.inchesToMeters(+52.00), (240)));
 
 
          fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
@@ -105,9 +102,7 @@ public class PhotonVision extends SubsystemBase{
          photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
          photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
 
-         var result = photonCameraL.getLatestResult();
 
-          target = result.getBestTarget();
 
 
     }
@@ -138,22 +133,29 @@ var result = photonCameraF.getLatestResult();
     return photonCameraF.getLatestResult().hasTargets();
  }
 
-public double getLeftRange(){
+ public double getAngle(){
+
+         var result = photonCameraF.getLatestResult(); 
+        if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
+        return 0;
+ }
+
+public double getRange(){
         ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(0, null);
+        int ID = 0;
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
                 for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
+                                ID = result.getBestTarget().getFiducialId();  
                         }
                 }
                 // First calculate range
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraLeftPosY,
-                                target.pose.getY(),
-                                VisionConstants.cameraLeftPitch,
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(ID-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
                 return (range);
@@ -162,35 +164,22 @@ public double getLeftRange(){
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
 
-        else return Double.NaN;
+
+         return 0;
 
         // Use our forward/turn speeds to control the drivetrain
        // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
        
     }
 
-public double getRange(double posY, double pitch){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(0, null);
-        var result = photonCameraF.getLatestResult(); 
-            if (result.hasTargets()) { 
-                for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                        }
-                }
-                double range =
-                        PhotonUtils.calculateDistanceToTargetMeters(
-                                posY,
-                                target.pose.getY(),
-                                pitch,
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+    public double getID(){
 
-                return (range);
+        if(photonCameraF.getLatestResult().hasTargets()){ 
+        double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
+        return (FidicualID);
+
         }
-
-        else return Double.NaN;
-       
+        return 0;
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
@@ -212,6 +201,6 @@ public double getRange(double posY, double pitch){
     }
 
     private AprilTag GenerateAprilTag(int id, double x, double y, double z, double rotationDegrees) {
-        return new AprilTag( id, new Pose3d( new Pose2d( x, y, Rotation2d.fromDegrees(rotationDegrees))));
+        return new AprilTag(id, new Pose3d( x, y, z, new Rotation3d(0, 0, rotationDegrees)));
     }
 }
