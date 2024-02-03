@@ -24,12 +24,11 @@ public class HardwareArm extends SubsystemBase{
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka); // Rad Calibrated
     private final Angle armAngle;
 
-    public HardwareArm(NAVx navx, I2CHandler i2c){
+    public HardwareArm(NAVx navx, I2CHandler i2c, int canID){
         this.navx = navx;
         this.i2c = i2c;
         
-        // TODO arm canIDs
-        turn = new CANSparkMax(0, MotorType.kBrushless);  
+        turn = new CANSparkMax(canID, MotorType.kBrushless);
         turn.setIdleMode(IdleMode.kBrake);
         turn.setSmartCurrentLimit(80, 80);
         armAngle = new Angle(STOWED_ANGLE);

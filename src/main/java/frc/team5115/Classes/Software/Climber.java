@@ -9,12 +9,14 @@ public class Climber extends SubsystemBase {
     final HardwareClimber rightClimber;
     final PIDController leftPid;
     final PIDController rightPid;
+    boolean deployed;
 
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
         this.leftClimber = leftClimber;
         this.rightClimber = rightClimber;
         leftPid = new PIDController(0, 0, 0);
         rightPid = new PIDController(0, 0, 0);
+        deployed = false;
     }
     
     public void loopPids(double[] setpoints){
@@ -78,5 +80,16 @@ public class Climber extends SubsystemBase {
     
     public boolean isFullyClimbed(){
         return !isRightTop() && !isLeftTop() && isLeftBottom() && isRightBottom();
+    }
+
+    /**
+     * Doesn't actually deploy the climber, just tells it that it is deployed
+     */
+    public void setDeployed() {
+        deployed = true;
+    }
+
+    public boolean isDeployed() {
+        return deployed;
     }
 }

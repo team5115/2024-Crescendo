@@ -7,10 +7,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.team5115.Classes.Accessory.I2CHandler;
+import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.HardwareIntake;
 import frc.team5115.Classes.Hardware.HardwareShooter;
+import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
+import frc.team5115.Commands.Arm.DeployArm;
+import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.SpinUpShooter;
@@ -22,15 +28,18 @@ public class RobotContainer {
     // private final Drivetrain drivetrain;
     // private final GenericEntry rookie;
     // private final GenericEntry doAuto;
-    // private final I2CHandler i2cHandler;
-    // private final NAVx navx;
-    // private final Arm arm;
+    private final I2CHandler i2cHandler;
+    private final NAVx navx;
     // private final Climber climber;
+    private final Arm arm;
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
+
+    // private final Climb climb;
+    // private final DeployClimber deployClimber;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
@@ -41,20 +50,22 @@ public class RobotContainer {
 
         // joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
-        // navx = new NAVx();
-        // i2cHandler = new I2CHandler();
+        navx = new NAVx();
+        i2cHandler = new I2CHandler();
 
         // HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         // PhotonVision photonVision = new PhotonVision();
         // drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx);
         
-        // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
-        // arm = new Arm(hardwareArm);
+        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, 0);
+        arm = new Arm(hardwareArm);
 
         // TODO set climber canIDs, sensor channels, and PWM channels
         // HardwareClimber leftClimber = new HardwareClimber(0, 0, 0, 0);
         // HardwareClimber rightClimber = new HardwareClimber(0, 0, 0, 0);
         // climber = new Climber(leftClimber, rightClimber);
+        // climb = new Climb(climber, 12);
+        // deployClimber = new DeployClimber(climber, 0.5);
 
         HardwareIntake hardwareIntake = new HardwareIntake();
         HardwareShooter hardwareShooter = new HardwareShooter();
@@ -75,11 +86,11 @@ public class RobotContainer {
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
 
-        // new JoystickButton(joyManips, XboxController.Button.kX.value)
-        // .onTrue(new DeployClimber(climber));
+        new JoystickButton(joyManips, XboxController.Button.kX.value)
+        .onTrue(new DeployArm(arm));
 
-        // new JoystickButton(joyManips, XboxController.Button.kY.value)
-        // .onTrue(new Climb(climber));
+        new JoystickButton(joyManips, XboxController.Button.kY.value)
+        .onTrue(new StowArm(arm));
     }
 
     public void disabledInit(){
@@ -125,6 +136,20 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+        /*
+        if (climber.isDeployed()) {
+            if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
+            && joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
+                climb.schedule();
+            }
+        } else {
+            if (joyManips.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.5
+            && joyManips.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.5) {
+                deployClimber.schedule();
+            }
+        }
+        */
+
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
 
