@@ -12,6 +12,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -125,9 +126,6 @@ var result = photonCameraF.getLatestResult();
        return target.pose;
 }
 
-        Pose3d y = new Pose3d();
-        Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
-        
 
  public boolean isTargetPresent(){
     return photonCameraF.getLatestResult().hasTargets();
