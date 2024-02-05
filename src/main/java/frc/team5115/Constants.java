@@ -15,15 +15,23 @@ public class Constants{
     public static final boolean MECANUM = false; 
   
     //motor ids
-    public static final byte FRONT_LEFT_MOTOR_ID = 6;
-    public static final byte FRONT_RIGHT_MOTOR_ID = 3;
-    public static final byte BACK_LEFT_MOTOR_ID = 7;
-    public static final byte BACK_RIGHT_MOTOR_ID = 2;
+    public static final byte FRONT_LEFT_MOTOR_ID = 4;
+    public static final byte FRONT_RIGHT_MOTOR_ID = 22;
+    public static final byte BACK_LEFT_MOTOR_ID = 24;
+    public static final byte BACK_RIGHT_MOTOR_ID = 26;
 
-    public static final byte FRONT_LEFT_TURN_MOTOR_ID = 5;
-    public static final byte FRONT_RIGHT_TURN_MOTOR_ID = 4;
-    public static final byte BACK_LEFT_TURN_MOTOR_ID = 8;
-    public static final byte BACK_RIGHT_TURN_MOTOR_ID = 1;
+    public static final byte FRONT_LEFT_TURN_MOTOR_ID = 29;
+    public static final byte FRONT_RIGHT_TURN_MOTOR_ID = 28;
+    public static final byte BACK_LEFT_TURN_MOTOR_ID = 23;
+    public static final byte BACK_RIGHT_TURN_MOTOR_ID = 25;
+
+    public static final byte INTAKE_MOTOR_ID = 32;
+    public static final byte ARM_LEFT_MOTOR_ID = 3;
+    public static final byte ARM_RIGHT_MOTOR_ID = 33;
+    public static final byte SHOOTER_CLOCKWISE_MOTOR_ID = 27;
+    public static final byte SHOOTER_COUNTERCLOCKWISE_MOTOR_ID = 20;
+    public static final byte CLIMBER_LEFT_MOTOR_ID = 30;
+    public static final byte CLIMBER_RIGHT_MOTOR_ID = 31;
 
     public static final double TALON_ENCODER_CALIBRATION = (63.837/4104.5);
     public static final double NEO_VELOCITY_CALIBRATION = (0.47877871986/(60*10.71));

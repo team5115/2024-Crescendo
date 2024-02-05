@@ -9,7 +9,7 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 
 public class ShootSequence extends SequentialCommandGroup{
-    public ShootSequence(GenericEntry rpmEntry, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, double defaultRpm) {
+    public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, GenericEntry rpmEntry, double defaultRpm) {
         addCommands(
             // new DeployArm(arm),
             new InstantCommand(this :: logStarting),

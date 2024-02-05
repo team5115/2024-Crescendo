@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
     }
     
     public void fastOut(){
-        motor.set(-1);
+        motor.set(-0.9);
     }
 
     public void stop(){

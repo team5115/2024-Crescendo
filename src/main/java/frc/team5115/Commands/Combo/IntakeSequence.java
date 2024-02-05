@@ -9,13 +9,13 @@ import frc.team5115.Classes.Software.Shooter;
 
 public class IntakeSequence extends SequentialCommandGroup{
     
-    public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput dioSensorFlywheel) {
+    public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         
         addCommands(
             // new DeployArm(arm),
             new InstantCommand(intake :: in),
             new InstantCommand(shooter :: slow),
-            new WaitForSensorChange(true, dioSensorFlywheel),
+            new WaitForSensorChange(true, sensor),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop)
         );

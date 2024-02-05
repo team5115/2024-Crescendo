@@ -50,7 +50,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void fastBackwards() {
-        hardwareShooter.setNormalized(-1);
+        hardwareShooter.setNormalized(-0.9);
     }
 
     public double getAverageSpeed() {

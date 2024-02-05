@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareArm;
+import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
@@ -15,7 +17,6 @@ import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
@@ -26,17 +27,17 @@ import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
     private final Joystick joyDrive;
-    // private final Joystick joyManips;
+    private final Joystick joyManips;
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
     // private final Climber climber;
-    // private final Arm arm;
-    // private final Intake intake;
-    // private final Shooter shooter;
-    // private final DigitalInput reflectiveSensor;
+    private final Arm arm;
+    private final Intake intake;
+    private final Shooter shooter;
+    private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
 
@@ -51,55 +52,55 @@ public class RobotContainer {
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
         joyDrive = new Joystick(0);
-        // joyManips = new Joystick(1);
+        joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx);
         
-        // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, 0, 1);
-        // arm = new Arm(hardwareArm);
+        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
+        arm = new Arm(hardwareArm);
 
         // TODO set climber canIDs, sensor channels, and PWM channels
-        // HardwareClimber leftClimber = new HardwareClimber(0, 0, 0, 0);
-        // HardwareClimber rightClimber = new HardwareClimber(0, 0, 0, 0);
+        // HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0, 0, 0);
+        // HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, 0, 0, 0);
         // climber = new Climber(leftClimber, rightClimber);
         // climb = new Climb(climber, 12);
         // deployClimber = new DeployClimber(climber, 0.5);
 
-        // HardwareShooter hardwareShooter = new HardwareShooter(9, 11);
-        // shooter = new Shooter(hardwareShooter);
-        // intake = new Intake(0);
-        // reflectiveSensor = new DigitalInput(9);
+        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
+        shooter = new Shooter(hardwareShooter);
+        intake = new Intake(0);
+        reflectiveSensor = new DigitalInput(0);
         configureButtonBindings();
     }
 
     public void configureButtonBindings() {
-        // new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        // .onTrue(new Vomit(true, shooter, intake))
-        // .onFalse(new Vomit(false, shooter, intake));
+        new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        .onTrue(new Vomit(true, shooter, intake))
+        .onFalse(new Vomit(false, shooter, intake));
 
-        // new JoystickButton(joyManips, XboxController.Button.kA.value)
-        // .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
+        new JoystickButton(joyManips, XboxController.Button.kA.value)
+        .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor));
 
-        // new JoystickButton(joyManips, XboxController.Button.kB.value)
-        // .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
+        new JoystickButton(joyManips, XboxController.Button.kB.value)
+        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor, rpmEntry, 3900));
 
-        // new JoystickButton(joyManips, XboxController.Button.kX.value)
-        // .onTrue(new DeployArm(arm));
+        new JoystickButton(joyManips, XboxController.Button.kX.value)
+        .onTrue(new DeployArm(arm));
 
-        // new JoystickButton(joyManips, XboxController.Button.kY.value)
-        // .onTrue(new StowArm(arm));
+        new JoystickButton(joyManips, XboxController.Button.kY.value)
+        .onTrue(new StowArm(arm));
     }
 
     public void disabledInit(){
-        // drivetrain.stop();
+        drivetrain.stop();
     }
 
     public void stopEverything(){
-        // drivetrain.stop();
-        // arm.stop();
+        drivetrain.stop();
+        arm.stop();
     }
 
     // SpinUpShooter spinCommand;
@@ -131,8 +132,8 @@ public class RobotContainer {
     public void startTeleop(){
         // if(autoCommandGroup != null) autoCommandGroup.cancel();
         
-        // System.out.println("Starting teleop");
-        // drivetrain.resetEncoders();
+        System.out.println("Starting teleop");
+        drivetrain.resetEncoders();
     }
 
     public void teleopPeriodic() {
@@ -150,9 +151,7 @@ public class RobotContainer {
         }
         */
 
-        // drivetrain.updateOdometry();
         i2cHandler.updatePitch();
-
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
     }
 }
