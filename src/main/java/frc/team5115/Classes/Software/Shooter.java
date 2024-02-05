@@ -11,15 +11,15 @@ public class Shooter extends SubsystemBase {
     // however, the rest of the code is in rpm
     // so we convert when using ff.calculate()
     // also convert for PID on both parameters 
-    private static final double cwKs = 0.19894;
-    private static final double cwKv = 0.12456;
-    private static final double cwKa = 0.037234;
+    private static final double cwKs = 0.26286;
+    private static final double cwKv = 0.12359;
+    private static final double cwKa = 0.031326;
     private static final double cwKp = 0.1;
     private static final double cwKd = 0;
 
-    private static final double ccwKs = 0.14687;
-    private static final double ccwKv = 0.12423;
-    private static final double ccwKa = 0.037858;
+    private static final double ccwKs = 0.29821;
+    private static final double ccwKv = 0.12334;
+    private static final double ccwKa = 0.029485;
     private static final double ccwKp = 0.1;
     private static final double ccwKd = 0;
 
