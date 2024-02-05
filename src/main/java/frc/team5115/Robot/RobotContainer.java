@@ -62,6 +62,11 @@ public class RobotContainer {
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm);
 
+        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
+        shooter = new Shooter(hardwareShooter);
+        intake = new Intake(Constants.INTAKE_MOTOR_ID);
+        reflectiveSensor = new DigitalInput(0);
+
         // TODO set climber canIDs, sensor channels, and PWM channels
         // HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0, 0, 0);
         // HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, 0, 0, 0);
@@ -69,10 +74,6 @@ public class RobotContainer {
         // climb = new Climb(climber, 12);
         // deployClimber = new DeployClimber(climber, 0.5);
 
-        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
-        shooter = new Shooter(hardwareShooter);
-        intake = new Intake(0);
-        reflectiveSensor = new DigitalInput(0);
         configureButtonBindings();
     }
 
@@ -103,9 +104,7 @@ public class RobotContainer {
         arm.stop();
     }
 
-    // SpinUpShooter spinCommand;
     public void startTest() {
-        // spinCommand = new SpinUpShooter(shooter, rpmEntry, 3900, true, true);
     }
 
     public void testPeriodic() {

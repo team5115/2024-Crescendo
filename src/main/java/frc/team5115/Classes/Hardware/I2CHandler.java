@@ -27,7 +27,7 @@ public class I2CHandler extends SubsystemBase {
     double pitch;
 
     public I2CHandler() {
-        i2c = new I2C(Port.kOnboard, 0x28);
+        i2c = new I2C(Port.kMXP, 0x28);
         buffer = new byte[2];
 
         i2c.write(OPERATION_MODE_ADDRESS, OPERATION_MODE);
