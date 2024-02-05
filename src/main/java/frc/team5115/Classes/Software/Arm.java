@@ -84,6 +84,11 @@ public class Arm extends SubsystemBase{
         setpoint.angle = HardwareArm.STOWED_ANGLE;
     }
 
+    public void deployToAngle(double x){
+        isDeployed = true;
+        setpoint.angle = x;
+    }
+
     public void stow() {
         isDeployed = false;
         setpoint.angle = HardwareArm.DEPLOYED_ANGLE;

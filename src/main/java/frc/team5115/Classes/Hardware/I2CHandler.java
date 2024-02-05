@@ -1,4 +1,4 @@
-package frc.team5115.Classes.Accessory;
+package frc.team5115.Classes.Hardware;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
@@ -15,6 +15,7 @@ public class I2CHandler extends SubsystemBase {
     static final byte xGravAddress = 0x2E;
     static final byte yGravAddress = 0x30;
     static final byte zGravAddress = 0x32;
+    //TODO determine bno pitch offset
     static final double PITCH_OFFSET = 0;
 
     private final I2C i2c;

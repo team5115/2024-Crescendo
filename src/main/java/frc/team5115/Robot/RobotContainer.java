@@ -7,12 +7,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.team5115.Classes.Accessory.I2CHandler;
 import frc.team5115.Classes.Hardware.HardwareArm;
+import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
+import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
+import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
+import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
@@ -22,18 +25,18 @@ import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
-    // private final Joystick joyDrive;
-    private final Joystick joyManips;
-    // private final Drivetrain drivetrain;
-    // private final GenericEntry rookie;
-    // private final GenericEntry doAuto;
+    private final Joystick joyDrive;
+    // private final Joystick joyManips;
+    private final Drivetrain drivetrain;
+    private final GenericEntry rookie;
+    private final GenericEntry doAuto;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
     // private final Climber climber;
-    private final Arm arm;
-    private final Intake intake;
-    private final Shooter shooter;
-    private final DigitalInput reflectiveSensor;
+    // private final Arm arm;
+    // private final Intake intake;
+    // private final Shooter shooter;
+    // private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
 
@@ -44,20 +47,19 @@ public class RobotContainer {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
 
-        // rookie = shuffleboardTab.add("Rookie?", false).getEntry();
-        // doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        rookie = shuffleboardTab.add("Rookie?", false).getEntry();
+        doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
-        // joyDrive = new Joystick(0);
-        joyManips = new Joystick(1);
+        joyDrive = new Joystick(0);
+        // joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
 
-        // HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        // PhotonVision photonVision = new PhotonVision();
-        // drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx);
+        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
+        drivetrain = new Drivetrain(hardwareDrivetrain, navx);
         
-        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, 0);
-        arm = new Arm(hardwareArm);
+        // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, 0, 1);
+        // arm = new Arm(hardwareArm);
 
         // TODO set climber canIDs, sensor channels, and PWM channels
         // HardwareClimber leftClimber = new HardwareClimber(0, 0, 0, 0);
@@ -66,29 +68,29 @@ public class RobotContainer {
         // climb = new Climb(climber, 12);
         // deployClimber = new DeployClimber(climber, 0.5);
 
-        HardwareShooter hardwareShooter = new HardwareShooter(9, 11);
-        shooter = new Shooter(hardwareShooter);
-        intake = new Intake(0);
-        reflectiveSensor = new DigitalInput(9);
+        // HardwareShooter hardwareShooter = new HardwareShooter(9, 11);
+        // shooter = new Shooter(hardwareShooter);
+        // intake = new Intake(0);
+        // reflectiveSensor = new DigitalInput(9);
         configureButtonBindings();
     }
 
     public void configureButtonBindings() {
-        new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(true, shooter, intake))
-        .onFalse(new Vomit(false, shooter, intake));
+        // new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        // .onTrue(new Vomit(true, shooter, intake))
+        // .onFalse(new Vomit(false, shooter, intake));
 
-        new JoystickButton(joyManips, XboxController.Button.kA.value)
-        .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
+        // new JoystickButton(joyManips, XboxController.Button.kA.value)
+        // .onTrue(new IntakeSequence(intake, shooter, null, reflectiveSensor));
 
-        new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
+        // new JoystickButton(joyManips, XboxController.Button.kB.value)
+        // .onTrue(new ShootSequence(rpmEntry, intake, shooter, null, reflectiveSensor, 3900));
 
-        new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(arm));
+        // new JoystickButton(joyManips, XboxController.Button.kX.value)
+        // .onTrue(new DeployArm(arm));
 
-        new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(arm));
+        // new JoystickButton(joyManips, XboxController.Button.kY.value)
+        // .onTrue(new StowArm(arm));
     }
 
     public void disabledInit(){
@@ -100,14 +102,14 @@ public class RobotContainer {
         // arm.stop();
     }
 
-    SpinUpShooter spinCommand;
+    // SpinUpShooter spinCommand;
     public void startTest() {
-        spinCommand = new SpinUpShooter(shooter, rpmEntry, 3900, true, true);
+        // spinCommand = new SpinUpShooter(shooter, rpmEntry, 3900, true, true);
     }
 
     public void testPeriodic() {
-        if (joyManips.getRawButton(3) && !spinCommand.isScheduled()) spinCommand.schedule();
-        else if (joyManips.getRawButton(4) && spinCommand.isScheduled()) spinCommand.cancel();
+        // if (joyManips.getRawButton(3) && !spinCommand.isScheduled()) spinCommand.schedule();
+        // else if (joyManips.getRawButton(4) && spinCommand.isScheduled()) spinCommand.cancel();
     }
 
     public void startAuto(){
@@ -149,8 +151,8 @@ public class RobotContainer {
         */
 
         // drivetrain.updateOdometry();
-        // i2cHandler.updatePitch();
+        i2cHandler.updatePitch();
 
-        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
     }
 }

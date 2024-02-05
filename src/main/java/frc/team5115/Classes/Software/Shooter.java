@@ -14,15 +14,14 @@ public class Shooter extends SubsystemBase {
     private static final double cwKs = 0.19894;
     private static final double cwKv = 0.12456;
     private static final double cwKa = 0.037234;
-    private static final double cwKp = 39.338;
-    private static final double cwKd = 1.6206;
+    private static final double cwKp = 0.1;
+    private static final double cwKd = 0;
 
     private static final double ccwKs = 0.14687;
     private static final double ccwKv = 0.12423;
     private static final double ccwKa = 0.037858;
-    private static final double ccwKp = 39.512;
-    private static final double ccwKd = 1.6387;
-
+    private static final double ccwKp = 0.1;
+    private static final double ccwKd = 0;
 
     final HardwareShooter hardwareShooter;
 
@@ -66,13 +65,17 @@ public class Shooter extends SubsystemBase {
         return hardwareShooter.getCounterClockwiseVelocity();
     }
 
-    public void spinByPid(double rpm) {
+    public double[] spinByPid(double rpm) {
         // divide by 60 on speeds to go to rot/sec
         double rps = rpm / 60.0;
         double cwVolts = cwFF.calculate(rps);
         double ccwVolts = ccwFF.calculate(rps);
-        // cwVolts += cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
-        // cwVolts += cwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
+        double cwPIDValue = cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
+        double ccwPIDValue = ccwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
+        cwVolts += cwPIDValue;
+        cwVolts += ccwPIDValue;
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
+
+        return new double[] { cwPIDValue, ccwPIDValue };
     }
 }

@@ -4,15 +4,16 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
-import frc.team5115.Classes.Accessory.I2CHandler;
 
 public class HardwareArm extends SubsystemBase{
     public static final double STOWED_ANGLE = 140.0;
     public static final double DEPLOYED_ANGLE = 0.0;
-    private final CANSparkMax turn;
+    private final CANSparkMax turnRight;
+    private final CANSparkMax turnLeft;
     
     private final NAVx navx;
     private final I2CHandler i2c;
@@ -24,22 +25,29 @@ public class HardwareArm extends SubsystemBase{
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka); // Rad Calibrated
     private final Angle armAngle;
 
-    public HardwareArm(NAVx navx, I2CHandler i2c, int canID){
+    public HardwareArm(NAVx navx, I2CHandler i2c, int canIdRight, int canIdLeft){
         this.navx = navx;
         this.i2c = i2c;
         
-        turn = new CANSparkMax(canID, MotorType.kBrushless);
-        turn.setIdleMode(IdleMode.kBrake);
-        turn.setSmartCurrentLimit(80, 80);
+        turnRight = new CANSparkMax(canIdRight, MotorType.kBrushless);
+        turnRight.setIdleMode(IdleMode.kBrake);
+        turnRight.setSmartCurrentLimit(80, 80);
+        
+        turnLeft = new CANSparkMax(canIdLeft, MotorType.kBrushless);
+        turnLeft.setIdleMode(IdleMode.kBrake);
+        turnLeft.setSmartCurrentLimit(80, 80);
+
         armAngle = new Angle(STOWED_ANGLE);
-        turn.setInverted(true);
+        turnRight.setInverted(false);
+        turnLeft.setInverted(true);
+        turnLeft.follow(turnRight);
     }
 
     public void setTurn(double speed){
         if(speed != speed) {
             speed = 0;
         }
-        turn.setVoltage(Math.max(ff.calculate(getArmAngle().getRadians(-Math.PI), speed), -10));
+        turnRight.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getRadians(-Math.PI), speed), -10, 10));
     }
 
     public void stop(){
@@ -47,11 +55,11 @@ public class HardwareArm extends SubsystemBase{
     }
     
     public double getTurnCurrent(){
-        return turn.getOutputCurrent();
+        return turnRight.getOutputCurrent();
     }
     
     public boolean getFault(CANSparkMax.FaultID f){
-       return turn.getFault(f);
+       return turnRight.getFault(f);
     }
     
     /**
@@ -64,6 +72,6 @@ public class HardwareArm extends SubsystemBase{
     }
 
     public void setIdleMode(IdleMode mode) {
-        turn.setIdleMode(mode);
+        turnRight.setIdleMode(mode);
     }
 }
