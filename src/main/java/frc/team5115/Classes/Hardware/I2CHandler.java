@@ -15,8 +15,6 @@ public class I2CHandler extends SubsystemBase {
     static final byte xGravAddress = 0x2E;
     static final byte yGravAddress = 0x30;
     static final byte zGravAddress = 0x32;
-    //TODO determine bno pitch offset
-    static final double PITCH_OFFSET = 90;
 
     private final I2C i2c;
     private final byte[] buffer;
@@ -55,7 +53,7 @@ public class I2CHandler extends SubsystemBase {
         double[] gravity = getGravity();
         final double radians = Math.atan2(-gravity[1], -gravity[0]);
         final double degrees = Math.toDegrees(radians);
-        pitch = degrees - PITCH_OFFSET; // ! offset because of how it's oriented on the robot
+        pitch = -degrees + 90.0; // ! offset because of how it's oriented on the robot
     }
 
     public double getPitch() {
