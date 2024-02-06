@@ -14,7 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 public class Arm extends SubsystemBase{
     private static final double MIN_DEGREES = -180.0;
     private static final double TURN_PID_TOLERANCE = 2.0;
-    private static final double TURN_PID_KP = 0.002;
+    private static final double TURN_PID_KP = 0.02;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     
@@ -43,11 +43,11 @@ public class Arm extends SubsystemBase{
     }
 
     public void disableBrake(){
-        hardwareArm.setIdleMode(IdleMode.kCoast);;
+        hardwareArm.setIdleMode(IdleMode.kCoast);
     }
 
     public void enableBrake(){
-        hardwareArm.setIdleMode(IdleMode.kBrake);;
+        hardwareArm.setIdleMode(IdleMode.kBrake);
     }
 
     /**

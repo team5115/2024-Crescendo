@@ -16,11 +16,6 @@ public class StowArm extends Command {
     }
 
     @Override
-    public void execute() {
-        arm.updateController();
-    }
-
-    @Override
     public boolean isFinished(){
         return arm.atSetpoint();
     }

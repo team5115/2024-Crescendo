@@ -10,19 +10,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 
 public class HardwareArm extends SubsystemBase{
-    public static final double STOWED_ANGLE = 140.0;
-    public static final double DEPLOYED_ANGLE = 0.0;
+    public static final double STOWED_ANGLE = 166.0;
+    public static final double DEPLOYED_ANGLE = 1.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
     private final NAVx navx;
     private final I2CHandler i2c;
 
-    private final double Ks = 0.13;
-    private final double Kv = 4.5;
-    private final double Ka = 0.1113;
-    private final double Kg = 0.39;
-    private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka); // Rad Calibrated
+    private final double Ks = 0.49155;
+    private final double Kv = 0.19266;
+    private final double Ka = 0.13019;
+    private final double Kg = 0.13614;
+    private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka); // Degree Calibrated
     private final Angle armAngle;
 
     public HardwareArm(NAVx navx, I2CHandler i2c, int canIdRight, int canIdLeft){
@@ -47,7 +47,7 @@ public class HardwareArm extends SubsystemBase{
         if(speed != speed) {
             speed = 0;
         }
-        turnRight.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getRadians(-Math.PI), speed), -10, 10));
+        turnRight.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getDegrees(-180), speed), -10, 10));
     }
 
     public void stop(){
@@ -73,5 +73,6 @@ public class HardwareArm extends SubsystemBase{
 
     public void setIdleMode(IdleMode mode) {
         turnRight.setIdleMode(mode);
+        turnLeft.setIdleMode(mode);
     }
 }

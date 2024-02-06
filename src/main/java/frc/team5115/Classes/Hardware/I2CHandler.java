@@ -64,7 +64,7 @@ public class I2CHandler extends SubsystemBase {
         final boolean aborted = i2c.read(registerAddress, count, buffer);
 
         if (aborted) {
-            // System.out.println("Failed to read from BNO055");
+            System.out.println("Failed to read from BNO055");
             return defaultValue;
         }
         return combineBytes(buffer);

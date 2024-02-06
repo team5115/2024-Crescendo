@@ -86,13 +86,13 @@ public class RobotContainer {
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor, rpmEntry, 3900));
+        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor));
 
-        new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(arm));
+        // new JoystickButton(joyManips, XboxController.Button.kX.value)
+        // .onTrue(new DeployArm(arm));
 
-        new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(arm));
+        // new JoystickButton(joyManips, XboxController.Button.kY.value)
+        // .onTrue(new StowArm(arm));
     }
 
     public void disabledInit(){
@@ -101,15 +101,16 @@ public class RobotContainer {
 
     public void stopEverything(){
         drivetrain.stop();
-        arm.stop();
+        // arm.stop();
     }
 
     public void startTest() {
+        
     }
 
     public void testPeriodic() {
-        // if (joyManips.getRawButton(3) && !spinCommand.isScheduled()) spinCommand.schedule();
-        // else if (joyManips.getRawButton(4) && spinCommand.isScheduled()) spinCommand.cancel();
+        i2cHandler.updatePitch();
+        System.out.println("bno: " + i2cHandler.getPitch());
     }
 
     public void startAuto(){
@@ -126,6 +127,7 @@ public class RobotContainer {
     public void autoPeriod() {
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
+        // arm.updateController();
     }
 
     public void startTeleop(){
@@ -150,7 +152,8 @@ public class RobotContainer {
         }
         */
 
-        i2cHandler.updatePitch();
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
+        // i2cHandler.updatePitch();
+        // arm.updateController();
+        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
     }
 }

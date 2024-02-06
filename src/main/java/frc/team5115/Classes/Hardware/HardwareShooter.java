@@ -19,6 +19,8 @@ public class HardwareShooter extends SubsystemBase{
         ccwMotor.setClosedLoopRampRate(0.1);
         cwEncoder = cwMotor.getEncoder();
         ccwEncoder = ccwMotor.getEncoder();
+        cwMotor.setInverted(true);
+        ccwMotor.setInverted(false);
     }
 
     public void setVoltage(double cwVolts, double ccwVolts) {

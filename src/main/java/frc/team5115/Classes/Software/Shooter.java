@@ -14,13 +14,13 @@ public class Shooter extends SubsystemBase {
     private static final double cwKs = 0.26286;
     private static final double cwKv = 0.12359;
     private static final double cwKa = 0.031326;
-    private static final double cwKp = 0.1;
+    private static final double cwKp = 1;
     private static final double cwKd = 0;
 
     private static final double ccwKs = 0.29821;
     private static final double ccwKv = 0.12334;
     private static final double ccwKa = 0.029485;
-    private static final double ccwKp = 0.1;
+    private static final double ccwKp = 1;
     private static final double ccwKd = 0;
 
     final HardwareShooter hardwareShooter;
