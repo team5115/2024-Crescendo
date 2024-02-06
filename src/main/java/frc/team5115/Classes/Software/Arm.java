@@ -14,7 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 public class Arm extends SubsystemBase{
     private static final double MIN_DEGREES = -180.0;
     private static final double TURN_PID_TOLERANCE = 2.0;
-    private static final double TURN_PID_KP = 0.02;
+    private static final double TURN_PID_KP = 0.08;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     
@@ -81,7 +81,7 @@ public class Arm extends SubsystemBase{
 
     public void deploy() {
         isDeployed = true;
-        setpoint.angle = HardwareArm.STOWED_ANGLE;
+        setpoint.angle = HardwareArm.DEPLOYED_ANGLE;
     }
 
     public void deployToAngle(double x){
@@ -91,7 +91,7 @@ public class Arm extends SubsystemBase{
 
     public void stow() {
         isDeployed = false;
-        setpoint.angle = HardwareArm.DEPLOYED_ANGLE;
+        setpoint.angle = HardwareArm.STOWED_ANGLE;
     }
 
     public boolean isDeployed() {

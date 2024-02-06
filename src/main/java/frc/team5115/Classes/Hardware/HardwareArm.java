@@ -11,7 +11,7 @@ import frc.team5115.Classes.Accessory.Angle;
 
 public class HardwareArm extends SubsystemBase{
     public static final double STOWED_ANGLE = 166.0;
-    public static final double DEPLOYED_ANGLE = 1.0;
+    public static final double DEPLOYED_ANGLE = -2.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
@@ -38,15 +38,16 @@ public class HardwareArm extends SubsystemBase{
         turnLeft.setSmartCurrentLimit(80, 80);
 
         armAngle = new Angle(STOWED_ANGLE);
-        turnRight.setInverted(false);
+        // TODO hardware arm motor inversion
+        turnRight.setInverted(true);
         turnLeft.setInverted(true);
-        turnLeft.follow(turnRight);
     }
 
     public void setTurn(double speed){
         if(speed != speed) {
             speed = 0;
         }
+        turnLeft.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getDegrees(-180), speed), -10, 10));
         turnRight.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getDegrees(-180), speed), -10, 10));
     }
 
