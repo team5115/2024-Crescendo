@@ -6,15 +6,17 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
+import frc.team5115.Classes.Hardware.I2CHandler;
 import edu.wpi.first.math.controller.PIDController;
 
 /**
  * The arm subsystem. Provides methods for controlling and getting information about the arm.
  */
 public class Arm extends SubsystemBase{
-    private static final double MIN_DEGREES = -180.0;
-    private static final double TURN_PID_TOLERANCE = 2.0;
-    private static final double TURN_PID_KP = 0.08;
+    //private final GenericEntry rookie;
+    private static final double MIN_DEGREES = -90.0;
+    private static final double TURN_PID_TOLERANCE = 1.5;
+    private static final double TURN_PID_KP = 0.15;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     
@@ -52,15 +54,21 @@ public class Arm extends SubsystemBase{
 
     /**
      * Update the pid controller to try to approach the setpoint angle by changing hardware arm's speed
+     * @param bno this is required to be passed in so that you don't forget to udpate the bno; this method updatesPitch() for you
      * @return true if the arm is at the setpoint
      */
-    public boolean updateController(){
+    public boolean updateController(I2CHandler bno){
+        bno.updatePitch();
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
         System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
         boolean atSetpoint = atSetpoint();
-        if (!atSetpoint) hardwareArm.setTurn(pidOutput);
+        if (!atSetpoint) hardwareArm.setTurn(pidOutput, setpoint);
         return atSetpoint;
+    }
+
+    public void setVoltage(double voltage) {
+        hardwareArm.setVoltage(voltage);
     }
 
     public boolean atSetpoint() {
@@ -76,12 +84,12 @@ public class Arm extends SubsystemBase{
     }
 
     public Angle getAngle() {
-        return hardwareArm.getArmAngle();
+        return hardwareArm.getAngle();
     }
 
     public void deploy() {
         isDeployed = true;
-        setpoint.angle = HardwareArm.DEPLOYED_ANGLE;
+        setpoint.angle = 15.0;
     }
 
     public void deployToAngle(double x){

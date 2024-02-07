@@ -19,4 +19,9 @@ public class StowArm extends Command {
     public boolean isFinished(){
         return arm.atSetpoint();
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("StowArm finished");
+    }
 }

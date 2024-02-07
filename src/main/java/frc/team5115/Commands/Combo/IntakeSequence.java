@@ -15,14 +15,14 @@ public class IntakeSequence extends SequentialCommandGroup{
     public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         
         addCommands(
-            // new DeployArm(arm),
+            new DeployArm(arm, 5),
             new InstantCommand(intake :: in),
             new InstantCommand(shooter :: slow),
             new WaitForSensorChange(true, sensor),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop),
-            // new StowArm(arm),
-            new WaitCommand(0.5),
+            new StowArm(arm),
+            // new WaitCommand(0.5),
             // Cock note after stowing arm
             new InstantCommand(intake :: out),
             new WaitForSensorChange(false, sensor),

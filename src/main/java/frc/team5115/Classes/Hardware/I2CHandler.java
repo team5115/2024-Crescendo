@@ -22,7 +22,7 @@ public class I2CHandler extends SubsystemBase {
     short gravX;
     short gravY;
     short gravZ;
-    double pitch;
+    double pitch = 3600;
 
     public I2CHandler() {
         i2c = new I2C(Port.kMXP, 0x28);

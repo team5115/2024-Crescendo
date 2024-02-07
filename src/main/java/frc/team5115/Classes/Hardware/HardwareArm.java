@@ -10,19 +10,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 
 public class HardwareArm extends SubsystemBase{
-    public static final double STOWED_ANGLE = 166.0;
-    public static final double DEPLOYED_ANGLE = -2.0;
+    public static final double STOWED_ANGLE = 160.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
     private final NAVx navx;
     private final I2CHandler i2c;
 
-    private final double Ks = 0.49155;
-    private final double Kv = 0.19266;
-    private final double Ka = 0.13019;
-    private final double Kg = 0.13614;
-    private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka); // Degree Calibrated
+    private final double Ks = 0.35;
+    private final double Kv = 0.13509;
+    private final double Ka = 0.048686;
+    private final double Kg = 0.15;
+    private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
 
     public HardwareArm(NAVx navx, I2CHandler i2c, int canIdRight, int canIdLeft){
@@ -39,23 +38,29 @@ public class HardwareArm extends SubsystemBase{
 
         armAngle = new Angle(STOWED_ANGLE);
         // TODO hardware arm motor inversion
-        turnRight.setInverted(true);
+        turnRight.setInverted(false);
         turnLeft.setInverted(true);
     }
 
-    public void setTurn(double speed){
+    public void setTurn(double speed, Angle setpoint){
         if(speed != speed) {
             speed = 0;
         }
-        turnLeft.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getDegrees(-180), speed), -10, 10));
-        turnRight.setVoltage(MathUtil.clamp(ff.calculate(getArmAngle().getDegrees(-180), speed), -10, 10));
+        double voltage = MathUtil.clamp(ff.calculate(getAngle().getRadians(-Math.PI), speed), -10, 10);
+        // double voltage = MathUtil.clamp(ff.calculate(setpoint.getRadians(-Math.PI), speed), -10, 10);
+        setVoltage(voltage);
+    }
+
+    public void setVoltage(double voltage) {
+        turnLeft.setVoltage(voltage);
+        turnRight.setVoltage(voltage);
     }
 
     public void stop(){
-        setTurn(0);
+        setTurn(0, getAngle());
     }
     
-    public double getTurnCurrent(){
+    public double getCurrentAmps(){
         return turnRight.getOutputCurrent();
     }
     
@@ -67,7 +72,7 @@ public class HardwareArm extends SubsystemBase{
      * This uses the navx and the bno to get the arm degree instead of motor encoder
      * @return the angle the arm is at relative to the horizontal
      */
-    public Angle getArmAngle(){
+    public Angle getAngle(){
         armAngle.angle = i2c.getPitch() - navx.getPitchDeg();
         return armAngle;
     }

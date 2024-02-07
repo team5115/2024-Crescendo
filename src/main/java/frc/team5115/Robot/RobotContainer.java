@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
+import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
@@ -90,7 +91,7 @@ public class RobotContainer {
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(arm));
+        .onTrue(new DeployArm(arm, 20));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
         .onTrue(new StowArm(arm));
@@ -106,7 +107,6 @@ public class RobotContainer {
     }
 
     public void startTest() {
-        
     }
 
     public void testPeriodic() {
@@ -151,9 +151,8 @@ public class RobotContainer {
         }
         */
 
-        i2cHandler.updatePitch();
-        System.out.println("bno: " + i2cHandler.getPitch());
-        arm.updateController();
+        // System.out.println("bno: " + i2cHandler.getPitch());
+        arm.updateController(i2cHandler);
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
     }
 }
