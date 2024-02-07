@@ -71,10 +71,32 @@ public RobotContainer() {
     }
 
     public void registerCommand() {
-        // Where should the commands come from? (Hint Autobuilder/Drivetrain)
+
     // Register Named Commands for pathplanner
 
       NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
+
+      NamedCommands.registerCommand("top to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("top to bottom", drivetrain.pathplanner());
+
+      NamedCommands.registerCommand("middle to bottom", drivetrain.pathplanner());
+      NamedCommands.registerCommand("middle to top", drivetrain.pathplanner());
+
+      NamedCommands.registerCommand("bottom to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("bottom to middle", drivetrain.pathplanner());
+
+      NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
+
+      NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
+
+      NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
+
     }
 
     public void configureButtonBindings() {     

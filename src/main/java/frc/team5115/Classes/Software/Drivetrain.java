@@ -108,10 +108,10 @@ public class Drivetrain extends SubsystemBase {
         poseEstimator.resetPosition(pose1.getRotation(), hardwareDrivetrain.getModulePositions(), pose1);
     }
 
-//What should it return?
+
 
     public Command pathplanner(){
-            //put stuff in
+        
             AutoBuilder.configureHolonomic(poseEstimator::getEstimatedPosition, this::resetPose, hardwareDrivetrain::getChassisSpeeds, hardwareDrivetrain::setWheelSpeeds, x, hardwareDrivetrain::isRed, hardwareDrivetrain);
             return autoBuilder.getAutonomousCommand();
     }
