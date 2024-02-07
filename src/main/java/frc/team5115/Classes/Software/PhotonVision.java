@@ -41,7 +41,7 @@ public class PhotonVision extends SubsystemBase{
         aprilTagList = new ArrayList<AprilTag>();
 
         //Left 
-    //    photonCameraL = new PhotonCamera("Stereo_Vision_1");
+        photonCameraL = new PhotonCamera("Stereo_Vision_1");
         //Back camera
     //    photonCameraB = new PhotonCamera("limelight");
         //Right camera 

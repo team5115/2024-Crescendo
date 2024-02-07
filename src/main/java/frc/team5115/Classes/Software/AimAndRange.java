@@ -46,7 +46,7 @@ public class AimAndRange extends SubsystemBase{
     }
 
 
-    PhotonCamera camera = new PhotonCamera("Mirosoft_LifeCam_Cinema");
+    PhotonCamera camera = new PhotonCamera("Stereo_Vision_1");
 
     // PID constants should be tuned per robot
     final double LINEAR_P = 0.1;
