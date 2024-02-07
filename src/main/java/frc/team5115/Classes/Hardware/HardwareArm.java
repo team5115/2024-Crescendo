@@ -69,11 +69,12 @@ public class HardwareArm extends SubsystemBase{
     }
     
     /**
-     * This uses the navx and the bno to get the arm degree instead of motor encoder
+     * This uses the bno to get the arm angle relative to the ground 
      * @return the angle the arm is at relative to the horizontal
      */
     public Angle getAngle(){
-        armAngle.angle = i2c.getPitch() - navx.getPitchDeg();
+        //armAngle.angle = i2c.getPitch() - navx.getPitchDeg();
+        armAngle.angle = i2c.getPitch();
         return armAngle;
     }
 
