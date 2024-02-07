@@ -22,6 +22,7 @@ import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Commands.Auto.*;
 import frc.team5115.Classes.Software.*;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Constants.VisionConstants;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -128,12 +129,15 @@ public RobotContainer() {
     }
 
     public void teleopPeriodic() {
-        drivetrain.updateOdometry();
         i2cHandler.updatePitch();
         arm.updateController();
         photonVision.getRange();
+        //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
+             
+        System.out.println(photonVision.getRange());
 
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
+        //System.out.println(photonVision.getID());
     }
+
 
 }
