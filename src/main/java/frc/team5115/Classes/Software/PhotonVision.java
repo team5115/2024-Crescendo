@@ -140,16 +140,13 @@ var result = photonCameraL.getLatestResult();
 
 public double getRange(){
         ArrayList<Double> x = new ArrayList<>();
-<<<<<<< HEAD
         AprilTag target = new AprilTag(0, null);
         var result = photonCameraL.getLatestResult(); 
-=======
-        int ID = 0;
-        var result = photonCameraF.getLatestResult(); 
->>>>>>> 9c92b46dfa7d0ec063cce31f0b0a80f6bc5fa2ae
             if (result.hasTargets()) { 
+                int ID;
                 for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
                                 ID = result.getBestTarget().getFiducialId();  
                         }
                 }
@@ -157,7 +154,7 @@ public double getRange(){
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
                                 VisionConstants.cameraPosY,
-                                aprilTagList.get(ID-1).pose.getZ(),
+                                aprilTagList.get(-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 
