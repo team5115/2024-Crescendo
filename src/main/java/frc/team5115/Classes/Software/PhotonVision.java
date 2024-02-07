@@ -123,11 +123,11 @@ public class PhotonVision extends SubsystemBase{
  */
 
  public PhotonPipelineResult getResult(){
-        return photonCameraF.getLatestResult(); 
+        return photonCameraL.getLatestResult(); 
  }
 public Pose3d j2(){
 AprilTag target = new AprilTag(0, null);
-var result = photonCameraF.getLatestResult(); 
+var result = photonCameraL.getLatestResult(); 
  for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
                                 target = i;
@@ -141,13 +141,13 @@ var result = photonCameraF.getLatestResult();
         
 
  public boolean isTargetPresent(){
-    return photonCameraF.getLatestResult().hasTargets();
+    return photonCameraL.getLatestResult().hasTargets();
  }
 
 public double getRange(){
         ArrayList<Double> x = new ArrayList<>();
         AprilTag target = new AprilTag(0, null);
-        var result = photonCameraF.getLatestResult(); 
+        var result = photonCameraL.getLatestResult(); 
             if (result.hasTargets()) { 
                 for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
