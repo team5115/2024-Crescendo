@@ -11,16 +11,15 @@ import frc.team5115.Commands.Arm.StowArm;
 
 public class IntakeSequence extends SequentialCommandGroup{
     
-    public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+    public IntakeSequence(double angle, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         
         addCommands(
-            new DeployArm(arm, 5),
+            new DeployArm(arm, angle),
             new InstantCommand(intake :: in),
             new InstantCommand(shooter :: slow),
             new WaitForSensorChange(true, sensor),
             new InstantCommand(intake :: stop),
-            new InstantCommand(shooter :: stop),
-            new StowArm(arm).alongWith(new Rack(intake, sensor))
+            new InstantCommand(shooter :: stop)
         );
     }
 }

@@ -17,8 +17,11 @@ import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
+import frc.team5115.Commands.Arm.DeployArm;
+import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Combo.CancelIntake;
 import frc.team5115.Commands.Combo.IntakeSequence;
+import frc.team5115.Commands.Combo.Rack;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.Vomit;
 
@@ -72,17 +75,19 @@ public class RobotContainer {
     public void configureButtonBindings() {
         // Climb climb = new Climb(climber, 12);
         // DeployClimber deployClimber = new DeployClimber(climber, 0.5);
-        IntakeSequence intakeSequence = new IntakeSequence(intake, shooter, arm, reflectiveSensor);
-        ShootSequence shootSequence = new ShootSequence(intake, shooter, arm, reflectiveSensor);
+        IntakeSequence intakeSequence = new IntakeSequence(5, intake, shooter, arm, reflectiveSensor);
+        ShootSequence shootSequence = new ShootSequence(5, intake, shooter, arm, reflectiveSensor);
         CancelIntake cancelIntake = new CancelIntake(intake, shooter, arm, intakeSequence);
+        DeployArm deployArm = new DeployArm(arm, 5);
         
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(true, shooter, intake))
         .onFalse(new Vomit(false, shooter, intake));
 
-        new JoystickButton(joyManips, XboxController.Button.kA.value).onTrue(intakeSequence);
+        new JoystickButton(joyManips, XboxController.Button.kA.value).onTrue(intakeSequence.andThen(new Rack(intake, reflectiveSensor)));
         new JoystickButton(joyManips, XboxController.Button.kB.value).onTrue(shootSequence);
         new JoystickButton(joyManips, XboxController.Button.kX.value).onTrue(cancelIntake);
+        new JoystickButton(joyManips, XboxController.Button.kY.value).onTrue(deployArm);
 
         // new JoystickButton(joyManips, XboxController.Button.kStart.value)
         // .onTrue(new DeployClimber(climber, 0.3));

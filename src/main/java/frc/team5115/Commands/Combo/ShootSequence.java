@@ -12,10 +12,10 @@ import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
 
 public class ShootSequence extends SequentialCommandGroup{
-    public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+    public ShootSequence(double angle, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addCommands(
             new InstantCommand(this :: logStarting),
-            new DeployArm(arm, 5),
+            new DeployArm(arm, angle),
 
             // // Cock note
             // new InstantCommand(intake :: out),
