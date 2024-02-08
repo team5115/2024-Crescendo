@@ -179,6 +179,7 @@ public RobotContainer() {
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
         // arm.updateController();
+        AutoCommandGroup.AutoSequence();
     }
 
     public void startTeleop(){

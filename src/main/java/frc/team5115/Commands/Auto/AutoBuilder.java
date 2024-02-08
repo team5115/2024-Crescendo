@@ -159,7 +159,7 @@ public class AutoBuilder extends Command{
     
   
 
-    public Command getAutonomousCommand() {
+  /*  public Command getAutonomousCommand() {
 
         
         // Load the path you want to follow using its name in the GUI
@@ -179,7 +179,7 @@ private static Command FollowPathCommand(PathPlannerPath path) {
     }
 
 
-
+*/
 
 
 public static SendableChooser<Command> buildAutoChooser() {

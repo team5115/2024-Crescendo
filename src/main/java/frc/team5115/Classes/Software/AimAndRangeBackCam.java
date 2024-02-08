@@ -74,7 +74,7 @@ public class AimAndRangeBackCam extends SubsystemBase{
 
         if(photonVision.isTargetPresent()){
                             
-        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2(), VisionConstants.robotToCamL.times(-1));
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2B(), VisionConstants.robotToCamL.times(-1));
         forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
 
         // Also calculate angular power
@@ -95,7 +95,7 @@ public class AimAndRangeBackCam extends SubsystemBase{
 
     j.drive(forwardSpeed, rotationSpeed, 0, true, true);
 
-        Pose3d y = photonVision.j2();
+        Pose3d y = photonVision.j2B();
         Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
 
         double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);

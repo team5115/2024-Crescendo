@@ -15,8 +15,13 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         if (!actuallyRun) return;
     }
 
-     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Example Path");
-   }
+     public AutoSequence(){
+
+        autochooser.getAutonomousCommand();
+        AimAndRangeFrontCam.getRangeF();
+        
+    }
+
+
 
    }

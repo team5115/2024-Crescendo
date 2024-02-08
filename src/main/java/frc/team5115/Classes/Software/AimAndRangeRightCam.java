@@ -95,7 +95,7 @@ public class AimAndRangeRightCam extends SubsystemBase{
 
     j.drive(forwardSpeed, rotationSpeed, 0, true, true);
 
-        Pose3d y = photonVision.j2();
+        Pose3d y = photonVision.j2R();
         Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
 
         double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);

@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
 
 
     public void autonomousPeriodic() {
+        robotContainer.autoPeriod();
     }
 
     public void teleopInit () {
