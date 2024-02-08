@@ -7,7 +7,6 @@ import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
-import frc.team5115.Commands.Arm.StowArm;
 
 public class IntakeSequence extends SequentialCommandGroup{
     
