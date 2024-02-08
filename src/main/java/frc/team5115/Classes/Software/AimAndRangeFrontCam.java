@@ -74,7 +74,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
 
         if(photonVision.isTargetPresent()){
                             
-        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2(), VisionConstants.robotToCamL.times(-1));
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
         forwardSpeed = -forwardController.calculate(photonVision.getRangeF(), GOAL_RANGE_METERS);
 
         // Also calculate angular power

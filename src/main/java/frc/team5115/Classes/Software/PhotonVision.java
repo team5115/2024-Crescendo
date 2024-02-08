@@ -130,6 +130,41 @@ var result = photonCameraL.getLatestResult();
        return target.pose;
 }
 
+public Pose3d j2F(){
+AprilTag target = new AprilTag(0, null);
+var result = photonCameraF.getLatestResult(); 
+
+ for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+       return target.pose;
+}
+
+public Pose3d j2R(){
+AprilTag target = new AprilTag(0, null);
+var result = photonCameraR.getLatestResult(); 
+
+ for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+       return target.pose;
+}
+
+public Pose3d j2B(){
+AprilTag target = new AprilTag(0, null);
+var result = photonCameraB.getLatestResult(); 
+
+ for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                        }
+                }
+       return target.pose;
+}
 
  public boolean isTargetPresent(){
     return photonCameraL.getLatestResult().hasTargets();
