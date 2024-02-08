@@ -8,25 +8,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
-import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
-import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
-import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Arm.DeployArm;
-import frc.team5115.Commands.Arm.StowArm;
-import frc.team5115.Commands.Climber.Climb;
-import frc.team5115.Commands.Climber.DeployClimber;
+import frc.team5115.Commands.Combo.CancelIntake;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
-import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -81,6 +74,7 @@ public class RobotContainer {
         // DeployClimber deployClimber = new DeployClimber(climber, 0.5);
         IntakeSequence intakeSequence = new IntakeSequence(intake, shooter, arm, reflectiveSensor);
         ShootSequence shootSequence = new ShootSequence(intake, shooter, arm, reflectiveSensor);
+        CancelIntake cancelIntake = new CancelIntake(intake, shooter, arm, intakeSequence);
         
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(true, shooter, intake))
@@ -88,6 +82,7 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kA.value).onTrue(intakeSequence);
         new JoystickButton(joyManips, XboxController.Button.kB.value).onTrue(shootSequence);
+        new JoystickButton(joyManips, XboxController.Button.kX.value).onTrue(cancelIntake);
 
         // new JoystickButton(joyManips, XboxController.Button.kStart.value)
         // .onTrue(new DeployClimber(climber, 0.3));
