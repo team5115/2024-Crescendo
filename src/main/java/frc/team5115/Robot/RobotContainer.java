@@ -39,7 +39,7 @@ public class RobotContainer {
     private final Joystick joyDrive;
     private final AutoBuilder autoBuilder;
     private final Joystick joyManips;
-    private final Drivetrain drivetrain;
+    private Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
     private final I2CHandler i2cHandler;
@@ -48,7 +48,7 @@ public class RobotContainer {
     private final Arm arm;
     private final Intake intake;
     private final Shooter shooter;
-    private final Paths paths;
+    private Paths paths;
     private AutoCommandGroup autoCommandGroup;
     private PhotonVision photonVision;
     private final DigitalInput reflectiveSensor;
@@ -70,14 +70,16 @@ public RobotContainer() {
         joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
+        autoBuilder = new AutoBuilder();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        drivetrain = new Drivetrain(hardwareDrivetrain, navx);
-        
-        autoBuilder = new AutoBuilder();
         drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
+        
+
+        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
+        
         photonVision = new PhotonVision();
-        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler);
+
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm);
 
@@ -202,12 +204,12 @@ public RobotContainer() {
         // System.out.println("bno: " + i2cHandler.getPitch());
         arm.updateController(i2cHandler);
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
-    }
 
+        
 
         i2cHandler.updatePitch();
         
-        arm.updateController();
+        arm.updateController(i2cHandler);
         photonVision.getRange();
         photonVision.getRangeF();
         photonVision.getRangeR();
