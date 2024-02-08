@@ -1,12 +1,11 @@
 package frc.team5115.Classes.Hardware;
 
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
 
 public class HardwareClimber {
     private static final double kGravity = 0;
@@ -17,27 +16,16 @@ public class HardwareClimber {
     final CANSparkMax climberMotor;
     final RelativeEncoder climbEncoder;
     final DigitalInput bottomSensor;
-    final DigitalInput topSensor;
-    final Servo actuator;
 
-
-    public HardwareClimber(int canId, int bottomChannel, int topChannel, int actuatorChannel){
+    public HardwareClimber(int canId, int bottomChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         climberMotor.setIdleMode(IdleMode.kBrake);
         bottomSensor = new DigitalInput(bottomChannel);
-        topSensor = new DigitalInput(topChannel);
-        actuator = new Servo(actuatorChannel);
-        actuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
         climbEncoder = climberMotor.getEncoder();
-        actuator.setSpeed(-1);
     }
 
     public boolean isBottomDetecting(){
         return bottomSensor.get();
-    }
-
-    public boolean isTopDetecting(){
-        return topSensor.get();
     }
     
     public double getRotations(){
@@ -51,14 +39,6 @@ public class HardwareClimber {
 
     public void setPercentage(double percentage){
         climberMotor.set(percentage);
-    }
-
-    public void extendPin() {
-        actuator.setSpeed(+1);
-    }
-
-    public void retractPin() {
-        actuator.setSpeed(-1);
     }
 
     public double getVelocity(){

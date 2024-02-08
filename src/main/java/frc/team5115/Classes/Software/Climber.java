@@ -43,16 +43,6 @@ public class Climber extends SubsystemBase {
         leftClimber.setPercentage(-0.2);
         rightClimber.setPercentage(-0.2);
     }
-   
-    public void retractPins() {
-        leftClimber.retractPin();
-        rightClimber.retractPin();
-    }
-
-    public void extendPins() {
-        leftClimber.extendPin();
-        rightClimber.extendPin();
-    }
 
     public double[] getRotations() {
         return new double[] {leftClimber.getRotations(), rightClimber.getRotations()};
@@ -65,21 +55,9 @@ public class Climber extends SubsystemBase {
     public boolean isLeftBottom(){
         return leftClimber.isBottomDetecting();
     }
-
-    public boolean isRightTop(){
-        return rightClimber.isTopDetecting();
-    }
-
-    public boolean isLeftTop(){
-        return leftClimber.isTopDetecting();
-    }
-
-    public boolean isFullyDeployed(){
-        return isRightTop() && isLeftTop() && !isLeftBottom() && !isRightBottom();
-    }
     
     public boolean isFullyClimbed(){
-        return !isRightTop() && !isLeftTop() && isLeftBottom() && isRightBottom();
+        return isLeftBottom() && isRightBottom();
     }
 
     /**
