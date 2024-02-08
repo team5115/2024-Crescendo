@@ -1,9 +1,5 @@
 package frc.team5115.Classes.Software;
 
-import java.util.Optional;
-
-import org.photonvision.EstimatedRobotPose;
-
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -15,20 +11,26 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
+
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import com.pathplanner.lib.util.*;
 import frc.team5115.Commands.Auto.*;
 import frc.team5115.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
-    private final PhotonVision photonVision;
     private final NAVx navx;
     HolonomicPathFollowerConfig x;
     private final HolonomicDriveController holonomicDriveController;
     public AutoBuilder autoBuilder;
     private SwerveDrivePoseEstimator poseEstimator;
+    private PhotonVision photonVision;
    
     public Drivetrain(HardwareDrivetrain hardwareDrivetrain, PhotonVision photonVision, NAVx navx, AutoBuilder autoBuilder) {
         this.photonVision = photonVision;
@@ -63,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Pose2d getStartingPoseGuess() {
-        return null; // TODO make starting pose guess
+            return new Pose2d();
     }
 
 
@@ -72,20 +74,31 @@ public class Drivetrain extends SubsystemBase {
 	 * Sets the encoder values to 0.
 	 */
     public void resetEncoders() {
+        navx.resetNAVx();
         hardwareDrivetrain.resetEncoders();
     }
     
-    public void SwerveDrive(double forward, double turn, double right, boolean rookieMode){
+    public void SwerveDrive(double forward, double turn, double right, boolean rookieMode, boolean fieldOriented){
+
+        if(Math.abs(forward)< 0.1){
+            forward = 0;
+        }
+        if(Math.abs(turn)< 0.1){
+            turn = 0;
+        }
+        if(Math.abs(right)< 0.1){
+            right = 0;
+        }        
         if(rookieMode){
             right *= 0.1;
             turn *= 0.1;
-            forward *= 0.1;
+            forward *= -0.1;
         }else{
             right *= 0.2;
             turn *= 0.2;
-            forward *= 0.2;
+            forward *= -0.2;
         }
-        hardwareDrivetrain.drive(forward, right, turn, false, false);
+        hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
     }
 
 	/**

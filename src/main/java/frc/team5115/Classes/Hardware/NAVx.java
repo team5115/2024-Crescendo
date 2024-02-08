@@ -33,7 +33,7 @@ public class NAVx implements Subsystem {
 	 * Sets the baseline yaw to the current yaw.
 	 */
     public void resetYaw(){
-        yawAtReset = getYawDeg();
+        yawAtReset = clampAngle(ahrs.getYaw());
     }
 
 	/**
