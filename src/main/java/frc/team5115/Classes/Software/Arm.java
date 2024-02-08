@@ -87,11 +87,6 @@ public class Arm extends SubsystemBase{
         return hardwareArm.getAngle();
     }
 
-    public void deploy() {
-        isDeployed = true;
-        setpoint.angle = 15.0;
-    }
-
     public void deployToAngle(double x){
         isDeployed = true;
         setpoint.angle = x;
