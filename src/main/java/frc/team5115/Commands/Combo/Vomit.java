@@ -6,7 +6,6 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 
 public class Vomit extends SequentialCommandGroup{
-    boolean start;
     public Vomit(boolean start, Shooter shooter, Intake intake){
        
         if(start){
