@@ -43,9 +43,9 @@ public class PhotonVision extends SubsystemBase{
         //Left 
         photonCameraL = new PhotonCamera("Stereo_Vision_1");
         //Back camera
-    //    photonCameraB = new PhotonCamera("limelight");
+        photonCameraB = new PhotonCamera("OV5647");
         //Right camera 
-   //     photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
+        photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
         //Front camera
         photonCameraF = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
@@ -112,12 +112,16 @@ public class PhotonVision extends SubsystemBase{
  * 
  */
 
+ 
  public PhotonPipelineResult getResult(){
+       
         return photonCameraL.getLatestResult(); 
  }
+ 
 public Pose3d j2(){
 AprilTag target = new AprilTag(0, null);
 var result = photonCameraL.getLatestResult(); 
+
  for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
                                 target = i;
@@ -134,6 +138,27 @@ var result = photonCameraL.getLatestResult();
  public double getAngle(){
 
          var result = photonCameraF.getLatestResult(); 
+        if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
+        return 0;
+ }
+
+ public double getAngleL(){
+
+         var result = photonCameraL.getLatestResult(); 
+        if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
+        return 0;
+ }
+
+ public double getAngleR(){
+        
+         var result = photonCameraR.getLatestResult(); 
+        if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
+        return 0;
+ }
+
+ public double getAngleB(){
+
+         var result = photonCameraB.getLatestResult(); 
         if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
         return 0;
  }
@@ -182,6 +207,139 @@ public double getRange(){
         return 0;
     }
 
+    public double getRangeF(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                int ID;
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                                ID = result.getBestTarget().getFiducialId();  
+                        }
+                }
+                // First calculate range
+                double rangeF =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (rangeF);
+                
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+        }
+
+
+         return 0;
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+    public double getIDF(){
+
+        if(photonCameraF.getLatestResult().hasTargets()){ 
+        double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
+        return (FidicualID);
+
+        }
+        return 0;
+    }
+
+
+     public double getRangeB(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraB.getLatestResult(); 
+            if (result.hasTargets()) { 
+                int ID;
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                                ID = result.getBestTarget().getFiducialId();  
+                        }
+                }
+                // First calculate range
+                double rangeB =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (rangeB);
+                
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+        }
+
+
+         return 0;
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+    public double getIDB(){
+
+        if(photonCameraB.getLatestResult().hasTargets()){ 
+        double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
+        return (FidicualID);
+
+        }
+        return 0;
+    }
+
+
+     public double getRangeR(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(0, null);
+        var result = photonCameraR.getLatestResult(); 
+            if (result.hasTargets()) { 
+                int ID;
+                for(AprilTag i : aprilTagList){
+                        if(i.ID == result.getBestTarget().getFiducialId()){
+                                target = i;
+                                ID = result.getBestTarget().getFiducialId();  
+                        }
+                }
+                // First calculate range
+                double rangeR =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
+                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+
+                return (rangeR);
+                
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+        }
+
+
+         return 0;
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+    public double getIDR(){
+
+        if(photonCameraR.getLatestResult().hasTargets()){ 
+        double FidicualID = photonCameraR.getLatestResult().getBestTarget().getFiducialId();
+        return (FidicualID);
+
+        }
+        return 0;
+    }
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         // The team assignment of the first grid the robot looks at is the team assignment of the robot
         // otherwise if we cant see any april tags trust the team assignment inputted on shuffle board

@@ -154,11 +154,15 @@ public RobotContainer() {
         i2cHandler.updatePitch();
         arm.updateController();
         photonVision.getRange();
+        photonVision.getRangeF();
+        photonVision.getRangeR();
+        photonVision.getRangeB();
+
         //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
              
         System.out.println(photonVision.getRange());
 
-        //System.out.println(photonVision.getID());
+        // System.out.println(photonVision.getID());
     }
 
 

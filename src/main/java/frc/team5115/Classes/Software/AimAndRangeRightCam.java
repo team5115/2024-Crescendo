@@ -28,7 +28,7 @@ import org.photonvision.PhotonUtils;
 
 
 
-public class AimAndRange extends SubsystemBase{
+public class AimAndRangeRightCam extends SubsystemBase{
     HardwareDrivetrain j;
     Drivetrain d;
     NAVx gyro;
@@ -36,7 +36,7 @@ public class AimAndRange extends SubsystemBase{
     int x = 0;
 
     
-    public AimAndRange(Drivetrain d){  
+    public AimAndRangeRightCam(Drivetrain d){  
         gyro = new NAVx();
         j = new HardwareDrivetrain(gyro);
         photonVision = new PhotonVision();
@@ -46,7 +46,7 @@ public class AimAndRange extends SubsystemBase{
     }
 
 
-    PhotonCamera camera = new PhotonCamera("Stereo_Vision_1");
+    PhotonCamera camera = new PhotonCamera("Mirosoft_LifeCam_Cinema");
 
     // PID constants should be tuned per robot
     final double LINEAR_P = 0.1;
@@ -75,11 +75,11 @@ public class AimAndRange extends SubsystemBase{
         if(photonVision.isTargetPresent()){
                             
         Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2(), VisionConstants.robotToCamL.times(-1));
-        forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+        forwardSpeed = -forwardController.calculate(photonVision.getRangeR(), GOAL_RANGE_METERS);
 
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
-        rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
+        rotationSpeed = -turnController.calculate(photonVision.getAngleR(), 0); 
         }
         else{
         forwardSpeed = -xboxController.getRightY();
