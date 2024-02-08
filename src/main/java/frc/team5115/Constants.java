@@ -1,9 +1,8 @@
 package frc.team5115;
 
-<<<<<<< HEAD
+
 import com.pathplanner.lib.path.PathConstraints;
-=======
->>>>>>> auto-test
+
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
