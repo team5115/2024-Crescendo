@@ -172,7 +172,7 @@ public class Constants{
         public static final double cameraPitch = 40;
         public static final double cameraYaw = 1;
 
-        //TODO get the pos.... 
+        //TODO get the pose.... 
         
         public static final double cameraRightPosX = 0;
         public static final double cameraRightPosY = 0;

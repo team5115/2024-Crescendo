@@ -77,7 +77,7 @@ public RobotContainer() {
         
 
         drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
-        
+
         photonVision = new PhotonVision();
 
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
@@ -163,6 +163,8 @@ public RobotContainer() {
     }
 
     public void startAuto(){
+
+        
         // if(autoCommandGroup != null) autoCommandGroup.cancel();
         // drivetrain.resetEncoders();
         // drivetrain.resetNAVx();
