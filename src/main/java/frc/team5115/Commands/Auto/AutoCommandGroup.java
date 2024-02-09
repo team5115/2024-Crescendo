@@ -15,10 +15,9 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         if (!actuallyRun) return;
     }
 
-     public AutoSequence(){
+     public void AutoSequence(){
 
-        autochooser.getAutonomousCommand();
-        AimAndRangeFrontCam.getRangeF();
+       
         
     }
 

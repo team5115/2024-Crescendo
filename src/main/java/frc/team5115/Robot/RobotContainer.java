@@ -164,7 +164,7 @@ public RobotContainer() {
 
     public void startAuto(){
 
-        
+
         // if(autoCommandGroup != null) autoCommandGroup.cancel();
         // drivetrain.resetEncoders();
         // drivetrain.resetNAVx();
@@ -179,7 +179,7 @@ public RobotContainer() {
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
         // arm.updateController();
-        AutoCommandGroup.AutoSequence();
+        
     }
 
     public void startTeleop(){
