@@ -16,11 +16,6 @@ public class ShootSequence extends SequentialCommandGroup{
             new InstantCommand(this :: logStarting),
             new DeployArm(arm, angle),
 
-            // // Cock note
-            // new InstantCommand(intake :: out),
-            // new WaitForSensorChange(false, sensor),
-            // new InstantCommand(intake :: stop),
-
             // Shoot
             new SpinUpShooter(shooter, 5000).withTimeout(4),
             new InstantCommand(intake :: fastIn),
@@ -28,8 +23,7 @@ public class ShootSequence extends SequentialCommandGroup{
             new WaitCommand(0.15),
 
             // Stop stuff
-            new InstantCommand(intake :: stop),
-            new InstantCommand(shooter :: stop),
+            new StopBoth(intake, shooter),
             new WaitCommand(0.35),
             new StowArm(arm)
         );

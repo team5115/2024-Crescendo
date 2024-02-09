@@ -11,8 +11,7 @@ public class CancelIntake extends SequentialCommandGroup {
     public CancelIntake(Intake intake, Shooter shooter, Arm arm, IntakeSequence intakeSequence) {   
         addCommands(
             new InstantCommand(intakeSequence :: cancel),
-            new InstantCommand(intake :: stop),
-            new InstantCommand(shooter :: stop),
+            new StopBoth(intake, shooter),
             new StowArm(arm)
         );
     }

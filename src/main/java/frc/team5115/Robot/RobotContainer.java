@@ -9,19 +9,24 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareArm;
+import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
+import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
+import frc.team5115.Commands.Climber.Climb;
+import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.CancelIntake;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.Rack;
 import frc.team5115.Commands.Combo.ShootSequence;
+import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -32,13 +37,16 @@ public class RobotContainer {
     private final GenericEntry doAuto;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
-    // private final Climber climber;
+    private final Climber climber;
     private final Arm arm;
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
+
+    private DeployClimber deployClimber;
+    private Climb climb;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
@@ -63,33 +71,29 @@ public class RobotContainer {
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(0);
 
-        // // TODO set climber sensor channels
-        // HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0);
-        // HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, 0);
-        // climber = new Climber(leftClimber, rightClimber);
+        // TODO set climber sensor channels
+        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0);
+        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, 0);
+        climber = new Climber(leftClimber, rightClimber);
 
         configureButtonBindings();
     }
 
     public void configureButtonBindings() {
-        // Climb climb = new Climb(climber, 12);
-        // DeployClimber deployClimber = new DeployClimber(climber, 0.5);
+        climb = new Climb(climber, 12);
+        deployClimber = new DeployClimber(climber, 0.5);
+
         IntakeSequence intakeSequence = new IntakeSequence(5, intake, shooter, arm, reflectiveSensor);
         ShootSequence shootSequence = new ShootSequence(5, intake, shooter, arm, reflectiveSensor);
         CancelIntake cancelIntake = new CancelIntake(intake, shooter, arm, intakeSequence);
         DeployArm deployArm = new DeployArm(arm, 5);
-        
-        new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(true, shooter, intake))
-        .onFalse(new Vomit(false, shooter, intake));
+
+        new JoystickButton(joyManips, XboxController.Button.kBack.value).onTrue(new Vomit(shooter, intake)).onFalse(new StopBoth(intake, shooter));
 
         new JoystickButton(joyManips, XboxController.Button.kA.value).onTrue(intakeSequence.andThen(new Rack(intake, reflectiveSensor)));
         new JoystickButton(joyManips, XboxController.Button.kB.value).onTrue(shootSequence);
         new JoystickButton(joyManips, XboxController.Button.kX.value).onTrue(cancelIntake);
         new JoystickButton(joyManips, XboxController.Button.kY.value).onTrue(deployArm);
-
-        // new JoystickButton(joyManips, XboxController.Button.kStart.value)
-        // .onTrue(new DeployClimber(climber, 0.3));
     }
 
     public void disabledInit(){
@@ -132,7 +136,7 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        /*
+        ///*
         if (climber.isDeployed()) {
             if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
             && joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
@@ -144,7 +148,7 @@ public class RobotContainer {
                 deployClimber.schedule();
             }
         }
-        */
+        //*/
 
         // System.out.println("bno: " + i2cHandler.getPitch());
         arm.updateController(i2cHandler);
