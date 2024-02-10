@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareArm;
@@ -83,21 +84,23 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(true, shooter, intake))
-        .onFalse(new Vomit(false, shooter, intake));
+        // new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        // .onTrue(new Vomit(true, shooter, intake))
+        // .onFalse(new Vomit(false, shooter, intake));
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
-        .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor));
+        .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor));
+        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(arm, 20));
+        .onTrue(new DeployArm(intake, shooter, arm, 5).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(arm));
+        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
     }
 
     public void disabledInit(){
@@ -155,8 +158,8 @@ public class RobotContainer {
         }
         */
 
-        // System.out.println("bno: " + i2cHandler.getPitch());
+        System.out.println("navx angle: " + navx.getYawDeg360());
         arm.updateController(i2cHandler);
-        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), false);
     }
 }
