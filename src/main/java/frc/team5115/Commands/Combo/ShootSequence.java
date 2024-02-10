@@ -15,7 +15,7 @@ public class ShootSequence extends SequentialCommandGroup{
     public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addCommands(
             new InstantCommand(this :: logStarting),
-            new DeployArm(arm, 20),
+            new DeployArm(arm, 5),
 
             // // Cock note
             // new InstantCommand(intake :: out),
@@ -31,8 +31,8 @@ public class ShootSequence extends SequentialCommandGroup{
             // Stop stuff
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop),
-            new WaitCommand(0.35),
-            new StowArm(arm)
+            new WaitCommand(0.35)
+            // new StowArm(arm)
         );
     }
 

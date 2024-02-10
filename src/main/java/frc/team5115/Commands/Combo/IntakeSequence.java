@@ -21,9 +21,7 @@ public class IntakeSequence extends SequentialCommandGroup{
             new WaitForSensorChange(true, sensor),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop),
-            new StowArm(arm),
-            // new WaitCommand(0.5),
-            // Cock note after stowing arm
+            new WaitCommand(0.5),
             new InstantCommand(intake :: out),
             new WaitForSensorChange(false, sensor),
             new InstantCommand(intake :: stop)
