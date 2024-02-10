@@ -15,7 +15,7 @@ import edu.wpi.first.math.controller.PIDController;
 public class Arm extends SubsystemBase{
     //private final GenericEntry rookie;
     private static final double MIN_DEGREES = -90.0;
-    private static final double TURN_PID_TOLERANCE = 1.5;
+    private static final double TURN_PID_TOLERANCE = 1.2;
     private static final double TURN_PID_KP = 0.15;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
