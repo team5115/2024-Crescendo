@@ -13,7 +13,7 @@ public class ShootSequence extends SequentialCommandGroup{
     public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addRequirements(intake, shooter, arm);
         addCommands(
-            new DeployArm(intake, shooter, arm, 5),
+            new DeployArm(intake, shooter, arm, 4).withTimeout(5),
 
             // Shoot
             new SpinUpShooter(shooter, 5000).withTimeout(4),

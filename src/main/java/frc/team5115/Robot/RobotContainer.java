@@ -89,9 +89,9 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        // new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        // .onTrue(new Vomit(true, shooter, intake))
-        // .onFalse(new Vomit(false, shooter, intake));
+        new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        .onTrue(new Vomit(true, shooter, intake))
+        .onFalse(new Vomit(false, shooter, intake));
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
@@ -102,7 +102,7 @@ public class RobotContainer {
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 5).withTimeout(5).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
         .onTrue(new StowArm(intake, shooter, arm).withTimeout(5).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
@@ -171,7 +171,8 @@ public class RobotContainer {
         */
 
         // System.out.println("bno angle: " + i2cHandler.getPitch());
+        // i2cHandler.updatePitch();
         arm.updateController(i2cHandler);
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }

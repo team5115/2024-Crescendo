@@ -17,6 +17,11 @@ public class StowArm extends Command {
     public void initialize() {
         arm.stow();
     }
+    
+    @Override
+    public void execute(){
+        arm.stow();
+    }
 
     @Override
     public boolean isFinished(){

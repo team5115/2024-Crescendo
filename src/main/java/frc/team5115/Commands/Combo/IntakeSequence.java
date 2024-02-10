@@ -14,7 +14,7 @@ public class IntakeSequence extends SequentialCommandGroup{
     public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addRequirements(intake, shooter, arm);
         addCommands(
-            new DeployArm(intake, shooter, arm, 5),
+            new DeployArm(intake, shooter, arm, 4).withTimeout(5),
 
             // Intake
             new InstantCommand(intake :: fastIn),

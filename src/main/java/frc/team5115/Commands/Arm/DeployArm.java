@@ -21,6 +21,11 @@ public class DeployArm extends Command {
     }
 
     @Override
+    public void execute(){
+        arm.deployToAngle(angle);
+    }
+
+    @Override
     public boolean isFinished(){
         return arm.atSetpoint();
     }
