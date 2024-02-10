@@ -2,37 +2,28 @@ package frc.team5115.Robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     private RobotContainer robotContainer;
-    public Timer timer; 
 
     @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
-        timer = new Timer();
-        timer.start();
 
         // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
         CommandScheduler.getInstance()
             .onCommandInitialize(
                 command ->
-                    Shuffleboard.addEventMarker(
-                        "Command initialized", command.getName(), EventImportance.kNormal));
+                    System.out.println("Command started " + command.getName()));
         CommandScheduler.getInstance()
             .onCommandInterrupt(
                 command ->
-                    Shuffleboard.addEventMarker(
-                        "Command interrupted", command.getName(), EventImportance.kNormal));
+                    System.out.println("Command interrupted " + command.getName()));
         CommandScheduler.getInstance()
             .onCommandFinish(
                 command ->
-                    Shuffleboard.addEventMarker(
-                        "Command finished", command.getName(), EventImportance.kNormal));
+                    System.out.println("Command finished " + command.getName()));
     }
 
     @Override
