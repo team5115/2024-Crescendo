@@ -13,12 +13,7 @@ public class ShootSequence extends SequentialCommandGroup{
     public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addRequirements(intake, shooter, arm);
         addCommands(
-            new DeployArm(arm, 5),
-
-            // // Cock note
-            // new InstantCommand(intake :: out),
-            // new WaitForSensorChange(false, sensor),
-            // new InstantCommand(intake :: stop),
+            new DeployArm(intake, shooter, arm, 5),
 
             // Shoot
             new SpinUpShooter(shooter, 5000).withTimeout(4),
@@ -29,8 +24,7 @@ public class ShootSequence extends SequentialCommandGroup{
             // Stop stuff
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop),
-            new WaitCommand(0.35)
-            // new StowArm(arm)
+            new WaitCommand(0.5)
         );
     }
 }
