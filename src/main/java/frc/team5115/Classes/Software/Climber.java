@@ -14,8 +14,8 @@ public class Climber extends SubsystemBase {
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
         this.leftClimber = leftClimber;
         this.rightClimber = rightClimber;
-        leftPid = new PIDController(0, 0, 0);
-        rightPid = new PIDController(0, 0, 0);
+        leftPid = new PIDController(0.01, 0, 0);
+        rightPid = new PIDController(0.01, 0, 0);
         deployed = false;
     }
     
@@ -23,8 +23,8 @@ public class Climber extends SubsystemBase {
         double leftOutput = leftPid.calculate(leftClimber.getRotations(), setpoints[0]);
         double rightOutput = rightPid.calculate(rightClimber.getRotations(), setpoints[1]);
         
-        leftClimber.setSpeed(leftOutput);
-        rightClimber.setSpeed(rightOutput);
+        leftClimber.setPercentage(leftOutput);
+        rightClimber.setPercentage(rightOutput);
     }
 
     public void stop(){
@@ -48,44 +48,34 @@ public class Climber extends SubsystemBase {
         leftClimber.setPercentage(-0.2);
         rightClimber.setPercentage(-0.2);
     }
-   
-    public void retractPins() {
-        leftClimber.retractPin();
-        rightClimber.retractPin();
-    }
-
-    public void extendPins() {
-        leftClimber.extendPin();
-        rightClimber.extendPin();
-    }
 
     public double[] getRotations() {
         return new double[] {leftClimber.getRotations(), rightClimber.getRotations()};
     }
 
-    public boolean isRightBottom(){
-        return rightClimber.isBottomDetecting();
-    }
+    // public boolean isRightBottom(){
+    //     return rightClimber.isBottomDetecting();
+    // }
 
-    public boolean isLeftBottom(){
-        return leftClimber.isBottomDetecting();
-    }
+    // public boolean isLeftBottom(){
+    //     return leftClimber.isBottomDetecting();
+    // }
 
-    public boolean isRightTop(){
-        return rightClimber.isTopDetecting();
-    }
+    // public boolean isRightTop(){
+    //     return rightClimber.isTopDetecting();
+    // }
 
-    public boolean isLeftTop(){
-        return leftClimber.isTopDetecting();
-    }
+    // public boolean isLeftTop(){
+    //     return leftClimber.isTopDetecting();
+    // }
 
-    public boolean isFullyDeployed(){
-        return isRightTop() && isLeftTop() && !isLeftBottom() && !isRightBottom();
-    }
+    // public boolean isFullyDeployed(){
+    //     return isRightTop() && isLeftTop() && !isLeftBottom() && !isRightBottom();
+    // }
     
-    public boolean isFullyClimbed(){
-        return !isRightTop() && !isLeftTop() && isLeftBottom() && isRightBottom();
-    }
+    // public boolean isFullyClimbed(){
+    //     return !isRightTop() && !isLeftTop() && isLeftBottom() && isRightBottom();
+    // }
 
     /**
      * Doesn't actually deploy the climber, just tells it that it is deployed
