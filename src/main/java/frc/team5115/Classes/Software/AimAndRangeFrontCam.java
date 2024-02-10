@@ -49,11 +49,11 @@ public class AimAndRangeFrontCam extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
     // PID constants should be tuned per robot
-    final double LINEAR_P = 0.1;
+    final double LINEAR_P = 0.3;
     final double LINEAR_D = 0.0;
     PIDController forwardController = new PIDController(LINEAR_P, 0, LINEAR_D);
 
-    final double ANGULAR_P = 0.1;
+    final double ANGULAR_P = 0.3;
     final double ANGULAR_D = 0.0;
     PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
@@ -66,7 +66,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
     public void periodic() { 
         double forwardSpeed;
         double rotationSpeed;
-        double GOAL_RANGE_METERS = 57;
+        double GOAL_RANGE_METERS = 1.6;
         
         if (xboxController.getAButton()) {
             // Vision-alignment mode

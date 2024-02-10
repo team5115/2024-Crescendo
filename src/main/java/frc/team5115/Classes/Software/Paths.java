@@ -32,7 +32,7 @@ public class Paths {
     public final static PathPlannerPath AutoNoteToNote9 = PathPlannerPath.fromPathFile("START top to middle");
     public final static PathPlannerPath AutoNoteToNote = PathPlannerPath.fromPathFile("START top to bottom");
 
-//starting from bottom
+// starting from bottom
     public final static PathPlannerPath AutoNoteToNote7 = PathPlannerPath.fromPathFile("START bottom to top");
     public final static PathPlannerPath AutoNoteToNote8 = PathPlannerPath.fromPathFile("START bottom to middle");
     public final static PathPlannerPath AutoNoteToNote0 = PathPlannerPath.fromPathFile("START bottom to bottom");

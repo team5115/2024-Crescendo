@@ -22,12 +22,7 @@ import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Commands.Auto.*;
 import frc.team5115.Classes.Software.*;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Constants.VisionConstants;
-import frc.team5115.Classes.Software.Arm;
-import frc.team5115.Classes.Software.Drivetrain;
-import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -171,14 +166,14 @@ public RobotContainer() {
         // drivetrain.stop();
         // drivetrain.init();
 
-        // autoCommandGroup = new AutoCommandGroup(drivetrain, doAuto.getBoolean(true));
-        // autoCommandGroup.schedule();
+         autoCommandGroup.schedule();
     }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
         // i2cHandler.updatePitch();
         // arm.updateController();
+        
         
     }
 
@@ -205,14 +200,14 @@ public RobotContainer() {
         */
 
         // System.out.println("bno: " + i2cHandler.getPitch());
-        arm.updateController(i2cHandler);
+      //  arm.updateController(i2cHandler);
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false), true);
 
         
 
-        i2cHandler.updatePitch();
+     //   i2cHandler.updatePitch();
         
-        arm.updateController(i2cHandler);
+    //    arm.updateController(i2cHandler);
         photonVision.getRange();
         photonVision.getRangeF();
         photonVision.getRangeR();
@@ -221,8 +216,13 @@ public RobotContainer() {
         //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
              
         System.out.println(photonVision.getRange());
+        System.out.println(photonVision.getRangeF());
+        System.out.println(photonVision.getRangeB());
+        System.out.println(photonVision.getRangeR());
+        
 
         // System.out.println(photonVision.getID());
+       // System.out.println(photonVision.getID());
     
 }
 
