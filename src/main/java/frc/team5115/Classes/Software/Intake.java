@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void in(){
-        motor.set(0.5);
+        motor.set(+1);
     }
 
     public void fastIn() {
