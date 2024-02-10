@@ -66,11 +66,11 @@ public class Drivetrain extends SubsystemBase {
             right = 0;
         }        
         if(rookieMode){
-            right *= -0.1;
+            right *= 0.1;
             turn *= 0.1;
             forward *= 0.1;
         }else{
-            right *= -0.2;
+            right *= 0.2;
             turn *= 0.2;
             forward *= 0.2;
         }
