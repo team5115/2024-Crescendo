@@ -1,6 +1,5 @@
 package frc.team5115.Commands.Combo;
 
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -9,12 +8,11 @@ import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
-import frc.team5115.Commands.Arm.StowArm;
 
 public class ShootSequence extends SequentialCommandGroup{
     public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+        addRequirements(intake, shooter, arm);
         addCommands(
-            new InstantCommand(this :: logStarting),
             new DeployArm(arm, 5),
 
             // // Cock note
@@ -34,9 +32,5 @@ public class ShootSequence extends SequentialCommandGroup{
             new WaitCommand(0.35)
             // new StowArm(arm)
         );
-    }
-
-    private void logStarting() {
-        System.out.println("STARTING SHOOT SEQUENCE");
     }
 }
