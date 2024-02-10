@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 
 public class HardwareArm extends SubsystemBase{
-    public static final double STOWED_ANGLE = 160.0;
+    public static final double STOWED_ANGLE = 149.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
