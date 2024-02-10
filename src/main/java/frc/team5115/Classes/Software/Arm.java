@@ -24,7 +24,6 @@ public class Arm extends SubsystemBase{
     private final Angle setpoint;
 
     private PIDController turnController = new PIDController(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
-    private boolean isDeployed;
 
     public Arm(HardwareArm hardwareArm){
         this.hardwareArm = hardwareArm;
@@ -60,7 +59,7 @@ public class Arm extends SubsystemBase{
     public boolean updateController(I2CHandler bno){
         bno.updatePitch();
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
-        System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
+        // System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
         boolean atSetpoint = atSetpoint();
         if (!atSetpoint) hardwareArm.setTurn(pidOutput, setpoint);
@@ -87,22 +86,11 @@ public class Arm extends SubsystemBase{
         return hardwareArm.getAngle();
     }
 
-    public void deploy() {
-        isDeployed = true;
-        setpoint.angle = 15.0;
-    }
-
-    public void deployToAngle(double x){
-        isDeployed = true;
-        setpoint.angle = x;
+    public void deployToAngle(double newSetpoint){
+        setpoint.angle = newSetpoint;
     }
 
     public void stow() {
-        isDeployed = false;
         setpoint.angle = HardwareArm.STOWED_ANGLE;
-    }
-
-    public boolean isDeployed() {
-        return isDeployed;
     }
 }

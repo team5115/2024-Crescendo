@@ -10,6 +10,7 @@ public class DeployArm extends Command {
     public DeployArm(Arm arm, double angle) {
         this.arm = arm;
         this.angle = angle;
+        addRequirements(arm);
     }
 
     @Override

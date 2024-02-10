@@ -8,6 +8,7 @@ public class StowArm extends Command {
     
     public StowArm(Arm arm) {
         this.arm = arm;
+        addRequirements(arm);
     }
 
     @Override
