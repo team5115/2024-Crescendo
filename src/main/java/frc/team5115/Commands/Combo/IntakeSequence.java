@@ -17,7 +17,7 @@ public class IntakeSequence extends SequentialCommandGroup{
             new DeployArm(intake, shooter, arm, 5),
 
             // Intake
-            new InstantCommand(intake :: in),
+            new InstantCommand(intake :: fastIn),
             new InstantCommand(shooter :: slow),
             new WaitForSensorChange(true, sensor).withTimeout(10),
             new InstantCommand(intake :: stop),
