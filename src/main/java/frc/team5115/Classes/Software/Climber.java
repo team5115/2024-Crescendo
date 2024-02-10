@@ -38,6 +38,11 @@ public class Climber extends SubsystemBase {
         rightClimber.setPercentage(0.2);
     }
 
+    public void setBoth(double speed){
+        leftClimber.setPercentage(speed);
+        rightClimber.setPercentage(speed);
+    }
+
     // TODO determine slow release speed
     public void letOutSlow() {
         leftClimber.setPercentage(-0.2);

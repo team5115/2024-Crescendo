@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
-import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
@@ -16,14 +15,16 @@ import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
+import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
+import frc.team5115.Commands.Climber.Climb;
+import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
-import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -42,8 +43,9 @@ public class RobotContainer {
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
 
-    // private final Climb climb;
-    // private final DeployClimber deployClimber;
+    private final Climber climber;
+    private final Climb climb;
+    private final DeployClimber deployClimber;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
@@ -63,17 +65,18 @@ public class RobotContainer {
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm);
 
+
         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
         shooter = new Shooter(hardwareShooter);
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(0);
 
         // TODO set climber canIDs, sensor channels, and PWM channels
-        // HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0, 0, 0);
-        // HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, 0, 0, 0);
-        // climber = new Climber(leftClimber, rightClimber);
-        // climb = new Climb(climber, 12);
-        // deployClimber = new DeployClimber(climber, 0.5);
+        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0, 0, 0);
+        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, 0, 0, 0);
+        climber = new Climber(leftClimber, rightClimber);
+        climb = new Climb(climber, 12);
+        deployClimber = new DeployClimber(climber, 0.5);
 
         configureButtonBindings();
     }
@@ -137,6 +140,7 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+        climber.setBoth(joyManips.getRawAxis(XboxController.Axis.kRightX.value));
         /*
         if (climber.isDeployed()) {
             if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
