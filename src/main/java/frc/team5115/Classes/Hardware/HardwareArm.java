@@ -14,7 +14,6 @@ public class HardwareArm extends SubsystemBase{
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
-    private final NAVx navx;
     private final I2CHandler i2c;
 
     private final double Ks = 0.35;
@@ -24,8 +23,7 @@ public class HardwareArm extends SubsystemBase{
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
 
-    public HardwareArm(NAVx navx, I2CHandler i2c, int canIdRight, int canIdLeft){
-        this.navx = navx;
+    public HardwareArm(I2CHandler i2c, int canIdRight, int canIdLeft){
         this.i2c = i2c;
         
         turnRight = new CANSparkMax(canIdRight, MotorType.kBrushless);
@@ -37,7 +35,6 @@ public class HardwareArm extends SubsystemBase{
         turnLeft.setSmartCurrentLimit(80, 80);
 
         armAngle = new Angle(STOWED_ANGLE);
-        // TODO hardware arm motor inversion
         turnRight.setInverted(false);
         turnLeft.setInverted(true);
     }
