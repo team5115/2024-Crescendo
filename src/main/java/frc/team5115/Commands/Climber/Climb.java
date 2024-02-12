@@ -23,15 +23,18 @@ public class Climb extends Command {
     @Override
     public void execute() {
         climber.loopPids(setpoints);
+        // System.out.println(setpoints[0]);
     }
 
     @Override
     public boolean isFinished() {
-        return climber.isFullyClimbed();
+        // return climber.isFullyClimbed();
+        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
         climber.stop();
     }
+
 }

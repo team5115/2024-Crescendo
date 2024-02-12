@@ -68,11 +68,11 @@ public class Drivetrain extends SubsystemBase {
         if(rookieMode){
             right *= 0.1;
             turn *= 0.1;
-            forward *= -0.1;
+            forward *= 0.1;
         }else{
             right *= 0.2;
             turn *= 0.2;
-            forward *= -0.2;
+            forward *= 0.2;
         }
         hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
     }

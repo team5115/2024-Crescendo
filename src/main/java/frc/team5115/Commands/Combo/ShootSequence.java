@@ -8,13 +8,12 @@ import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
-import frc.team5115.Commands.Arm.StowArm;
 
 public class ShootSequence extends SequentialCommandGroup{
-    public ShootSequence(double angle, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+    public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+        addRequirements(intake, shooter, arm);
         addCommands(
-            new InstantCommand(this :: logStarting),
-            new DeployArm(arm, angle),
+            new DeployArm(intake, shooter, arm, 4).withTimeout(5),
 
             // Shoot
             new SpinUpShooter(shooter, 5000).withTimeout(4),
@@ -23,13 +22,9 @@ public class ShootSequence extends SequentialCommandGroup{
             new WaitCommand(0.15),
 
             // Stop stuff
-            new StopBoth(intake, shooter),
-            new WaitCommand(0.35),
-            new StowArm(arm)
+            new InstantCommand(intake :: stop),
+            new InstantCommand(shooter :: stop),
+            new WaitCommand(0.5)
         );
-    }
-
-    private void logStarting() {
-        System.out.println("STARTING SHOOT SEQUENCE");
     }
 }

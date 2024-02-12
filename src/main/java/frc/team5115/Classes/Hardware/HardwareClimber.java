@@ -15,18 +15,29 @@ public class HardwareClimber {
 
     final CANSparkMax climberMotor;
     final RelativeEncoder climbEncoder;
-    final DigitalInput bottomSensor;
+    // final DigitalInput bottomSensor;
+    // final DigitalInput topSensor;
+    // final Servo actuator;
 
-    public HardwareClimber(int canId, int bottomChannel){
+
+    public HardwareClimber(int canId, boolean reversed){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
         climberMotor.setIdleMode(IdleMode.kBrake);
-        bottomSensor = new DigitalInput(bottomChannel);
+        // bottomSensor = new DigitalInput(bottomChannel);
+        // topSensor = new DigitalInput(topChannel);
         climbEncoder = climberMotor.getEncoder();
+        climbEncoder.setPositionConversionFactor(1.0/16.0);
+        climberMotor.setInverted(reversed);
+        climberMotor.setSmartCurrentLimit(45);
     }
 
-    public boolean isBottomDetecting(){
-        return bottomSensor.get();
-    }
+    // public boolean isBottomDetecting(){
+    //     return bottomSensor.get();
+    // }
+
+    // public boolean isTopDetecting(){
+    //     return topSensor.get();
+    // }
     
     public double getRotations(){
         return climbEncoder.getPosition();
@@ -40,10 +51,5 @@ public class HardwareClimber {
     public void setPercentage(double percentage){
         climberMotor.set(percentage);
     }
-
-    public double getVelocity(){
-        return climbEncoder.getVelocity();
-    }
-
 }
     

@@ -12,7 +12,7 @@ public class CancelIntake extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(intakeSequence :: cancel),
             new StopBoth(intake, shooter),
-            new StowArm(arm)
+            new StowArm(intake, shooter, arm)
         );
     }
 }

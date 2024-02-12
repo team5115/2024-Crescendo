@@ -15,8 +15,8 @@ import edu.wpi.first.math.controller.PIDController;
 public class Arm extends SubsystemBase{
     //private final GenericEntry rookie;
     private static final double MIN_DEGREES = -90.0;
-    private static final double TURN_PID_TOLERANCE = 1.5;
-    private static final double TURN_PID_KP = 0.16;
+    private static final double TURN_PID_TOLERANCE = 3;
+    private static final double TURN_PID_KP = 0.15;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     
@@ -24,7 +24,6 @@ public class Arm extends SubsystemBase{
     private final Angle setpoint;
 
     private PIDController turnController = new PIDController(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
-    private boolean isDeployed;
 
     public Arm(HardwareArm hardwareArm){
         this.hardwareArm = hardwareArm;
@@ -60,7 +59,7 @@ public class Arm extends SubsystemBase{
     public boolean updateController(I2CHandler bno){
         bno.updatePitch();
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
-        System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
+        // System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
         boolean atSetpoint = atSetpoint();
         if (!atSetpoint) hardwareArm.setTurn(pidOutput, setpoint);
@@ -72,7 +71,8 @@ public class Arm extends SubsystemBase{
     }
 
     public boolean atSetpoint() {
-        return turnController.atSetpoint();
+        // return turnController.atSetpoint();
+        return Math.abs(getAngle().angle-setpoint.angle) < TURN_PID_TOLERANCE;
     }
 
     public boolean getFault(CANSparkMax.FaultID f){
@@ -87,17 +87,11 @@ public class Arm extends SubsystemBase{
         return hardwareArm.getAngle();
     }
 
-    public void deployToAngle(double x){
-        isDeployed = true;
-        setpoint.angle = x;
+    public void deployToAngle(double newSetpoint){
+        setpoint.angle = newSetpoint;
     }
 
     public void stow() {
-        isDeployed = false;
         setpoint.angle = HardwareArm.STOWED_ANGLE;
-    }
-
-    public boolean isDeployed() {
-        return isDeployed;
     }
 }
