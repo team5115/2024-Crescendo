@@ -1,12 +1,11 @@
 package frc.team5115.Classes.Hardware;
 
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
 
 public class HardwareClimber {
     private static final double kGravity = 0;
@@ -52,10 +51,5 @@ public class HardwareClimber {
     public void setPercentage(double percentage){
         climberMotor.set(percentage);
     }
-
-    public double getVelocity(){
-        return climbEncoder.getVelocity();
-    }
-
 }
     

@@ -1,6 +1,5 @@
 package frc.team5115.Commands.Combo;
 
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Shooter;
 

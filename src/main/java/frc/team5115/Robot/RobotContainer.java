@@ -20,6 +20,7 @@ import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Climber;
+import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
@@ -28,7 +29,9 @@ import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
+import frc.team5115.Commands.Combo.Rack;
 import frc.team5115.Commands.Combo.ShootSequence;
+import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -67,7 +70,7 @@ public class RobotContainer {
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx);
         
-        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
+        HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm);
 
         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
@@ -90,8 +93,8 @@ public class RobotContainer {
         // new JoystickButton(joyManips, XboxController.Button.kStart.value).onTrue(climb);
 
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(true, shooter, intake))
-        .onFalse(new Vomit(false, shooter, intake));
+        .onTrue(new Vomit(shooter, intake))
+        .onFalse(new StopBoth(intake, shooter));
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
@@ -168,7 +171,7 @@ public class RobotContainer {
                 deployClimber.schedule();
             }
         }
-        */
+        //*/
 
         // System.out.println("bno angle: " + i2cHandler.getPitch());
         // i2cHandler.updatePitch();
