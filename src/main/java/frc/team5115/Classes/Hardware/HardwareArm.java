@@ -35,7 +35,6 @@ public class HardwareArm extends SubsystemBase{
         turnLeft.setSmartCurrentLimit(80, 80);
 
         armAngle = new Angle(STOWED_ANGLE);
-        // TODO hardware arm motor inversion
         turnRight.setInverted(false);
         turnLeft.setInverted(true);
     }

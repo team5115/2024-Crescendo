@@ -9,7 +9,7 @@ public class DriveTimed extends Command{
     private final Drivetrain drivetrain;
     private final double timeToComplete;
     private final double speedNormalized;
-    
+
     public DriveTimed(Drivetrain drivetrain, double timeToComplete, double speedNormalized) {
         timer = new Timer();
         this.drivetrain = drivetrain;
@@ -21,7 +21,7 @@ public class DriveTimed extends Command{
     public void initialize() {
         timer.reset();
         timer.start();
-        drivetrain.SwerveDrive(speedNormalized, 0, 0, false, true);
+        drivetrain.SwerveDrive(speedNormalized, 0, 0, false, false);
     }
 
     @Override
@@ -32,5 +32,10 @@ public class DriveTimed extends Command{
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
+    }
+
+    public static DriveTimed fromDistance(Drivetrain drivetrain, double distance, double speed) {
+        double time = distance / speed;
+        return new DriveTimed(drivetrain, time, speed);
     }
 }

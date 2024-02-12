@@ -10,5 +10,9 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         this.drivetrain = drivetrain;
 
         if (!actuallyRun) return;
+
+        addCommands(
+            new DriveTimed(drivetrain, 0, 0)
+        );
     }
 }
