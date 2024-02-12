@@ -5,8 +5,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-
 public class HardwareClimber {
     private static final double kGravity = 0;
     private static final double kSpring = 0;

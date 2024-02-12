@@ -1,7 +1,6 @@
 package frc.team5115.Commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Climber;
 
 public class DeployClimber extends Command {
