@@ -30,7 +30,6 @@ public class PhotonVision extends SubsystemBase{
      static PhotonTrackedTarget target;
 
      public AprilTagFieldLayout fieldLayout;
-
      private PhotonPoseEstimator photonPoseEstimatorL;
      private PhotonPoseEstimator photonPoseEstimatorR;
      private PhotonPoseEstimator photonPoseEstimatorB;

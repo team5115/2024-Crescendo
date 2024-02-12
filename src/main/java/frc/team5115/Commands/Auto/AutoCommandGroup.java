@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.team5115.Classes.Software.Arm;
+import frc.team5115.Classes.Software.AutoAimAndRange;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Paths;
@@ -22,8 +23,10 @@ public class AutoCommandGroup extends SequentialCommandGroup {
     IntakeSequence intakeSequence;
     SpinUpShooter spinUpShooter;
     ShootSequence shootSequence;
+    
+    AutoAimAndRange autoAimAndRange;
 
-    public AutoCommandGroup(Drivetrain drivetrain, boolean actuallyRun, SpinUpShooter spinUpShooter,ShootSequence shootSequence, IntakeSequence intakeSequence, Paths paths, Arm arm, AutoSegment1 autoSegment1){
+    public AutoCommandGroup(Drivetrain drivetrain, boolean actuallyRun, SpinUpShooter spinUpShooter,ShootSequence shootSequence, IntakeSequence intakeSequence, Paths paths, Arm arm, AutoSegment1 autoSegment1, AutoAimAndRange autoAimAndRange){
         this.drivetrain = drivetrain;
         this.paths = paths;
         this.arm = arm;
@@ -32,11 +35,12 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         this.arm = arm;
         this.shootSequence = shootSequence;
         this.intakeSequence = intakeSequence;
+        this.autoAimAndRange = autoAimAndRange;
 
         if (!actuallyRun) return;
 
             addCommands(
-
+                
             );
 
        
