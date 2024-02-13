@@ -124,7 +124,6 @@ public class RobotContainer {
     }
 
     public void startTest() {
-        intake.in();
     }
 
     public void testPeriodic() {
