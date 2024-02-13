@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
@@ -27,6 +27,7 @@ import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
+import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.Vomit;
@@ -84,25 +85,26 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        // new JoystickButton(joyManips, XboxController.Button.kStart.value).onTrue(climb);
-
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
         .onFalse(new StopBoth(intake, shooter));
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(intake, shooter, arm).withTimeout(5).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming));
+        .onTrue(new StowArm(intake, shooter, arm).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+
+        new JoystickButton(joyManips, XboxController.Button.kStart.value)
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));
@@ -152,20 +154,25 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        // climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
         /*
-        if (climber.isDeployed()) {
-            if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
-            && joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
-                climb.schedule();
-            }
+        final boolean MANUAL_CLIMB = true;
+
+        if (MANUAL_CLIMB) {
+            climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
         } else {
-            if (joyManips.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.5
-            && joyManips.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.5) {
-                deployClimber.schedule();
+            if (climber.isDeployed()) {
+                if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
+                && joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
+                    climb.schedule();
+                }
+            } else {
+                if (joyManips.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.5
+                && joyManips.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.5) {
+                    deployClimber.schedule();
+                }
             }
-        }
-        //*/
+        } 
+        */
 
         // System.out.println("bno angle: " + i2cHandler.getPitch());
         // i2cHandler.updatePitch();
