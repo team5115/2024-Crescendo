@@ -71,10 +71,10 @@ public class RobotContainer {
         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
         shooter = new Shooter(hardwareShooter);
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
-        reflectiveSensor = new DigitalInput(0);
+        reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
 
-        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.LEFT_SENSOR_ID);
-        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.RIGHT_SENSOR_ID);
+        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
+        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
         climb = new Climb(climber, 12);
         deployClimber = new DeployClimber(climber, 1);
@@ -122,6 +122,7 @@ public class RobotContainer {
     }
 
     public void startTest() {
+        intake.in();
     }
 
     public void testPeriodic() {
