@@ -22,14 +22,19 @@ public class Climb extends Command {
 
     @Override
     public void execute() {
+        if(climber.isLeftBottom()){
+            setpoints[0] = climber.getRotations()[0];
+        }
+        if(climber.isRightBottom()){
+            setpoints[1] = climber.getRotations()[1];
+        }
         climber.loopPids(setpoints);
         // System.out.println(setpoints[0]);
     }
 
     @Override
     public boolean isFinished() {
-        // return climber.isFullyClimbed();
-        return false;
+        return climber.isLeftBottom() && climber.isRightBottom();
     }
 
     @Override

@@ -73,8 +73,8 @@ public class RobotContainer {
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(0);
 
-        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true);
-        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false);
+        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.LEFT_SENSOR_ID);
+        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
         climb = new Climb(climber, 12);
         deployClimber = new DeployClimber(climber, 1);

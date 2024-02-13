@@ -50,6 +50,9 @@ public class Constants{
 
     public static final double DRIVE_MOTOR_MAX_VOLTAGE = 12;
 
+    public static final byte LEFT_SENSOR_ID = 0;
+    public static final byte RIGHT_SENSOR_ID = 1;
+
     public static final double TARGET_ANGLE = 1;
 
     // Copyright (c) FIRST and other WPILib contributors.
