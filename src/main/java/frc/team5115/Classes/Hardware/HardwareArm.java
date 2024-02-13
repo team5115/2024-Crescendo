@@ -1,5 +1,7 @@
 package frc.team5115.Classes.Hardware;
 
+import static frc.team5115.Constants.kS;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -16,7 +18,7 @@ public class HardwareArm extends SubsystemBase{
     
     private final I2CHandler i2c;
 
-    private final double Ks = 0.35;
+    private final double Ks = 0.345;
     private final double Kv = 0.13509;
     private final double Ka = 0.048686;
     private final double Kg = 0.15;
@@ -45,6 +47,11 @@ public class HardwareArm extends SubsystemBase{
         }
         double voltage = MathUtil.clamp(ff.calculate(getAngle().getRadians(-Math.PI), speed), -10, 10);
         // double voltage = MathUtil.clamp(ff.calculate(setpoint.getRadians(-Math.PI), speed), -10, 10);
+        
+        if (Math.abs(voltage) < 2 * kS) {
+            voltage = 0;
+        }
+        
         setVoltage(voltage);
     }
 

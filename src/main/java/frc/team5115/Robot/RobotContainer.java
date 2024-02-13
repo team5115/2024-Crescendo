@@ -101,7 +101,7 @@ public class RobotContainer {
         .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(intake, shooter, arm).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kStart.value)
         .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
