@@ -16,7 +16,7 @@ public class ScoreAmp extends SequentialCommandGroup {
             new DeployArm(intake, shooter, arm, 92).withTimeout(5),
             new InstantCommand(this :: printOuttake),
             new InstantCommand(intake :: out),
-            new WaitForSensorChange(false, sensor),
+            new WaitForSensorChange(false, sensor, intake, null, 5),
             new InstantCommand(this :: printSensorChange),
             new WaitCommand(3),
             new InstantCommand(intake :: stop)

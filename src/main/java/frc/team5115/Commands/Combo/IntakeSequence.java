@@ -19,14 +19,14 @@ public class IntakeSequence extends SequentialCommandGroup{
             // Intake
             new InstantCommand(intake :: fastIn),
             new InstantCommand(shooter :: slow),
-            new WaitForSensorChange(true, sensor).withTimeout(10),
+            new WaitForSensorChange(true, sensor, intake, shooter, 10),
             new InstantCommand(intake :: stop),
             new InstantCommand(shooter :: stop),
 
             // Rack
             new WaitCommand(0.5),
             new InstantCommand(intake :: out),
-            new WaitForSensorChange(false, sensor).withTimeout(1),
+            new WaitForSensorChange(false, sensor, intake, shooter, 1),
             new InstantCommand(intake :: stop)
         );
     }

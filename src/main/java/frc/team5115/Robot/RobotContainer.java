@@ -91,20 +91,20 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kStart.value)
-        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));

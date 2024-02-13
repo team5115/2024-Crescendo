@@ -9,7 +9,7 @@ public class Rack extends SequentialCommandGroup{
     public Rack(Intake intake, DigitalInput sensor) {
         addCommands(
             new InstantCommand(intake :: out),
-            new WaitForSensorChange(false, sensor),
+            new WaitForSensorChange(false, sensor, intake, null, 1),
             new InstantCommand(intake :: stop)
         );
     }

@@ -18,7 +18,7 @@ public class ShootSequence extends SequentialCommandGroup{
             // Shoot
             new SpinUpShooter(shooter, 5000).withTimeout(4),
             new InstantCommand(intake :: fastIn),
-            new WaitForSensorChange(true, sensor).withTimeout(0.5),
+            new WaitForSensorChange(true, sensor, intake, shooter, 0.5),
             new WaitCommand(0.15),
 
             // Stop stuff
