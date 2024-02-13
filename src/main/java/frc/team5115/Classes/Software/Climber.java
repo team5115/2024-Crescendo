@@ -1,30 +1,22 @@
 package frc.team5115.Classes.Software;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 
 public class Climber extends SubsystemBase {
     final HardwareClimber leftClimber;
     final HardwareClimber rightClimber;
-    final PIDController leftPid;
-    final PIDController rightPid;
     boolean deployed;
 
     public Climber(HardwareClimber leftClimber, HardwareClimber rightClimber){
-        this.leftClimber = leftClimber;
+        this.leftClimber = leftClimber; 
         this.rightClimber = rightClimber;
-        leftPid = new PIDController(0.01, 0, 0);
-        rightPid = new PIDController(0.01, 0, 0);
         deployed = false;
     }
     
     public void loopPids(double[] setpoints){
-        double leftOutput = leftPid.calculate(leftClimber.getRotations(), setpoints[0]);
-        double rightOutput = rightPid.calculate(rightClimber.getRotations(), setpoints[1]);
-        
-        leftClimber.setPercentage(leftOutput);
-        rightClimber.setPercentage(rightOutput);
+        leftClimber.updatePID(setpoints[0]);
+        rightClimber.updatePID(setpoints[1]);
     }
 
     public void stop(){
@@ -47,13 +39,13 @@ public class Climber extends SubsystemBase {
         return new double[] {leftClimber.getRotations(), rightClimber.getRotations()};
     }
 
-    // public boolean isRightBottom(){
-    //     return rightClimber.isBottomDetecting();
-    // }
+    public boolean isRightBottom(){
+        return rightClimber.isBottomDetecting();
+    }
 
-    // public boolean isLeftBottom(){
-    //     return leftClimber.isBottomDetecting();
-    // }
+    public boolean isLeftBottom(){
+        return leftClimber.isBottomDetecting();
+    }
 
     // public boolean isRightTop(){
     //     return rightClimber.isTopDetecting();
