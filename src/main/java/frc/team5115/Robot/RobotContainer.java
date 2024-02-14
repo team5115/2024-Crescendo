@@ -17,6 +17,7 @@ import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
+import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
@@ -29,6 +30,8 @@ import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
+import frc.team5115.Classes.Software.AimAndRangeFrontCam;
+import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -38,6 +41,7 @@ public class RobotContainer {
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
     private final I2CHandler i2cHandler;
+    private final HardwareDrivetrain2 hardwareDrivetrain2;
     private final NAVx navx;
     // private final Climber climber;
     private final Arm arm;
@@ -49,6 +53,7 @@ public class RobotContainer {
     private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
     private final GenericEntry rpmEntry;
+    private final AimAndRangeFrontCam aimAndRangeFrontCam;
 
     // private final Climb climb;
     // private final DeployClimber deployClimber;
@@ -66,21 +71,22 @@ public RobotContainer() {
         navx = new NAVx();
         i2cHandler = new I2CHandler();
         autoBuilder = new AutoBuilder();
+        hardwareDrivetrain2 = new HardwareDrivetrain2();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
         
-
-        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
-
         photonVision = new PhotonVision();
+
+        aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain2);
 
         HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm);
 
         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
         shooter = new Shooter(hardwareShooter);
-        paths = new Paths();        intake = new Intake(Constants.INTAKE_MOTOR_ID);
+        paths = new Paths();       
+        intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(0);
 
         // TODO set climber canIDs, sensor channels, and PWM channels
@@ -179,7 +185,7 @@ public RobotContainer() {
 
     public void startTeleop(){
         // if(autoCommandGroup != null) autoCommandGroup.cancel();
-        
+        aimAndRangeFrontCam.periodic1();
         System.out.println("Starting teleop");
         drivetrain.resetEncoders();
     }

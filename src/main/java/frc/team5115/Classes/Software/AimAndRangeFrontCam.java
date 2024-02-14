@@ -26,22 +26,26 @@ import java.util.Optional;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
+import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
+
 
 
 public class AimAndRangeFrontCam extends SubsystemBase{
     HardwareDrivetrain j;
     Drivetrain d;
+    HardwareDrivetrain2 d2;
     NAVx gyro;
     PhotonVision photonVision;
     int x = 0;
 
     
-    public AimAndRangeFrontCam(Drivetrain d){  
+    public AimAndRangeFrontCam(HardwareDrivetrain2 d2){  
         gyro = new NAVx();
         j = new HardwareDrivetrain(gyro);
         photonVision = new PhotonVision();
         x=1;
-        this.d = d;
+        this.d2 = d2;
+       this.d = d;
 
     }
 
@@ -62,13 +66,13 @@ public class AimAndRangeFrontCam extends SubsystemBase{
 
 
 // Calculate robot's field relative pose
-   @Override
-    public void periodic() { 
+
+    public void periodic1() { 
         double forwardSpeed;
         double rotationSpeed;
         double GOAL_RANGE_METERS = 1.6;
         
-        if (xboxController.getAButton()) {
+      //  if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
 
@@ -85,13 +89,13 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
         }
-    } 
-    else {
+    //} 
+  /*    else {
         // Manual Driver Mode
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
     }
-
+*/
 
     j.drive(forwardSpeed, rotationSpeed, 0, true, true);
 
@@ -103,9 +107,8 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(GOAL_RANGE_METERS, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
 
         Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
-
-        
+}
 
 
 }
-}
+
