@@ -40,7 +40,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         if (!actuallyRun) return;
 
             addCommands(
-                
+                new AutoSegment1(),
+                new AutoAimAndRange(drivetrain)
             );
 
        
