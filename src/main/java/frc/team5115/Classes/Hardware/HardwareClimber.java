@@ -35,7 +35,7 @@ public class HardwareClimber {
     }
 
     public boolean isBottomDetecting(){
-        return bottomSensor.get();
+        return !bottomSensor.get();
     }
 
     // public boolean isTopDetecting(){
@@ -56,7 +56,9 @@ public class HardwareClimber {
     }
 
     public void updatePID(double setpoint){
-        climberMotor.set(pid.calculate(getRotations(), setpoint));
+        double pidout = pid.calculate(getRotations(), setpoint);
+        climberMotor.set(pidout);
+        // System.out.println(bottomSensor.getChannel() + " pushes " + pidout + " | sensor.get(): " + bottomSensor.get());
     }
 }
     
