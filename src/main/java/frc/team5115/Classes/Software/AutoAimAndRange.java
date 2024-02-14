@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.*;
 import java.util.Optional;
@@ -26,12 +27,14 @@ import org.photonvision.PhotonUtils;
 
 
 
-public class AutoAimAndRange extends SubsystemBase{
+public class AutoAimAndRange extends Command{
     HardwareDrivetrain j;
     Drivetrain d;
     NAVx gyro;
     PhotonVision photonVision;
     int x = 0;
+    double GOAL_RANGE_METERS = 1.6;
+
 
     
     public AutoAimAndRange(Drivetrain d){  
@@ -55,13 +58,17 @@ public class AutoAimAndRange extends SubsystemBase{
     final double ANGULAR_D = 0.0;
     PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
-    XboxController xboxController = new XboxController(0);
+
+    @Override
+        public void initialize(){ 
+
+    }
 
 
 
 // Calculate robot's field relative pose
    @Override
-    public void periodic() { 
+    public void execute() { 
         double forwardSpeed;
         double rotationSpeed;
         double GOAL_RANGE_METERS = 1.6;
@@ -94,8 +101,16 @@ public class AutoAimAndRange extends SubsystemBase{
 
         Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
 
-        
 
 
 }
+        @Override
+            public boolean isFinished() {
+
+                if((GOAL_RANGE_METERS - photonVision.getRangeF()) < 0.1)
+                return true;
+                
+        return false;
+        }
+
 }
