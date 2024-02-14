@@ -33,22 +33,22 @@ import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
-    // private final Joystick joyDrive;
+    private final Joystick joyDrive;
     private final Joystick joyManips;
-    // private final Drivetrain drivetrain;
+    private final Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
-    // private final I2CHandler i2cHandler;
-    // private final NAVx navx;
+    private final I2CHandler i2cHandler;
+    private final NAVx navx;
     private final Climber climber;
-    // private final Arm arm;
-    // private final Intake intake;
-    // private final Shooter shooter;
-    // private final DigitalInput reflectiveSensor;
-    // private AutoCommandGroup autoCommandGroup;
+    private final Arm arm;
+    private final Intake intake;
+    private final Shooter shooter;
+    private final DigitalInput reflectiveSensor;
+    private AutoCommandGroup autoCommandGroup;
 
-    // private final Climb climb;
-    // private final DeployClimber deployClimber;
+    private final Climb climb;
+    private final DeployClimber deployClimber;
 
     boolean fieldOriented = true;
 
@@ -58,59 +58,56 @@ public class RobotContainer {
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
 
-        // joyDrive = new Joystick(0);
+        joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
-        // navx = new NAVx();
-        // i2cHandler = new I2CHandler();
+        navx = new NAVx();
+        i2cHandler = new I2CHandler();
 
-        // HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        // drivetrain = new Drivetrain(hardwareDrivetrain, navx);
+        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
+        drivetrain = new Drivetrain(hardwareDrivetrain, navx);
         
-        // HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
-        // arm = new Arm(hardwareArm);
+        HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
+        arm = new Arm(hardwareArm);
 
-        // HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
-        // shooter = new Shooter(hardwareShooter);
-        // intake = new Intake(Constants.INTAKE_MOTOR_ID);
-        // reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
+        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
+        shooter = new Shooter(hardwareShooter);
+        intake = new Intake(Constants.INTAKE_MOTOR_ID);
+        reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
 
         HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
         HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
-        // climb = new Climb(climber, 12);
-        // deployClimber = new DeployClimber(climber, 1);
+        climb = new Climb(climber, 12);
+        deployClimber = new DeployClimber(climber, 1);
 
         configureButtonBindings();
     }
 
     public void configureButtonBindings() {
 
-        // new JoystickButton(joyManips, XboxController.Button.kA.value).onTrue(deployClimber);
-        // new JoystickButton(joyManips, XboxController.Button.kB.value).onTrue(climb);
+        new JoystickButton(joyManips, XboxController.Button.kBack.value)
+        .onTrue(new Vomit(shooter, intake))
+        .onFalse(new StopBoth(intake, shooter));
 
-        // new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        // .onTrue(new Vomit(shooter, intake))
-        // .onFalse(new StopBoth(intake, shooter));
+        new JoystickButton(joyManips, XboxController.Button.kA.value)
+        .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        // new JoystickButton(joyManips, XboxController.Button.kA.value)
-        // .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        new JoystickButton(joyManips, XboxController.Button.kB.value)
+        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        // new JoystickButton(joyManips, XboxController.Button.kB.value)
-        // .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        new JoystickButton(joyManips, XboxController.Button.kX.value)
+        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        // new JoystickButton(joyManips, XboxController.Button.kX.value)
-        // .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        new JoystickButton(joyManips, XboxController.Button.kY.value)
+        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        // new JoystickButton(joyManips, XboxController.Button.kY.value)
-        // .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        new JoystickButton(joyManips, XboxController.Button.kStart.value)
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        // new JoystickButton(joyManips, XboxController.Button.kStart.value)
-        // .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-        // new JoystickButton(joyDrive, XboxController.Button.kA.value)
-        // .onTrue(new InstantCommand(this :: switchFieldOriented));
+        new JoystickButton(joyDrive, XboxController.Button.kA.value)
+        .onTrue(new InstantCommand(this :: switchFieldOriented));
     }
 
     private void switchFieldOriented() {
@@ -118,49 +115,45 @@ public class RobotContainer {
     }
 
     public void disabledInit(){
-        // drivetrain.stop();
+        drivetrain.stop();
     }
 
     public void stopEverything(){
-        // drivetrain.stop();
-        // arm.stop();
+        drivetrain.stop();
+        arm.stop();
     }
 
-    DigitalInput s =  new DigitalInput(0);
     public void startTest() {
     }
 
     public void testPeriodic() {
-        System.out.println(s.get());
     }
 
     public void startAuto(){
-        // if(autoCommandGroup != null) autoCommandGroup.cancel();
-        // drivetrain.resetEncoders();
-        // navx.resetNAVx();
-        // drivetrain.stop();
-        // drivetrain.init();
+        if(autoCommandGroup != null) autoCommandGroup.cancel();
+        drivetrain.resetEncoders();
+        navx.resetNAVx();
+        drivetrain.stop();
+        drivetrain.init();
 
-        // autoCommandGroup = new AutoCommandGroup(drivetrain, doAuto.getBoolean(true));
-        // autoCommandGroup.schedule();
+        autoCommandGroup = new AutoCommandGroup(drivetrain, doAuto.getBoolean(true));
+        autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
-        // arm.updateController(i2cHandler);
+        arm.updateController(i2cHandler);
     }
 
     public void startTeleop(){
-        // if(autoCommandGroup != null) autoCommandGroup.cancel();
+        if(autoCommandGroup != null) autoCommandGroup.cancel();
         
-        // drivetrain.resetEncoders();
+        drivetrain.resetEncoders();
         System.out.println("Starting teleop");
     }
 
     public void teleopPeriodic() {
-        climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
-
         /*
         final boolean MANUAL_CLIMB = true;
 
@@ -183,7 +176,7 @@ public class RobotContainer {
 
         // System.out.println("bno angle: " + i2cHandler.getPitch());
         // i2cHandler.updatePitch();
-        // arm.updateController(i2cHandler);
-        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        arm.updateController(i2cHandler);
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }
