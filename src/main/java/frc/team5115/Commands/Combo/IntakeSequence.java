@@ -30,4 +30,26 @@ public class IntakeSequence extends SequentialCommandGroup{
             new InstantCommand(intake :: stop)
         );
     }
+
+    private class WrappedIntakeSequence extends SequentialCommandGroup {
+        public WrappedIntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor){
+                    addRequirements(intake, shooter, arm);
+        addCommands(
+            new DeployArm(intake, shooter, arm, 4).withTimeout(5),
+
+            // Intake
+            new InstantCommand(intake :: fastIn),
+            new InstantCommand(shooter :: slow),
+            new WaitForSensorChange(true, sensor, intake, shooter, 10),
+            new InstantCommand(intake :: stop),
+            new InstantCommand(shooter :: stop),
+
+            // Rack
+            new WaitCommand(0.5),
+            new InstantCommand(intake :: out),
+            new WaitForSensorChange(false, sensor, intake, shooter, 1),
+            new InstantCommand(intake :: stop)
+        );
+        } 
+    }
 }
