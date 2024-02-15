@@ -41,11 +41,12 @@ public class AimAndRangeFrontCam extends SubsystemBase{
     
     public AimAndRangeFrontCam(HardwareDrivetrain2 d2){  
         gyro = new NAVx();
-        j = new HardwareDrivetrain(gyro);
+      //  j = new HardwareDrivetrain(gyro);
+        d2 = new HardwareDrivetrain2();
         photonVision = new PhotonVision();
         x=1;
-        this.d2 = d2;
-       this.d = d;
+
+        this.d = d;
 
     }
 
@@ -72,7 +73,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         double rotationSpeed;
         double GOAL_RANGE_METERS = 1.6;
         
-      //  if (xboxController.getAButton()) {
+        if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
 
@@ -89,26 +90,29 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
         }
-    //} 
-  /*    else {
+    }
+      else {
         // Manual Driver Mode
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
     }
-*/
 
-    j.drive(forwardSpeed, rotationSpeed, 0, true, true);
+
+    // j.drive(forwardSpeed, rotationSpeed, 0, true, true);
+    d2.drive(forwardSpeed, rotationSpeed);
 
         Pose3d y = photonVision.j2F();
         Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
 
         double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);
     // Calculate a translation from the camera to the target.
-        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(GOAL_RANGE_METERS, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
+       Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(GOAL_RANGE_METERS, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
 
         Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
 }
 
+    }
 
-}
+
+
 

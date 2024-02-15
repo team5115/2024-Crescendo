@@ -186,11 +186,12 @@ public RobotContainer() {
     public void startTeleop(){
         // if(autoCommandGroup != null) autoCommandGroup.cancel();
         aimAndRangeFrontCam.periodic1();
-        System.out.println("Starting teleop");
-        drivetrain.resetEncoders();
+        // System.out.println("Starting teleop");
+        // drivetrain.resetEncoders();
     }
 
     public void teleopPeriodic() {
+        aimAndRangeFrontCam.periodic1();
         /*
         if (climber.isDeployed()) {
             if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
