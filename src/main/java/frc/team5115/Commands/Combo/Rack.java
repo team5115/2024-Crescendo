@@ -8,7 +8,7 @@ import frc.team5115.Classes.Software.Intake;
 public class Rack extends SequentialCommandGroup{
     public Rack(Intake intake, DigitalInput sensor) {
         addCommands(
-            new InstantCommand(intake :: out),
+            new InstantCommand(intake :: fastOut),
             new WaitForSensorChange(false, sensor).withTimeout(1),
             new InstantCommand(intake :: stop)
         );

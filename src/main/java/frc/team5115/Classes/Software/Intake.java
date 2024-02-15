@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
     public Intake(int canId){
         motor = new CANSparkMax(canId, MotorType.kBrushless);
         motor.setIdleMode(IdleMode.kBrake);
-        motor.setSmartCurrentLimit(15);
+        motor.setSmartCurrentLimit(20);
     }
 
     public void in(){
@@ -20,15 +20,15 @@ public class Intake extends SubsystemBase {
     }
 
     public void fastIn() {
-        motor.set(+1);
+        motor.set(+0.75);
     }
 
     public void out() {
-        motor.set(-0.35);
+        motor.set(-0.75);
     }
     
     public void fastOut(){
-        motor.set(-0.9);
+        motor.set(-1);
     }
 
     public void stop(){
