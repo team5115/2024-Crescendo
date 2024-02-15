@@ -96,23 +96,25 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
     }
+}
+}
 
 
     // j.drive(forwardSpeed, rotationSpeed, 0, true, true);
-    d2.drive(forwardSpeed, rotationSpeed);
+ /*    d2.drive(forwardSpeed, rotationSpeed);
 
         Pose3d y = photonVision.j2F();
         Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
 
         double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);
+
     // Calculate a translation from the camera to the target.
        Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(GOAL_RANGE_METERS, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
 
         Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
 }
-
     }
-
+*/
 
 
 

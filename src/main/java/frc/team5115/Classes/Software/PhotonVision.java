@@ -254,7 +254,7 @@ public double getRange(){
                 for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
                                 target = i;
-                                ID = result.getBestTarget().getFiducialId();  
+                               ID = result.getBestTarget().getFiducialId();  
                         }
                 }
                 // First calculate range
