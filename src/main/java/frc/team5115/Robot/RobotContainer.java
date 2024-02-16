@@ -34,25 +34,25 @@ import frc.team5115.Classes.Software.AimAndRangeFrontCam;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
 
 public class RobotContainer {
-    private final Joystick joyDrive;
-    private final AutoBuilder autoBuilder;
-    private final Joystick joyManips;
+    // private final Joystick joyDrive;
+    // private final AutoBuilder autoBuilder;
+    // private final Joystick joyManips;
     private Drivetrain drivetrain;
-    private final GenericEntry rookie;
-    private final GenericEntry doAuto;
-    private final I2CHandler i2cHandler;
+    // private final GenericEntry rookie;
+    // private final GenericEntry doAuto;
+    // private final I2CHandler i2cHandler;
     private final HardwareDrivetrain2 hardwareDrivetrain2;
-    private final NAVx navx;
-    // private final Climber climber;
-    private final Arm arm;
-    private final Intake intake;
-    private final Shooter shooter;
-    private Paths paths;
+    // private final NAVx navx;
+    // // private final Climber climber;
+    // private final Arm arm;
+    // private final Intake intake;
+    // private final Shooter shooter;
+    // private Paths paths;
     private AutoCommandGroup autoCommandGroup;
     private PhotonVision photonVision;
-    private final DigitalInput reflectiveSensor;
+    // private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
-    private final GenericEntry rpmEntry;
+    // private final GenericEntry rpmEntry;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
 
     // private final Climb climb;
@@ -60,34 +60,34 @@ public class RobotContainer {
 
 public RobotContainer() {
 
-        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
-        rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
+        // ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
+        // rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
 
-        rookie = shuffleboardTab.add("Rookie?", false).getEntry();
-        doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        // rookie = shuffleboardTab.add("Rookie?", false).getEntry();
+        // doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
-        joyDrive = new Joystick(0);
-        joyManips = new Joystick(1);
-        navx = new NAVx();
-        i2cHandler = new I2CHandler();
-        autoBuilder = new AutoBuilder();
+        // joyDrive = new Joystick(0);
+        // joyManips = new Joystick(1);
+        // navx = new NAVx();
+        // i2cHandler = new I2CHandler();
+        // autoBuilder = new AutoBuilder();
         hardwareDrivetrain2 = new HardwareDrivetrain2();
 
-        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
+        // HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
+        // drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
         
         photonVision = new PhotonVision();
 
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain2);
 
-        HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
-        arm = new Arm(hardwareArm);
+        // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
+        // arm = new Arm(hardwareArm);
 
-        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
-        shooter = new Shooter(hardwareShooter);
-        paths = new Paths();       
-        intake = new Intake(Constants.INTAKE_MOTOR_ID);
-        reflectiveSensor = new DigitalInput(0);
+        // HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
+        // shooter = new Shooter(hardwareShooter);
+        // paths = new Paths();       
+        // intake = new Intake(Constants.INTAKE_MOTOR_ID);
+        // reflectiveSensor = new DigitalInput(0);
 
         // TODO set climber canIDs, sensor channels, and PWM channels
         // HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, 0, 0, 0);
@@ -96,8 +96,8 @@ public RobotContainer() {
         // climb = new Climb(climber, 12);
         // deployClimber = new DeployClimber(climber, 0.5);
 
-        paths = new Paths();
-        configureButtonBindings();
+        // paths = new Paths();
+        // configureButtonBindings();
     }
 
     public void registerCommand() {
@@ -131,22 +131,22 @@ public RobotContainer() {
 
     public void configureButtonBindings() {
 
-        new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(true, shooter, intake))
-        .onFalse(new Vomit(false, shooter, intake));
+    //     new JoystickButton(joyManips, XboxController.Button.kBack.value)
+    //     .onTrue(new Vomit(true, shooter, intake))
+    //     .onFalse(new Vomit(false, shooter, intake));
 
-        new JoystickButton(joyManips, XboxController.Button.kA.value)
-        .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor));
+    //     new JoystickButton(joyManips, XboxController.Button.kA.value)
+    //     .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor));
 
-        new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor));
+    //     new JoystickButton(joyManips, XboxController.Button.kB.value)
+    //     .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor));
 
-        new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(arm, 20));
+    //     new JoystickButton(joyManips, XboxController.Button.kX.value)
+    //     .onTrue(new DeployArm(arm, 20));
 
-        new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(arm));
-    }
+    //     new JoystickButton(joyManips, XboxController.Button.kY.value)
+    //     .onTrue(new StowArm(arm));
+     }
 
     public void disabledInit(){
         drivetrain.stop();
@@ -215,17 +215,17 @@ public RobotContainer() {
      //   i2cHandler.updatePitch();
         
     //    arm.updateController(i2cHandler);
-        photonVision.getRange();
-        photonVision.getRangeF();
-        photonVision.getRangeR();
-        photonVision.getRangeB();
+        // photonVision.getRange();
+        // photonVision.getRangeF();
+        // photonVision.getRangeR();
+        // photonVision.getRangeB();
 
         //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), joyDrive.getRawAxis(0), rookie.getBoolean(false));
              
-        System.out.println(photonVision.getRange());
-        System.out.println(photonVision.getRangeF());
-        System.out.println(photonVision.getRangeB());
-        System.out.println(photonVision.getRangeR());
+        // System.out.println(photonVision.getRange());
+        // System.out.println(photonVision.getRangeF());
+        // System.out.println(photonVision.getRangeB());
+        // System.out.println(photonVision.getRangeR());
         
 
         // System.out.println(photonVision.getID());

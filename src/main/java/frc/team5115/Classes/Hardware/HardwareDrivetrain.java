@@ -35,8 +35,8 @@ import frc.team5115.Classes.Accessory.SwerveUtils;
 public class HardwareDrivetrain extends SubsystemBase{    
     private final NAVx gyro;
 
-    final SwerveDriveModule frontLeft = new SwerveDriveModule(FRONT_LEFT_MOTOR_ID, FRONT_LEFT_TURN_MOTOR_ID, Math.toRadians(90));
-    final SwerveDriveModule frontRight = new SwerveDriveModule(FRONT_RIGHT_MOTOR_ID, FRONT_RIGHT_TURN_MOTOR_ID, Math.toRadians(180));
+    final SwerveDriveModule frontLeft = new SwerveDriveModule(99, FRONT_LEFT_TURN_MOTOR_ID, Math.toRadians(90));
+    final SwerveDriveModule frontRight = new SwerveDriveModule(98, FRONT_RIGHT_TURN_MOTOR_ID, Math.toRadians(180));
     final SwerveDriveModule backLeft = new SwerveDriveModule(BACK_LEFT_MOTOR_ID,BACK_LEFT_TURN_MOTOR_ID, 0);
     final SwerveDriveModule backRight = new SwerveDriveModule(BACK_RIGHT_MOTOR_ID, BACK_RIGHT_TURN_MOTOR_ID, Math.toRadians(270));
 

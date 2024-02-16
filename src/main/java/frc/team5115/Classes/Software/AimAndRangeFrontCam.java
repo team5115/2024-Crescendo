@@ -62,7 +62,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
     final double ANGULAR_D = 0.0;
     PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
-    XboxController xboxController = new XboxController(0);
+ //   XboxController xboxController = new XboxController(0);
 
 
 
@@ -73,7 +73,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         double rotationSpeed;
         double GOAL_RANGE_METERS = 1.6;
         
-        if (xboxController.getAButton()) {
+    //    if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
 
@@ -85,9 +85,9 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
         rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
-        }
-        else{
-        forwardSpeed = -xboxController.getRightY();
+        
+     /*     else{
+         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
         }
     }
@@ -95,15 +95,19 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         // Manual Driver Mode
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
-    }
-}
-}
+    } */
+
+    
+
 
 
     // j.drive(forwardSpeed, rotationSpeed, 0, true, true);
- /*    d2.drive(forwardSpeed, rotationSpeed);
+     d2.drive(forwardSpeed, rotationSpeed);
+     }
+    
 
-        Pose3d y = photonVision.j2F();
+
+     /*     Pose3d y = photonVision.j2F();
         Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
 
         double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);
@@ -113,8 +117,10 @@ public class AimAndRangeFrontCam extends SubsystemBase{
 
         Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
 }
-    }
+}
 */
 
+    }
+}
 
 

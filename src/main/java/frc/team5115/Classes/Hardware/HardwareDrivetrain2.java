@@ -28,9 +28,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelState
 public class HardwareDrivetrain2 extends SubsystemBase{    
 
     CANSparkMax frontLeft = new CANSparkMax(FRONT_LEFT_MOTOR_ID, MotorType.kBrushless);
-    CANSparkMax frontRight = new CANSparkMax(FRONT_RIGHT_MOTOR_ID, MotorType.kBrushless);
-    CANSparkMax backLeft = new CANSparkMax(BACK_LEFT_MOTOR_ID, MotorType.kBrushless);
-    CANSparkMax backRight = new CANSparkMax(BACK_RIGHT_MOTOR_ID, MotorType.kBrushless);
+    CANSparkMax frontRight = new CANSparkMax(21, MotorType.kBrushless);
+  //  CANSparkMax backLeft = new CANSparkMax(BACK_LEFT_MOTOR_ID, MotorType.kBrushless);
+  //  CANSparkMax backRight = new CANSparkMax(BACK_RIGHT_MOTOR_ID, MotorType.kBrushless);
 
      
     int x;
@@ -57,9 +57,9 @@ public class HardwareDrivetrain2 extends SubsystemBase{
 
     public void drive(double forwards, double turn){
         frontLeft.set(forwards + turn);
-        backLeft.follow(frontLeft);
+    //    backLeft.follow(frontLeft);
         frontRight.set((forwards - turn));
-        backRight.follow(frontRight);
+    //   backRight.follow(frontRight);
     }
 
     
