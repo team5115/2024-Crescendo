@@ -98,7 +98,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        .onTrue(new DeployArm(intake, shooter, arm, 3).withTimeout(0.1).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
         .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
