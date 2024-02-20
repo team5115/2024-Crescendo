@@ -67,7 +67,7 @@ public class RobotContainer {
         drivetrain = new Drivetrain(hardwareDrivetrain, navx);
         
         HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
-        arm = new Arm(hardwareArm);
+        arm = new Arm(hardwareArm, i2cHandler);
 
         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
         shooter = new Shooter(hardwareShooter);
@@ -91,14 +91,19 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        //rack here
+        );
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf).
+        andThen(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
+        );
 
-        new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 3).withTimeout(0.1).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        //new JoystickButton(joyManips, XboxController.Button.kX.value)
+        //.onTrue(new DeployArm(intake, shooter, arm, 3).withTimeout(0.1).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
         .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -175,8 +180,8 @@ public class RobotContainer {
         */
 
          System.out.println("bno angle: " + i2cHandler.getPitch());
-        i2cHandler.updatePitch();
+        // i2cHandler.updatePitch();
         arm.updateController(i2cHandler);
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }

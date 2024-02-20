@@ -21,7 +21,7 @@ public class HardwareArm extends SubsystemBase{
     private final double Ks = 0.345;
     private final double Kv = 0.13509;
     private final double Ka = 0.048686;
-    private final double Kg = 0.15;
+    private final double Kg = 0.145;
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
 

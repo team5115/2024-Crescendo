@@ -11,15 +11,24 @@ import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 
 public class ShootSequence extends Command{
-    private final WrappedShootSequence wrapped;
-
+    private WrappedShootSequence wrapped;
+        final Intake intake;
+        final Shooter shooter;
+        final Arm arm;
+        final DigitalInput sensor;
     public ShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+        this.intake = intake;
+        this.shooter = shooter; 
+        this.sensor = sensor;
+        this.arm = arm;
         addRequirements(intake, shooter, arm);
-        wrapped = new WrappedShootSequence(intake, shooter, arm, sensor);
     }
 
     @Override
     public void initialize() {
+        wrapped = new WrappedShootSequence(intake, shooter, arm, sensor);
+        intake.stop();
+        shooter.stop();
         wrapped.schedule();
     }
 
@@ -42,19 +51,20 @@ public class ShootSequence extends Command{
         public WrappedShootSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
             this.intake = intake;
             this.shooter = shooter;
+            if(!arm.deployed()) addCommands(
+             new DeployArm(intake, shooter, arm, -1).withTimeout(5)
+            );
             addCommands(
-                new DeployArm(intake, shooter, arm, 4).withTimeout(5),
 
                 // Shoot
                 new SpinUpShooter(shooter, 5000).withTimeout(4),
                 new InstantCommand(intake :: fastIn),
                 new WaitForSensorChange(true, sensor).withTimeout(0.5),
-                new WaitCommand(0.15),
+                new WaitCommand(0.1),
 
                 // Stop stuff
                 new InstantCommand(intake :: stop),
-                new InstantCommand(shooter :: stop),
-                new WaitCommand(0.5)
+                new InstantCommand(shooter :: stop)
             );
         }
 

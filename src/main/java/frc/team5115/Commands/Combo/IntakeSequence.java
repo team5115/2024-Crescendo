@@ -32,6 +32,7 @@ public class IntakeSequence extends Command{
     public void end(boolean interrupted) {
         if (interrupted) {
             wrapped.interrupt();
+            System.out.println("interupted ;)");
         }
     }
 
@@ -43,19 +44,18 @@ public class IntakeSequence extends Command{
             this.intake = intake;
             this.shooter = shooter;
             addCommands(
-                new DeployArm(intake, shooter, arm, 4).withTimeout(5),
-
+             new DeployArm(intake, shooter, arm, -1).withTimeout(5),
                 // Intake
                 new InstantCommand(intake :: fastIn),
                 new InstantCommand(shooter :: slow),
-                new WaitForSensorChange(true, sensor).withTimeout(10),
+                new WaitForSensorChange(true, sensor),
                 new InstantCommand(intake :: stop),
                 new InstantCommand(shooter :: stop),
 
                 // Rack
                 new WaitCommand(0.5),
                 new InstantCommand(intake :: out),
-                new WaitForSensorChange(false, sensor).withTimeout(1),
+                new WaitForSensorChange(false, sensor),
                 new InstantCommand(intake :: stop)
             );
         }
