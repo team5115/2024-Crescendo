@@ -20,8 +20,8 @@ public class Constants{
     public static final boolean MECANUM = false; 
   
     //motor ids
-    public static final byte FRONT_LEFT_MOTOR_ID = 4;
-    public static final byte FRONT_RIGHT_MOTOR_ID = 22;
+    public static final byte FRONT_LEFT_MOTOR_ID = 21;
+    public static final byte FRONT_RIGHT_MOTOR_ID = 4;
     public static final byte BACK_LEFT_MOTOR_ID = 24;
     public static final byte BACK_RIGHT_MOTOR_ID = 26;
 
