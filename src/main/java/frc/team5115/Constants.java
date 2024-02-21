@@ -51,8 +51,8 @@ public class Constants{
     public static final double DRIVE_MOTOR_MAX_VOLTAGE = 12;
 
     public static final byte SHOOTER_SENSOR_ID = 0;
-    public static final byte CLIMB_LEFT_SENSOR_ID = 2;
-    public static final byte CLIMB_RIGHT_SENSOR_ID = 1;
+    public static final byte CLIMB_LEFT_SENSOR_ID = 8;
+    public static final byte CLIMB_RIGHT_SENSOR_ID = 9;
 
     public static final double TARGET_ANGLE = 1;
 

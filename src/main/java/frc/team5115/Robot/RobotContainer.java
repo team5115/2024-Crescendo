@@ -27,6 +27,7 @@ import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
+import frc.team5115.Commands.Combo.Rack;
 import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.StopBoth;
@@ -85,6 +86,11 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
+        new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
+        .onTrue(deployClimber);
+        new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
+        .onTrue(climb);
+
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
         .onFalse(new StopBoth(intake, shooter));
@@ -92,7 +98,7 @@ public class RobotContainer {
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        //rack here
+        .andThen(new Rack(intake, reflectiveSensor))
         );
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
@@ -159,8 +165,12 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+        if (joyManips.getRawButton(XboxController.Button.kLeftStick.value)) {
+            climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
+        }
+
         /*
-        final boolean MANUAL_CLIMB = true;
+        final boolean MANUAL_CLIMB = false;
 
         if (MANUAL_CLIMB) {
             climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
@@ -179,9 +189,9 @@ public class RobotContainer {
         } 
         */
 
-         System.out.println("bno angle: " + i2cHandler.getPitch());
+        //  System.out.println("bno angle: " + i2cHandler.getPitch());
         // i2cHandler.updatePitch();
-        arm.updateController(i2cHandler);
+        // arm.updateController(i2cHandler);
         // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }
