@@ -52,9 +52,9 @@ public class IntakeSequence extends Command{
                 new InstantCommand(intake :: stop),
                 new InstantCommand(shooter :: stop),
 
+                new WaitCommand(0.5)
                 // Rack
-                new WaitCommand(0.5),
-                new InstantCommand(intake :: out),
+                , new InstantCommand(intake :: out),
                 new WaitForSensorChange(false, sensor),
                 new InstantCommand(intake :: stop)
             );

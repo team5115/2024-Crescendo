@@ -13,12 +13,29 @@ import frc.team5115.Constants.DriveConstants;
  * The drivetrain hardware subsystem. Provides methods to interact with the actual hardware of the drivetrain.
  */
 public class HardwareDrivetrain{    
+
+    private static final double frontLeftKs = 0.19801;
+    private static final double frontLeftKv = 156.6;
+    private static final double frontLeftKa = 22.654;
+
+    private static final double frontRightKs = 0.097546;
+    private static final double frontRightKv = 155.28;
+    private static final double frontRightKa = 22.616;
+    
+    private static final double backLeftKs = 0.11547;
+    private static final double backLeftKv = 153.7;
+    private static final double backLeftKa = 22.943;
+
+    private static final double backRightKs = 0.12506;
+    private static final double backRightKv = 153.68;
+    private static final double backRightKa = 24.364;
+
     private final NAVx gyro;
 
-    final SwerveDriveModule frontLeft = new SwerveDriveModule(FRONT_LEFT_MOTOR_ID, FRONT_LEFT_TURN_MOTOR_ID, Math.toRadians(90));
-    final SwerveDriveModule frontRight = new SwerveDriveModule(FRONT_RIGHT_MOTOR_ID, FRONT_RIGHT_TURN_MOTOR_ID, Math.toRadians(180));
-    final SwerveDriveModule backLeft = new SwerveDriveModule(BACK_LEFT_MOTOR_ID,BACK_LEFT_TURN_MOTOR_ID, 0);
-    final SwerveDriveModule backRight = new SwerveDriveModule(BACK_RIGHT_MOTOR_ID, BACK_RIGHT_TURN_MOTOR_ID, Math.toRadians(270));
+    final SwerveDriveModule frontLeft = new SwerveDriveModule(FRONT_LEFT_MOTOR_ID, FRONT_LEFT_TURN_MOTOR_ID, Math.toRadians(90), frontLeftKs, frontLeftKv, frontLeftKa);
+    final SwerveDriveModule frontRight = new SwerveDriveModule(FRONT_RIGHT_MOTOR_ID, FRONT_RIGHT_TURN_MOTOR_ID, Math.toRadians(180), frontRightKs, frontRightKv, frontRightKa);
+    final SwerveDriveModule backLeft = new SwerveDriveModule(BACK_LEFT_MOTOR_ID,BACK_LEFT_TURN_MOTOR_ID, Math.toRadians(270), backLeftKs, backLeftKv, backLeftKa);
+    final SwerveDriveModule backRight = new SwerveDriveModule(BACK_RIGHT_MOTOR_ID, BACK_RIGHT_TURN_MOTOR_ID, Math.toRadians(270), backRightKs, backRightKv, backRightKa);
 
     // Slew rate filter variables for controlling lateral acceleration
     private double m_currentRotation = 0.0;

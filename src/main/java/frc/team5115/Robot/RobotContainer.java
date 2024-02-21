@@ -98,15 +98,16 @@ public class RobotContainer {
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        .andThen(new Rack(intake, reflectiveSensor))
+        //.andThen(new Rack(intake, reflectiveSensor))
         );
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf).
         andThen(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
-        );
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        //,new Rack(intake, reflectiveSensor)
+        ));
 
         //new JoystickButton(joyManips, XboxController.Button.kX.value)
         //.onTrue(new DeployArm(intake, shooter, arm, 3).withTimeout(0.1).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -165,6 +166,8 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+
+        // manual climber
         if (joyManips.getRawButton(XboxController.Button.kLeftStick.value)) {
             climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
         }
@@ -191,7 +194,8 @@ public class RobotContainer {
 
         //  System.out.println("bno angle: " + i2cHandler.getPitch());
         // i2cHandler.updatePitch();
-        // arm.updateController(i2cHandler);
-        // drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+
+        arm.updateController(i2cHandler);
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }

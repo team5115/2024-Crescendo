@@ -1,5 +1,6 @@
 package frc.team5115.Classes.Hardware;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -22,6 +23,8 @@ public class SwerveDriveModule {
   private final SparkPIDController m_drivingPIDController;
   private final SparkPIDController m_turningPIDController;
 
+  private final SimpleMotorFeedforward m_drivingFeedforward;
+
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
@@ -31,9 +34,11 @@ public class SwerveDriveModule {
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
    */
-  public SwerveDriveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
+  public SwerveDriveModule(int drivingCANId, int turningCANId, double chassisAngularOffset, double ks, double kv, double ka) {
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     m_turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
+
+    m_drivingFeedforward = new SimpleMotorFeedforward(ks, kv, ka);
 
     // Factory reset, so we get the SPARKS MAX to a known state before configuring
     // them. This is useful in case a SPARK MAX is swapped out.
