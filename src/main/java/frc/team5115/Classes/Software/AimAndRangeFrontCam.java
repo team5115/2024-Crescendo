@@ -26,23 +26,19 @@ import java.util.Optional;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
-import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
-
 
 
 public class AimAndRangeFrontCam extends SubsystemBase{
     HardwareDrivetrain j;
     Drivetrain d;
-    HardwareDrivetrain2 d2;
     NAVx gyro;
     PhotonVision photonVision;
     int x = 0;
 
     
-    public AimAndRangeFrontCam(HardwareDrivetrain2 d2){  
+    public AimAndRangeFrontCam(HardwareDrivetrain j){  
         gyro = new NAVx();
-      //  j = new HardwareDrivetrain(gyro);
-        d2 = new HardwareDrivetrain2();
+        j = new HardwareDrivetrain(gyro);
         photonVision = new PhotonVision();
         x=1;
 
@@ -101,8 +97,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
 
 
 
-    // j.drive(forwardSpeed, rotationSpeed, 0, true, true);
-     d2.drive(forwardSpeed, rotationSpeed);
+       j.drive(forwardSpeed, rotationSpeed, 0, true, true);
      }
     
 

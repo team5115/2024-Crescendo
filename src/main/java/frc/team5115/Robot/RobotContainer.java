@@ -17,7 +17,6 @@ import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
-import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
@@ -31,54 +30,52 @@ import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.SpinUpShooter;
 import frc.team5115.Commands.Combo.Vomit;
 import frc.team5115.Classes.Software.AimAndRangeFrontCam;
-import frc.team5115.Classes.Hardware.HardwareDrivetrain2;
 
 public class RobotContainer {
-    // private final Joystick joyDrive;
-    // private final AutoBuilder autoBuilder;
-    // private final Joystick joyManips;
+    private final Joystick joyDrive;
+    private final AutoBuilder autoBuilder;
+    private final Joystick joyManips;
     private Drivetrain drivetrain;
-    // private final GenericEntry rookie;
-    // private final GenericEntry doAuto;
-    // private final I2CHandler i2cHandler;
-    private final HardwareDrivetrain2 hardwareDrivetrain2;
-    // private final NAVx navx;
-    // // private final Climber climber;
-    // private final Arm arm;
-    // private final Intake intake;
-    // private final Shooter shooter;
-    // private Paths paths;
+    private final GenericEntry rookie;
+    private final GenericEntry doAuto;
+    private final I2CHandler i2cHandler;
+    private final NAVx navx;
+    private final Climber climber;
+    private final Arm arm;
+    private final Intake intake;
+    private final Shooter shooter;
+    private Paths paths;
     private AutoCommandGroup autoCommandGroup;
     private PhotonVision photonVision;
-    // private final DigitalInput reflectiveSensor;
+    private final DigitalInput reflectiveSensor;
     // private AutoCommandGroup autoCommandGroup;
-    // private final GenericEntry rpmEntry;
+    private final GenericEntry rpmEntry;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
 
     // private final Climb climb;
     // private final DeployClimber deployClimber;
 
 public RobotContainer() {
+    
 
-        // ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
-        // rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
+        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
+        rpmEntry = shuffleboardTab.add("shooter rpm", 3500).getEntry();
 
-        // rookie = shuffleboardTab.add("Rookie?", false).getEntry();
-        // doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        rookie = shuffleboardTab.add("Rookie?", false).getEntry();
+        doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
 
-        // joyDrive = new Joystick(0);
-        // joyManips = new Joystick(1);
-        // navx = new NAVx();
-        // i2cHandler = new I2CHandler();
-        // autoBuilder = new AutoBuilder();
-        hardwareDrivetrain2 = new HardwareDrivetrain2();
+        joyDrive = new Joystick(0);
+        joyManips = new Joystick(1);
+        navx = new NAVx();
+        i2cHandler = new I2CHandler();
+        autoBuilder = new AutoBuilder();
 
-        // HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        // drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
+         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
+         drivetrain = new Drivetrain(hardwareDrivetrain, photonVision, navx, autoBuilder);
         
         photonVision = new PhotonVision();
 
-        aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain2);
+        aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain);
 
         // HardwareArm hardwareArm = new HardwareArm(navx, i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         // arm = new Arm(hardwareArm);
