@@ -1,117 +1,100 @@
 package frc.team5115.Robot;
 
+import org.photonvision.PhotonVersion;
+
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
-import frc.team5115.Classes.Hardware.HardwareArm;
-import frc.team5115.Classes.Hardware.HardwareClimber;
+import frc.team5115.Classes.Accessory.Angle;
+
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
-import frc.team5115.Classes.Hardware.HardwareShooter;
-import frc.team5115.Classes.Hardware.I2CHandler;
+
 import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Classes.Software.Arm;
-import frc.team5115.Classes.Software.Climber;
-import frc.team5115.Classes.Software.Drivetrain;
-import frc.team5115.Classes.Software.Intake;
-import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Arm.DeployArm;
-import frc.team5115.Commands.Arm.StowArm;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
-import frc.team5115.Commands.Climber.Climb;
-import frc.team5115.Commands.Climber.DeployClimber;
-import frc.team5115.Commands.Combo.IntakeSequence;
-import frc.team5115.Commands.Combo.ScoreAmp;
-import frc.team5115.Commands.Combo.ShootSequence;
-import frc.team5115.Commands.Combo.StopBoth;
-import frc.team5115.Commands.Combo.Vomit;
+import frc.team5115.Commands.Auto.*;
+import frc.team5115.Classes.Software.*;
+import frc.team5115.Constants.VisionConstants;
 
 public class RobotContainer {
     private final Joystick joyDrive;
+   // private final AutoBuilder autoBuilder;
     private final Joystick joyManips;
-    private final Drivetrain drivetrain;
+    private Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
-    private final I2CHandler i2cHandler;
     private final NAVx navx;
-    private final Climber climber;
-    private final Arm arm;
-    private final Intake intake;
-    private final Shooter shooter;
-    private final DigitalInput reflectiveSensor;
+    private final boolean fieldOriented = true;
+   // private final Climber climber;
+   // private final Arm arm;
+   // private final Intake intake;
+   // private final Shooter shooter;
+    private Paths paths;
     private AutoCommandGroup autoCommandGroup;
-
-    private final Climb climb;
-    private final DeployClimber deployClimber;
-
-    boolean fieldOriented = true;
+    private AimandRangeFrontCam aimandRange;
+    private PhotonVision photonVision;
+   // private final DigitalInput reflectiveSensor;
+   // private AutoCommandGroup autoCommandGroup;
+   // private final GenericEntry rpmEntry;
+   // private final AimandRangeFrontCam aimAndRangeFrontCam;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
-        shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
+       // shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
 
         joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
         navx = new NAVx();
-        i2cHandler = new I2CHandler();
 
+        photonVision = new PhotonVision();
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        drivetrain = new Drivetrain(hardwareDrivetrain, navx);
-        
-        HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
-        arm = new Arm(hardwareArm);
-
-        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
-        shooter = new Shooter(hardwareShooter);
-        intake = new Intake(Constants.INTAKE_MOTOR_ID);
-        reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
-
-        HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
-        HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
-        climber = new Climber(leftClimber, rightClimber);
-        climb = new Climb(climber, 12);
-        deployClimber = new DeployClimber(climber, 1);
+        drivetrain = new Drivetrain(hardwareDrivetrain, navx, photonVision);
+       
+        aimandRange = new AimandRangeFrontCam(hardwareDrivetrain, photonVision);
 
         configureButtonBindings();
     }
 
-    public void configureButtonBindings() {
+    public void registerCommand() {
 
-        new JoystickButton(joyManips, XboxController.Button.kBack.value)
-        .onTrue(new Vomit(shooter, intake))
-        .onFalse(new StopBoth(intake, shooter));
+    // Register Named Commands for pathplanner
+/* 
+      NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
 
-        new JoystickButton(joyManips, XboxController.Button.kA.value)
-        .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+      NamedCommands.registerCommand("top to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("top to bottom", drivetrain.pathplanner());
 
-        new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+      NamedCommands.registerCommand("middle to bottom", drivetrain.pathplanner());
+      NamedCommands.registerCommand("middle to top", drivetrain.pathplanner());
 
-        new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+      NamedCommands.registerCommand("bottom to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("bottom to middle", drivetrain.pathplanner());
 
-        new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+      NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
 
-        new JoystickButton(joyManips, XboxController.Button.kStart.value)
-        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+      NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
 
-        new JoystickButton(joyDrive, XboxController.Button.kA.value)
-        .onTrue(new InstantCommand(this :: switchFieldOriented));
+      NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
+        */
     }
 
-    private void switchFieldOriented() {
-        fieldOriented = !fieldOriented;
+    public void configureButtonBindings() {
+
     }
 
     public void disabledInit(){
@@ -120,7 +103,6 @@ public class RobotContainer {
 
     public void stopEverything(){
         drivetrain.stop();
-        arm.stop();
     }
 
     public void startTest() {
@@ -130,24 +112,14 @@ public class RobotContainer {
     }
 
     public void startAuto(){
-        if(autoCommandGroup != null) autoCommandGroup.cancel();
-        drivetrain.resetEncoders();
-        navx.resetNAVx();
-        drivetrain.stop();
-        drivetrain.init();
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, doAuto.getBoolean(true));
-        autoCommandGroup.schedule();
-        System.out.println("Starting auto");
     }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
-        arm.updateController(i2cHandler);
     }
 
     public void startTeleop(){
-        if(autoCommandGroup != null) autoCommandGroup.cancel();
         
         drivetrain.resetEncoders();
         System.out.println("Starting teleop");
@@ -174,9 +146,9 @@ public class RobotContainer {
         } 
         */
 
+        aimandRange.periodic1();
         // System.out.println("bno angle: " + i2cHandler.getPitch());
         // i2cHandler.updatePitch();
-        arm.updateController(i2cHandler);
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }

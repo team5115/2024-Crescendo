@@ -15,15 +15,16 @@ public class Constants{
     public static final boolean MECANUM = false; 
   
     //motor ids
-    public static final byte FRONT_LEFT_MOTOR_ID = 4;
-    public static final byte FRONT_RIGHT_MOTOR_ID = 22;
-    public static final byte BACK_LEFT_MOTOR_ID = 24;
-    public static final byte BACK_RIGHT_MOTOR_ID = 26;
+    public static final byte FRONT_LEFT_MOTOR_ID = 6;
+    public static final byte FRONT_RIGHT_MOTOR_ID = 3;
+    public static final byte BACK_LEFT_MOTOR_ID = 7;
+    public static final byte BACK_RIGHT_MOTOR_ID = 2;
 
-    public static final byte FRONT_LEFT_TURN_MOTOR_ID = 29;
-    public static final byte FRONT_RIGHT_TURN_MOTOR_ID = 28;
-    public static final byte BACK_LEFT_TURN_MOTOR_ID = 23;
-    public static final byte BACK_RIGHT_TURN_MOTOR_ID = 25;
+    public static final byte FRONT_LEFT_TURN_MOTOR_ID = 5;
+    public static final byte FRONT_RIGHT_TURN_MOTOR_ID = 4;
+    public static final byte BACK_LEFT_TURN_MOTOR_ID = 8;
+    public static final byte BACK_RIGHT_TURN_MOTOR_ID = 1;
+
 
     public static final byte INTAKE_MOTOR_ID = 32;
     public static final byte ARM_LEFT_MOTOR_ID = 3;
@@ -148,7 +149,7 @@ public class Constants{
     }
 
     // Photon vision constants    
-    public static class FieldConstants {
+      public static class FieldConstants {
         public static final double length = Units.feetToMeters(54);
         public static final double width = Units.feetToMeters(27);
         public static final double startX = 7;
@@ -159,21 +160,47 @@ public class Constants{
 
 
     public static class VisionConstants {
-        public static final String leftCameraName = "HD_USB_Camera";
-        public static final String rightCameraName = "Microsoft_LifeCam_HD-3000";
-        public static final String frontCameraName = "OV5647";
+        public static final String leftCameraName = "Stereo_Vision_1";
+        public static final String rightCameraName = "Mirosoft_LifeCam_Cinema"; 
+        public static final String frontCameraName = "Microsoft_LifeCam_HD-3000";
+        public static final String backCameraName = "OV5647"; 
 
-        private static final double cameraPosX = 0.277813055626;
-        private static final double cameraPosY = 0.346869443739;
-        private static final double cameraPosZ = 0.0889001778004;
+        private static final double cameraPosZ = 0.2413; // 0.2413
+        public static final double cameraPosX = 0.0;
+        public static final double cameraPosY = 0.0889001778004; // 0.0889001778004
         private static final double cameraRoll = 0.0;
-        private static final double cameraPitch = 158.0;
-        private static final double cameraYaw = 22.5;
+        public static final double cameraPitch = 40;
+        public static final double cameraYaw = 1;
 
-        public static final Transform3d robotToCamL = new Transform3d( new Translation3d(-cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, +cameraYaw)); 
-        public static final Transform3d robotToCamR = new Transform3d( new Translation3d(+cameraPosX, -cameraPosY, cameraPosZ), new Rotation3d(cameraRoll, cameraPitch, -cameraYaw)); 
+        //TODO get the pose.... 
+        
+        public static final double cameraRightPosX = 0;
+        public static final double cameraRightPosY = 0;
+        public static final double cameraRightZ = 0;
+        public static final double cameraRightRoll = 0;
+        public static final double cameraRightPitch = 0;
+        public static final double cameraRightYaw = 0;
+
+        public static final double cameraFrontPosX =  0.277813055626;
+        public static final double cameraFrontPosY = 0.346869443739;
+        public static final double cameraFrontPosZ = 0.0889001778004;
+        public static final double cameraFrontRoll = 0.0;
+        public static final double cameraFrontPitch = 158.0;
+        public static final double cameraFrontYaw = 22.5;
+
+        public static final double cameraBackPosX = 0;
+        public static final double cameraBackPosY = 0;
+        public static final double cameraBackPosZ = 0;
+        public static final double cameraBackRoll = 0;
+        public static final double cameraBackPitch = 0;
+        public static final double cameraBackYaw = 0;
+
+
+        public static final Transform3d robotToCamL = new Transform3d( new Translation3d(-cameraFrontPosX, -cameraFrontPosY, cameraFrontPosZ), new Rotation3d(cameraFrontRoll, cameraFrontPitch, +cameraFrontYaw)); 
+        public static final Transform3d robotToCamR = new Transform3d( new Translation3d(+cameraFrontPosX, -cameraFrontPosY, cameraFrontPosZ), new Rotation3d(cameraFrontRoll, cameraFrontPitch, -cameraFrontYaw));
         
     }
+
 
 
 }

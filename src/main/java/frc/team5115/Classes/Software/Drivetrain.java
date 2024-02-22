@@ -1,5 +1,14 @@
 package frc.team5115.Classes.Software;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -15,14 +24,29 @@ import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
 
 public class Drivetrain extends SubsystemBase {
-    private final HardwareDrivetrain hardwareDrivetrain;
-    private final NAVx navx;
-    private final HolonomicDriveController holonomicDriveController;
+    private  HardwareDrivetrain hardwareDrivetrain;
+    private  NAVx navx;
+    private PhotonVision p;
+    private  HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
+    //private final PhotonVision photonVision;
+    //private final AutoBuilder autoBuilder;
+    
+    
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision p) {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
+        this.hardwareDrivetrain = hardwareDrivetrain;
+        this.navx = navx;
+        this.p = p;
+        //this.autoBuilder = autoBuilder;
+                // ? do we need to tune the pid controllers for the holonomic drive controller?
+        holonomicDriveController = new HolonomicDriveController(
+            new PIDController(1, 0, 0),
+            new PIDController(1, 0, 0),
+            new ProfiledPIDController(1, 0, 0,
+                new TrapezoidProfile.Constraints(6.28, 3.14))); 
 
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
@@ -33,15 +57,34 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void init() {
+
+        System.out.println("Angle from navx" + navx.getYawDeg());
         poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.kDriveKinematics,
             navx.getYawRotation2D(),
             hardwareDrivetrain.getModulePositions(),
             getStartingPoseGuess());
+            addVisionMeasurement();
 
         System.out.println("Angle from navx" + navx.getYawDeg());
     }
 
+    private void addVisionMeasurement() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addVisionMeasurement'");
+    }
+
+     public void updateOdometry() {
+        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
+
+        Optional<EstimatedRobotPose> result = p.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            System.out.println("vision is really working");
+        }
+
+     }
     private Pose2d getStartingPoseGuess() {
             return new Pose2d();
     }

@@ -2,6 +2,25 @@ package frc.team5115.Classes.Hardware;
 
 import static frc.team5115.Constants.*;
 
+import java.util.Optional;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.Units.*;
+import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team5115.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.team5115.Classes.Accessory.SwerveUtils;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -9,10 +28,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.team5115.Constants.DriveConstants;
+import frc.team5115.Classes.Accessory.SwerveUtils;
 /**
  * The drivetrain hardware subsystem. Provides methods to interact with the actual hardware of the drivetrain.
  */
-public class HardwareDrivetrain{    
+public class HardwareDrivetrain extends SubsystemBase{    
     private final NAVx gyro;
 
     final SwerveDriveModule frontLeft = new SwerveDriveModule(FRONT_LEFT_MOTOR_ID, FRONT_LEFT_TURN_MOTOR_ID, Math.toRadians(90));
@@ -32,6 +52,66 @@ public class HardwareDrivetrain{
         resetEncoders();
         //frontRightOld.setInverted(true);
     }
+
+    public void x(){
+       double x = frontLeft.getState().speedMetersPerSecond;
+       double velocity = frontLeft.getState().speedMetersPerSecond;
+    }
+
+    public double getEncoderVelocity(int motorID){
+        switch(motorID) {
+            case BACK_LEFT_MOTOR_ID:
+        return backLeft.getState().speedMetersPerSecond;
+            case FRONT_LEFT_MOTOR_ID:
+        return frontLeft.getState().speedMetersPerSecond;
+
+            case FRONT_RIGHT_MOTOR_ID:
+        return frontRight.getState().speedMetersPerSecond;
+            case BACK_RIGHT_MOTOR_ID:
+        return backRight.getState().speedMetersPerSecond;
+
+        default:
+         throw new Error("Not working yet buddy");
+        }
+         
+    }
+    public double getEncoder(int motorID){
+        switch(motorID) {
+            case BACK_LEFT_MOTOR_ID:
+        return backLeft.getPosition().distanceMeters;
+            case FRONT_LEFT_MOTOR_ID:
+        return frontLeft.getPosition().distanceMeters;
+
+            case FRONT_RIGHT_MOTOR_ID:
+        return frontRight.getPosition().distanceMeters;
+            case BACK_RIGHT_MOTOR_ID:
+        return backRight.getPosition().distanceMeters;
+
+        default:
+         throw new Error("Not working yet bucko");
+        }
+        
+
+         
+    }
+
+    public ChassisSpeeds getChassisSpeeds(){ 
+        SwerveModuleState[] x = {frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState()};
+        return DriveConstants.kDriveKinematics.toChassisSpeeds(x);
+    }
+
+    public void setWheelSpeeds(ChassisSpeeds speeds){ 
+        drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, true, false);
+
+        // plugandFFDrive(leftVelocity, rightVelocity);
+
+    }
+
+
+    public boolean isRed(){
+        return false;
+    }
+
 
     public ChassisSpeeds discretize(
                   double vxMetersPerSecond,
@@ -86,6 +166,10 @@ public class HardwareDrivetrain{
         double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond+rotDelivered/20;
         double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
 
+
+
+
+        //System.out.println(gyro.getYawDeg360());
         ChassisSpeeds x = 
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getYawDeg360()))
@@ -102,6 +186,23 @@ public class HardwareDrivetrain{
         backRight.setDesiredState(swerveModuleStates[3]);
     }
 
+    public void getAutonomousCommand(){
+        getAutonomousCommand();
+
+
+    }
+
+
+    public void FollowPathCommand(){
+
+
+    }
+
+    public void buildAutoChooser(){
+        buildAutoChooser(); 
+        AutoBuilder.buildAutoChooser();
+
+    }
     /**
      * Sets the wheels into an X formation to prevent movement.
      */
