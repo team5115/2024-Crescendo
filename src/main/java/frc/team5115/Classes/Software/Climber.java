@@ -26,8 +26,8 @@ public class Climber extends SubsystemBase {
 
     // TODO determine latch release speed
     public void latchSpeed(){
-        leftClimber.setPercentage(0.2);
-        rightClimber.setPercentage(0.2);
+        leftClimber.setPercentage(0.5);
+        rightClimber.setPercentage(0.5);
     }
 
     public void setBoth(double speed){

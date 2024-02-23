@@ -35,6 +35,8 @@ public class DeployClimber extends Command {
 
     @Override
     public void end(boolean interrupted){
+        if(interrupted) System.out.println("interupted");
+        System.out.println("deployed");
         climber.setDeployed();
         climber.stop();
     }

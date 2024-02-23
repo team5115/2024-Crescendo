@@ -31,6 +31,7 @@ public class HardwareClimber {
         climbEncoder = climberMotor.getEncoder();
         climbEncoder.setPositionConversionFactor(1.0/16.0);
         climberMotor.setInverted(reversed);
+        climberMotor.setIdleMode(IdleMode.kBrake);
         climberMotor.setSmartCurrentLimit(45);
     }
 

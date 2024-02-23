@@ -87,10 +87,10 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        // new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
-        // .onTrue(deployClimber);
-        // new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
-        // .onTrue(climb);
+        new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
+        .onTrue(deployClimber);
+        new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
+        .onTrue(climb);
 
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
@@ -172,9 +172,8 @@ public class RobotContainer {
     public void teleopPeriodic() {
 
         // manual climber
-        // if (joyManips.getRawButton(XboxController.Button.kLeftStick.value)) {
-        //     climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
-        // }
+             climber.setBoth(joyManips.getRawAxis(1));
+
 
         /*
         final boolean MANUAL_CLIMB = false;

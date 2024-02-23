@@ -42,7 +42,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void slow() {
-        hardwareShooter.setNormalized(0.1);
+        hardwareShooter.setNormalized(0.08);
     }
 
     public void stop() {
