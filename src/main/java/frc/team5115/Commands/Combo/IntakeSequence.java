@@ -5,17 +5,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 
 public class IntakeSequence extends Command{
-    private final WrappedIntakeSequence wrapped;
+    private final WrapperCommand wrapped;
 
     public IntakeSequence(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addRequirements(intake, shooter, arm);
-        wrapped = new WrappedIntakeSequence(intake, shooter, arm, sensor);
+        wrapped = new WrappedIntakeSequence(intake, shooter, arm, sensor).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
     }
 
     @Override
@@ -31,7 +32,6 @@ public class IntakeSequence extends Command{
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            wrapped.interrupt();
             System.out.println("interupted ;)");
         }
     }
@@ -53,10 +53,7 @@ public class IntakeSequence extends Command{
                 new InstantCommand(shooter :: stop),
 
                 new WaitCommand(0.5)
-                // Rack
-                , new InstantCommand(intake :: out),
-                new WaitForSensorChange(false, sensor),
-                new InstantCommand(intake :: stop)
+                
             );
         }
 

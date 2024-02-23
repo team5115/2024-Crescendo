@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 
 public class HardwareArm extends SubsystemBase{
-    public static final double STOWED_ANGLE = 149.0;
+    public static final double STOWED_ANGLE = 85.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
@@ -45,7 +45,8 @@ public class HardwareArm extends SubsystemBase{
         if(speed != speed) {
             speed = 0;
         }
-        double voltage = MathUtil.clamp(ff.calculate(getAngle().getRadians(-Math.PI), speed), -10, 10);
+        double adjustedRads = getAngle().getRadians(-Math.PI);// + Math.toRadians(30);
+        double voltage = MathUtil.clamp(ff.calculate(adjustedRads, speed), -10, 10);
         // double voltage = MathUtil.clamp(ff.calculate(setpoint.getRadians(-Math.PI), speed), -10, 10);
         
         if (Math.abs(voltage) < 2 * kS) {

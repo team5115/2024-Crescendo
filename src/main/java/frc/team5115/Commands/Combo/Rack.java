@@ -14,8 +14,8 @@ public class Rack extends SequentialCommandGroup{
                 new WaitForSensorChange(false, sensor),
                 new InstantCommand(intake :: stop)
         );
-    }
+        }
             public void print(){
-            System.out.println("wah");
+            System.out.println("rack");
         }
 }

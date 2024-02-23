@@ -5,13 +5,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 
 public class ShootSequence extends Command{
-    private WrappedShootSequence wrapped;
+    private WrapperCommand wrapped;
         final Intake intake;
         final Shooter shooter;
         final Arm arm;
@@ -26,7 +27,7 @@ public class ShootSequence extends Command{
 
     @Override
     public void initialize() {
-        wrapped = new WrappedShootSequence(intake, shooter, arm, sensor);
+        wrapped = new WrappedShootSequence(intake, shooter, arm, sensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
         intake.stop();
         shooter.stop();
         wrapped.schedule();
@@ -40,11 +41,10 @@ public class ShootSequence extends Command{
     @Override
     public void end(boolean interrupted) {
         if (interrupted) {
-            wrapped.interrupt();
         }
     }
     
-    private class WrappedShootSequence extends SequentialCommandGroup {
+    public class WrappedShootSequence extends SequentialCommandGroup {
         final Intake intake;
         final Shooter shooter;
 
@@ -55,6 +55,11 @@ public class ShootSequence extends Command{
              new DeployArm(intake, shooter, arm, -1).withTimeout(5)
             );
             addCommands(
+
+                // Rack
+                new InstantCommand(intake :: out),
+                new WaitForSensorChange(false, sensor),
+                new InstantCommand(intake :: stop),
 
                 // Shoot
                 new SpinUpShooter(shooter, 5000).withTimeout(4),

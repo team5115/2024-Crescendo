@@ -42,7 +42,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void slow() {
-        hardwareShooter.setNormalized(0.065);
+        hardwareShooter.setNormalized(0.1);
     }
 
     public void stop() {
@@ -75,6 +75,7 @@ public class Shooter extends SubsystemBase {
         cwVolts += cwPIDValue;
         cwVolts += ccwPIDValue;
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
+        System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
 
         return new double[] { cwPIDValue, ccwPIDValue };
     }

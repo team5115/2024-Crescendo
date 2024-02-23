@@ -12,9 +12,13 @@ import frc.team5115.Commands.Arm.DeployArm;
 
 public class ScoreAmp extends Command {
     private final WrappedScoreAmp wrapped;
+    final Intake intake;
+    final Shooter shooter;
 
     public ScoreAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addRequirements(intake, shooter, arm);
+        this.intake = intake;
+        this.shooter = shooter;
         wrapped = new WrappedScoreAmp(intake, shooter, arm, sensor);
     }
 
@@ -30,6 +34,8 @@ public class ScoreAmp extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        intake.stop();
+        shooter.stop();
         if (interrupted) {
             wrapped.interrupt();
         }

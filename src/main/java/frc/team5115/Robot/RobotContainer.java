@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
@@ -86,10 +87,10 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
-        .onTrue(deployClimber);
-        new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
-        .onTrue(climb);
+        // new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
+        // .onTrue(deployClimber);
+        // new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
+        // .onTrue(climb);
 
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
@@ -98,16 +99,19 @@ public class RobotContainer {
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        //.andThen(new Rack(intake, reflectiveSensor))
         );
+
+        new JoystickButton(joyManips, XboxController.Button.kX.value)
+        .onTrue(new Rack(intake, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf).
-        andThen(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        //,new Rack(intake, reflectiveSensor)
-        ));
+        // .andThen(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
+        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        // ,new Rack(intake, reflectiveSensor)
+        //)
+        );
 
         //new JoystickButton(joyManips, XboxController.Button.kX.value)
         //.onTrue(new DeployArm(intake, shooter, arm, 3).withTimeout(0.1).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -116,7 +120,7 @@ public class RobotContainer {
         .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kStart.value)
-        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));
@@ -168,9 +172,9 @@ public class RobotContainer {
     public void teleopPeriodic() {
 
         // manual climber
-        if (joyManips.getRawButton(XboxController.Button.kLeftStick.value)) {
-            climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
-        }
+        // if (joyManips.getRawButton(XboxController.Button.kLeftStick.value)) {
+        //     climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
+        // }
 
         /*
         final boolean MANUAL_CLIMB = false;
@@ -192,8 +196,7 @@ public class RobotContainer {
         } 
         */
 
-        //  System.out.println("bno angle: " + i2cHandler.getPitch());
-        // i2cHandler.updatePitch();
+        //   System.out.println("bno angle: " + i2cHandler.getPitch());
 
         arm.updateController(i2cHandler);
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
