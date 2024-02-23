@@ -37,7 +37,6 @@ public class AimandRangeFrontCam extends SubsystemBase{
 
     
     public AimandRangeFrontCam(HardwareDrivetrain j, PhotonVision photonVision){  
-        gyro = new NAVx();
         this.j = j;
         this.photonVision = photonVision;
         x=1;
@@ -57,7 +56,7 @@ public class AimandRangeFrontCam extends SubsystemBase{
     final double ANGULAR_D = 0.0;
     PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
- //   XboxController xboxController = new XboxController(0);
+    XboxController xboxController = new XboxController(0);
 
 
 
@@ -68,7 +67,7 @@ public class AimandRangeFrontCam extends SubsystemBase{
         double rotationSpeed = 0;
         double GOAL_RANGE_METERS = 1.6;
         
-    //    if (xboxController.getAButton()) {
+       if (xboxController.getAButton()) {
             // Vision-alignment mode
             // Query the latest result from PhotonVision
 
@@ -80,20 +79,16 @@ public class AimandRangeFrontCam extends SubsystemBase{
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
         rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
-        //System.out.println(photonVision.getRange());
-     /*     else{
-         forwardSpeed = -xboxController.getRightY();
-        rotationSpeed = xboxController.getLeftX();
-        }
-    }
-      else {
-        // Manual Driver Mode
+
+        
+     /*      else{
+            // Manual Driver Mode
         forwardSpeed = -xboxController.getRightY();
         rotationSpeed = xboxController.getLeftX();
-    } */
-
+        } */
+        
+    }
     
-
 
 
        j.drive(forwardSpeed, 0, rotationSpeed, true, false);
