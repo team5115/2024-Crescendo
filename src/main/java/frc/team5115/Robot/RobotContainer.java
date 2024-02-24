@@ -79,8 +79,10 @@ public class RobotContainer {
         HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
         HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
-        climb = new Climb(climber, 12);
-        deployClimber = new DeployClimber(climber, 1);
+
+        // the sign of the delta for these commands can be used to change the direction
+        climb = new Climb(climber, +12);
+        deployClimber = new DeployClimber(climber, +1);
 
         configureButtonBindings();
     }

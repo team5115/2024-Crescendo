@@ -15,6 +15,10 @@ public class HardwareClimber {
     private static final double kStatic = 0;
     private static final double kVelocity = 0;
 
+    private static final double kP = 0.02;
+    private static final double kI = 0;
+    private static final double kD = 0;
+
     final PIDController pid;
     final CANSparkMax climberMotor;
     final RelativeEncoder climbEncoder;
@@ -24,7 +28,7 @@ public class HardwareClimber {
 
     public HardwareClimber(int canId, boolean reversed, int bottomChannel){
         climberMotor = new CANSparkMax(canId, MotorType.kBrushless);
-        pid = new PIDController(0.01, 0, 0);
+        pid = new PIDController(kP, kI, kD);
         climberMotor.setIdleMode(IdleMode.kBrake);
         bottomSensor = new DigitalInput(bottomChannel);
         // topSensor = new DigitalInput(topChannel);
