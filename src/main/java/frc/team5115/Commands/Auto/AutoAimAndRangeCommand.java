@@ -6,6 +6,8 @@ import frc.team5115.Classes.Software.AutoAimAndRange;
 
 public class AutoAimAndRangeCommand extends Command{
     private final AutoAimAndRange autoAimAndRange;
+
+    double[] errors = {100000000000.0, 10000000000000.0};
    
     
     public AutoAimAndRangeCommand(AutoAimAndRange autoAimAndRange) {
@@ -14,17 +16,20 @@ public class AutoAimAndRangeCommand extends Command{
 
     @Override
     public void initialize() {
-      autoAimAndRange.periodic1();
+    }
+
+    @Override
+    public void execute(){
+        errors = autoAimAndRange.periodic1();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return autoAimAndRange.isFinished(errors);
     }
 
     @Override
     public void end(boolean interrupted) {
-        autoAimAndRange.isFinished(null);
     }
 }
 

@@ -101,15 +101,16 @@ public class AutoAimAndRange extends SubsystemBase{
 
      double[] periodic1 = periodic1();
     
-     public boolean isFinished(double[] i){ 
+    public boolean isFinished(double[] i){ 
 
-        if(i[0] <= 0.1){
-            if(i[1] <= 0.1)
+        if(Math.abs(i[0]) <= 0.1){
+            if(Math.abs(i[1]) <= 0.1)
             return true;
-     }
+        }
 
      return false;
 
+    }
 
 
      /*     Pose3d y = photonVision.j2F();
@@ -125,6 +126,5 @@ public class AutoAimAndRange extends SubsystemBase{
 }
 */
 
-    }
 
 }
