@@ -228,7 +228,7 @@ var result = photonCameraB.getLatestResult();
         return 0;
  }
 
-// for specific IDs
+// for specific IDs USE THESE
 
  public double getAngleID4(){
         var result = photonCameraF.getLatestResult(); 
@@ -294,8 +294,8 @@ public double getRange(){
                 // First calculate range
                 double range =
                         PhotonUtils.calculateDistanceToTargetMeters(
-                                VisionConstants.cameraPosY,
-                                aprilTagList.get(ID-1).pose.getZ(),
+                            VisionConstants.cameraPosY,
+                            aprilTagList.get(ID-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
                                 Units.degreesToRadians(result.getBestTarget().getPitch())); 
 

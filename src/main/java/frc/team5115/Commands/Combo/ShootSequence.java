@@ -52,13 +52,14 @@ public class ShootSequence extends Command{
             this.intake = intake;
             this.shooter = shooter;
             if(!arm.deployed()) addCommands(
-             new DeployArm(intake, shooter, arm, -1).withTimeout(5)
+             new DeployArm(intake, shooter, arm, 10).withTimeout(5)
             );
             addCommands(
 
                 // Rack
                 new InstantCommand(intake :: out),
                 new WaitForSensorChange(false, sensor),
+                new WaitCommand(0.1),
                 new InstantCommand(intake :: stop),
 
                 // Shoot

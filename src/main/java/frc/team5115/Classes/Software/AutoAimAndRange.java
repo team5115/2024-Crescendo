@@ -64,7 +64,7 @@ public class AutoAimAndRange extends SubsystemBase{
     public double[] periodic1() { 
         double forwardSpeed = 0;
         double rotationSpeed = 0;
-        double GOAL_RANGE_METERS = 2.3;
+        double GOAL_RANGE_METERS = 0.3; // cam height = 0.68
         
 
         // Vision-alignment mode
@@ -73,6 +73,7 @@ public class AutoAimAndRange extends SubsystemBase{
         if(photonVision.isTargetPresent()){
 
              
+
         //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
         forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
 
@@ -103,8 +104,9 @@ public class AutoAimAndRange extends SubsystemBase{
     
     public boolean isFinished(double[] i){ 
 
-        if(Math.abs(i[0]) <= 0.1){
-            if(Math.abs(i[1]) <= 0.1)
+         
+        if(Math.abs(i[0]) <= 0.75){
+            if(Math.abs(i[1]) <= 1)
             return true;
         }
 
