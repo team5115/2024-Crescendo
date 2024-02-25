@@ -104,7 +104,7 @@ public class RobotContainer {
         );
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new Rack(intake, reflectiveSensor));
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
@@ -174,7 +174,7 @@ public class RobotContainer {
     public void teleopPeriodic() {
 
         // manual climber
-             climber.setBoth(joyManips.getRawAxis(1));
+        if(climber.isDeployed()) climber.setBoth(joyManips.getRawAxis(1));
 
 
         /*
