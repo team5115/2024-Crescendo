@@ -18,9 +18,11 @@ import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
+import frc.team5115.Classes.Software.AutoAimAndRange;
 import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
+import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
@@ -47,6 +49,7 @@ public class RobotContainer {
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
+    private AutoAimAndRange a;
     private AutoCommandGroup autoCommandGroup;
 
     private final Climb climb;
@@ -64,6 +67,8 @@ public class RobotContainer {
         joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
+
+        PhotonVision p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx);
@@ -83,7 +88,7 @@ public class RobotContainer {
         // the sign of the delta for these commands can be used to change the direction
         climb = new Climb(climber, +12);
         deployClimber = new DeployClimber(climber, +1);
-
+        a = new AutoAimAndRange(hardwareDrivetrain, p);
         configureButtonBindings();
     }
 
@@ -154,7 +159,7 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, doAuto.getBoolean(true));
+        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, a);
         autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
