@@ -141,6 +141,58 @@ var result = photonCameraF.getLatestResult();
        return target.pose;
 }
 
+
+public PhotonTrackedTarget getID7(){
+        var result = photonCameraF.getLatestResult(); 
+        var targets = result.getTargets();
+
+        for (PhotonTrackedTarget i : targets){
+                if(i.getFiducialId() == 7){
+                        return i;
+                }
+        }
+        return null;
+}
+
+public boolean isThereID7(){
+        var result = photonCameraF.getLatestResult(); 
+        var targets = result.getTargets();
+
+        for (PhotonTrackedTarget i : targets){
+                if(i.getFiducialId() == 7){
+                        return true;
+                }
+        }
+        return false;
+}
+
+public PhotonTrackedTarget getID4(){
+        var result = photonCameraF.getLatestResult(); 
+        var targets = result.getTargets();
+
+        for (PhotonTrackedTarget i : targets){
+                if(i.getFiducialId() == 4){
+                        return i;
+                }
+        }
+        return null;
+}
+
+public boolean isThereID4(){
+        var result = photonCameraF.getLatestResult(); 
+        var targets = result.getTargets();
+
+        for (PhotonTrackedTarget i : targets){
+                if(i.getFiducialId() == 4){
+                        return true;
+                }
+        }
+        return false;
+}
+
+
+
+
 public Pose3d j2R(){
 AprilTag target = new AprilTag(0, null);
 var result = photonCameraR.getLatestResult(); 
@@ -170,6 +222,13 @@ var result = photonCameraB.getLatestResult();
  }
 
  public double getAngle(){
+
+         var result = photonCameraL.getLatestResult(); 
+        if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
+        return 0;
+ }
+
+  public double getAngleID7(){
 
          var result = photonCameraL.getLatestResult(); 
         if (result.hasTargets()) return result.getBestTarget().getYaw() + VisionConstants.cameraYaw;
@@ -234,8 +293,8 @@ public double getRange(){
 
    public double getID(){
 
-        if(photonCameraF.getLatestResult().hasTargets()){ 
-        double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
+        if(photonCameraL.getLatestResult().hasTargets()){ 
+        double FidicualID = photonCameraL.getLatestResult().getBestTarget().getFiducialId();
         return (FidicualID);
 
         }
@@ -252,7 +311,7 @@ public double getRange(){
             if (result.hasTargets()) { 
                 int ID;
                 for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
+                        if(i.ID == getID7().getFiducialId()){
                                 target = i;
                                ID = result.getBestTarget().getFiducialId();  
                         }
