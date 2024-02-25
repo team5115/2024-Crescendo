@@ -61,7 +61,7 @@ public class AutoAimAndRange extends SubsystemBase{
 
 // Calculate robot's field relative pose
 
-    public double[] periodic1() { 
+    public double[] periodic1(boolean BlueTeam) { 
         double forwardSpeed = 0;
         double rotationSpeed = 0;
         double GOAL_RANGE_METERS = 1.6;
@@ -71,6 +71,9 @@ public class AutoAimAndRange extends SubsystemBase{
             // Query the latest result from PhotonVision
 
         if(photonVision.isTargetPresent()){
+
+        if(BlueTeam){
+        if(photonVision.getID() == 7){
                             
         //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
         forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
@@ -85,6 +88,15 @@ public class AutoAimAndRange extends SubsystemBase{
 
 
        j.drive(forwardSpeed, 0, rotationSpeed, true, false);
+            }
+            else{
+                j.drive(0, 0, 0, true, false);
+            }
+        }
+        else if(photonVision.getID() == 9){
+
+            
+        }
      }
 
      else{
@@ -98,8 +110,6 @@ public class AutoAimAndRange extends SubsystemBase{
      return x;
 
     }
-
-     double[] periodic1 = periodic1();
     
     public boolean isFinished(double[] i){ 
 

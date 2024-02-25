@@ -7,20 +7,23 @@ import frc.team5115.Classes.Software.AutoAimAndRange;
 public class AutoAimAndRangeCommand extends Command{
     private final AutoAimAndRange autoAimAndRange;
 
+
     double[] errors = {100000000000.0, 10000000000000.0};
-   
+    boolean isBlue;
     
-    public AutoAimAndRangeCommand(AutoAimAndRange autoAimAndRange) {
+    public AutoAimAndRangeCommand(AutoAimAndRange autoAimAndRange, boolean isBlue) {
         this.autoAimAndRange = autoAimAndRange;
+        this.isBlue = isBlue;
     }
 
     @Override
     public void initialize() {
+
     }
 
     @Override
     public void execute(){
-        errors = autoAimAndRange.periodic1();
+        errors = autoAimAndRange.periodic1(isBlue);
     }
 
     @Override

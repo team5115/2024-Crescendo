@@ -30,12 +30,14 @@ public class RobotContainer {
     private Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
+    private final GenericEntry isBlue;
     private final NAVx navx;
     private final boolean fieldOriented = true;
    // private final Climber climber;
    // private final Arm arm;
    // private final Intake intake;
    // private final Shooter shooter;
+   private HardwareDrivetrain hardwareDrivetrain;
     private Paths paths;
     private AutoCommandGroup autoCommandGroup;
     private AimandRangeFrontCam aimandRange;
@@ -49,6 +51,7 @@ public class RobotContainer {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        isBlue = shuffleboardTab.add("Are We Blue Team?", true).getEntry();
        // shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
 
         joyDrive = new Joystick(0);
@@ -56,10 +59,9 @@ public class RobotContainer {
         navx = new NAVx();
 
         photonVision = new PhotonVision();
-        HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
+        hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx, photonVision);
        
-        aimandRange = new AimandRangeFrontCam(hardwareDrivetrain, photonVision);
 
         configureButtonBindings();
     }
@@ -112,7 +114,7 @@ public class RobotContainer {
     }
 
     public void startAuto(){
-
+            aimandRange = new AimandRangeFrontCam(hardwareDrivetrain, photonVision);
     }
 
     public void autoPeriod() {
