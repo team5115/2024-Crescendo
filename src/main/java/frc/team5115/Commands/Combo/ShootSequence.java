@@ -59,6 +59,7 @@ public class ShootSequence extends Command{
                 // Rack
                 new InstantCommand(intake :: out),
                 new WaitForSensorChange(false, sensor),
+
                 new WaitCommand(0.2),
                 new InstantCommand(intake :: stop),
 
