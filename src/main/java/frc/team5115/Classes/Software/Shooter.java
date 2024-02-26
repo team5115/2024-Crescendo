@@ -45,6 +45,10 @@ public class Shooter extends SubsystemBase {
         hardwareShooter.setNormalized(0.08);
     }
 
+    public void fast () {
+        hardwareShooter.setNormalized(+0.9);
+    }
+
     public void stop() {
         hardwareShooter.setNormalized(0);
     }

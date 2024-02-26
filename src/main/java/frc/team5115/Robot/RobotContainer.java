@@ -30,10 +30,12 @@ import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
+import frc.team5115.Commands.Combo.PrepareShoot;
 import frc.team5115.Commands.Combo.Rack;
 import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.StopBoth;
+import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -80,6 +82,7 @@ public class RobotContainer {
         shooter = new Shooter(hardwareShooter);
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
+        shuffleboardTab.addBoolean("Note Sensor", () -> !reflectiveSensor.get());
 
         HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
         HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
@@ -111,17 +114,16 @@ public class RobotContainer {
         new JoystickButton(joyManips, XboxController.Button.kX.value)
         .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor));
 
-        new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        // .andThen(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        // ,new Rack(intake, reflectiveSensor)
-        //)
-        );
+        // new JoystickButton(joyManips, XboxController.Button.kB.value)
+        // .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
+        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-        //new JoystickButton(joyManips, XboxController.Button.kX.value)
-        //.onTrue(new DeployArm(intake, shooter, arm, 3).withTimeout(0.1).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        final Command prepareShoot = new PrepareShoot(intake, shooter, arm, reflectiveSensor);
+        final Command triggerShoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor);
+
+        new JoystickButton(joyManips, XboxController.Button.kB.value)
+        .onTrue(prepareShoot.withInterruptBehavior(InterruptionBehavior.kCancelSelf))
+        .onFalse(triggerShoot.withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
         .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
