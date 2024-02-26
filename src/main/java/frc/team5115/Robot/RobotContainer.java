@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
@@ -17,9 +18,11 @@ import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.Arm;
+import frc.team5115.Classes.Software.AutoAimAndRange;
 import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
+import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Arm.StowArm;
@@ -27,9 +30,12 @@ import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
+import frc.team5115.Commands.Combo.PrepareShoot;
+import frc.team5115.Commands.Combo.Rack;
 import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.ShootSequence;
 import frc.team5115.Commands.Combo.StopBoth;
+import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
@@ -45,6 +51,7 @@ public class RobotContainer {
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
+    private AutoAimAndRange a;
     private AutoCommandGroup autoCommandGroup;
 
     private final Climb climb;
@@ -63,27 +70,37 @@ public class RobotContainer {
         navx = new NAVx();
         i2cHandler = new I2CHandler();
 
+        PhotonVision p = new PhotonVision();
+
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx);
         
         HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
-        arm = new Arm(hardwareArm);
+        arm = new Arm(hardwareArm, i2cHandler);
 
         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
         shooter = new Shooter(hardwareShooter);
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
+        shuffleboardTab.addBoolean("Note Sensor", () -> !reflectiveSensor.get());
 
         HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
         HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
-        climb = new Climb(climber, 12);
-        deployClimber = new DeployClimber(climber, 1);
 
+        // the sign of the delta for these commands can be used to change the direction
+        climb = new Climb(climber, +12);
+        deployClimber = new DeployClimber(climber, +1);
+        a = new AutoAimAndRange(hardwareDrivetrain, p);
         configureButtonBindings();
     }
 
     public void configureButtonBindings() {
+
+        new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
+        .onTrue(deployClimber);
+        new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
+        .onTrue(climb);
 
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
@@ -91,17 +108,25 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
-
-        new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
+        );
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new DeployArm(intake, shooter, arm, 4).withTimeout(5).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor));
+
+        // new JoystickButton(joyManips, XboxController.Button.kB.value)
+        // .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
+        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+        final Command prepareShoot = new PrepareShoot(intake, shooter, arm, reflectiveSensor);
+        final Command triggerShoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor);
+
+        new JoystickButton(joyManips, XboxController.Button.kB.value)
+        .onTrue(prepareShoot.withInterruptBehavior(InterruptionBehavior.kCancelSelf))
+        .onFalse(triggerShoot.withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
+        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kStart.value)
         .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
@@ -136,7 +161,7 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, doAuto.getBoolean(true));
+        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, a);
         autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
@@ -154,8 +179,14 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+
+        // manual climber
+        if(climber.isDeployed()) climber.setBoth(joyManips.getRawAxis(1));
+
+        a.periodic1();
+
         /*
-        final boolean MANUAL_CLIMB = true;
+        final boolean MANUAL_CLIMB = false;
 
         if (MANUAL_CLIMB) {
             climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
@@ -174,9 +205,9 @@ public class RobotContainer {
         } 
         */
 
-        // System.out.println("bno angle: " + i2cHandler.getPitch());
-        // i2cHandler.updatePitch();
+        //   System.out.println("bno angle: " + i2cHandler.getPitch());
+
         arm.updateController(i2cHandler);
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }

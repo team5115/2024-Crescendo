@@ -8,10 +8,15 @@ import frc.team5115.Classes.Software.Shooter;
 public class DeployArm extends Command {
     final Arm arm;
     final double angle;
+    final Intake intake;
+    final Shooter shooter;
+
 
     public DeployArm(Intake intake, Shooter shooter, Arm arm, double angle) {
         this.arm = arm;
         this.angle = angle;
+        this.intake = intake;
+        this.shooter = shooter;
         addRequirements(intake, shooter, arm);
     }
 
@@ -25,6 +30,7 @@ public class DeployArm extends Command {
         arm.deployToAngle(angle);
     }
 
+
     @Override
     public boolean isFinished(){
         return arm.atSetpoint();
@@ -32,6 +38,8 @@ public class DeployArm extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        intake.stop();
+        shooter.stop();
         System.out.println("DeployArm finished");
     }
 }

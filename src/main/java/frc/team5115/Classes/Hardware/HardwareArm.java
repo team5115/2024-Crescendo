@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 
 public class HardwareArm extends SubsystemBase{
-    public static final double STOWED_ANGLE = 149.0;
+    public static final double STOWED_ANGLE = 75.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
@@ -25,7 +25,7 @@ public class HardwareArm extends SubsystemBase{
     private final double Ks = 0.345;
     private final double Kv = 0.13509;
     private final double Ka = 0.048686;
-    private final double Kg = 0.15;
+    private final double Kg = 0.145;
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
     
@@ -55,7 +55,8 @@ public class HardwareArm extends SubsystemBase{
         if(speed != speed) {
             speed = 0;
         }
-        double voltage = MathUtil.clamp(ff.calculate(getAngle().getRadians(-Math.PI), speed), -10, 10);
+        double adjustedRads = getAngle().getRadians(-Math.PI);// + Math.toRadians(30);
+        double voltage = MathUtil.clamp(ff.calculate(adjustedRads, speed), -10, 10);
         // double voltage = MathUtil.clamp(ff.calculate(setpoint.getRadians(-Math.PI), speed), -10, 10);
         
         if (Math.abs(voltage) < 2 * kS) {

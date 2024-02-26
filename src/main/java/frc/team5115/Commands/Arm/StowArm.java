@@ -10,9 +10,13 @@ public class StowArm extends Command {
     private static final double TIMEOUT = 1;
     final Arm arm;
     final Timer timer;
+    final Intake intake;
+    final Shooter shooter;
     
     public StowArm(Intake intake, Shooter shooter, Arm arm) {
         this.arm = arm;
+        this.intake = intake;
+        this.shooter = shooter;
         addRequirements(intake, shooter, arm);
         timer = new Timer();
     }
@@ -36,6 +40,8 @@ public class StowArm extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        intake.stop();
+        shooter.stop();
         System.out.println("StowArm finished");
     }
 }

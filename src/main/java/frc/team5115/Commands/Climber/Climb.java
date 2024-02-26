@@ -29,7 +29,6 @@ public class Climb extends Command {
             setpoints[1] = climber.getRotations()[1];
         }
         climber.loopPids(setpoints);
-        // System.out.println(setpoints[0]);
     }
 
     @Override

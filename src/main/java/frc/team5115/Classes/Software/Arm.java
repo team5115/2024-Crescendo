@@ -15,17 +15,18 @@ import edu.wpi.first.math.controller.PIDController;
 public class Arm extends SubsystemBase{
     //private final GenericEntry rookie;
     private static final double MIN_DEGREES = -90.0;
-    private static final double TURN_PID_TOLERANCE = 3;
+    private static final double TURN_PID_TOLERANCE = 10;
     private static final double TURN_PID_KP = 0.25;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
-    
+    private final I2CHandler bno;
     private final HardwareArm hardwareArm;
     private final Angle setpoint;
 
     private PIDController turnController = new PIDController(TURN_PID_KP, TURN_PID_KI, TURN_PID_KD);
 
-    public Arm(HardwareArm hardwareArm){
+    public Arm(HardwareArm hardwareArm, I2CHandler bno){
+        this.bno = bno;
         this.hardwareArm = hardwareArm;
         turnController.setTolerance(TURN_PID_TOLERANCE);
         setpoint = new Angle(HardwareArm.STOWED_ANGLE);
@@ -56,23 +57,30 @@ public class Arm extends SubsystemBase{
      * @param bno this is required to be passed in so that you don't forget to udpate the bno; this method updatesPitch() for you
      * @return true if the arm is at the setpoint
      */
-    public boolean updateController(I2CHandler bno){
+    public void updateController(I2CHandler bno){
         bno.updatePitch();
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
         // System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
-        boolean atSetpoint = atSetpoint();
-        if (!atSetpoint) hardwareArm.setTurn(pidOutput, setpoint);
-        return atSetpoint;
+        //boolean atSetpoint = atSetpoint();
+        hardwareArm.setTurn(pidOutput, setpoint);
     }
 
     public void setVoltage(double voltage) {
         hardwareArm.setVoltage(voltage);
     }
 
+
+    public boolean deployed() {
+        updateController(bno);
+                return Math.abs(getAngle().angle-(-1)) < 20;
+
+    }
+
     public boolean atSetpoint() {
-        // return turnController.atSetpoint();
-        return Math.abs(getAngle().angle-setpoint.angle) < TURN_PID_TOLERANCE;
+        updateController(bno);
+        return turnController.atSetpoint();
+        //return Math.abs(getAngle().angle-setpoint.angle) < TURN_PID_TOLERANCE;
     }
 
     public boolean getFault(CANSparkMax.FaultID f){
