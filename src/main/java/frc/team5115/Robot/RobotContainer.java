@@ -183,7 +183,7 @@ public class RobotContainer {
         // manual climber
         if(climber.isDeployed()) climber.setBoth(joyManips.getRawAxis(1));
 
-        a.periodic1();
+        //a.periodic1();
 
         /*
         final boolean MANUAL_CLIMB = false;
