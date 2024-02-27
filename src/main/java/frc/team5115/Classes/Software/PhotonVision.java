@@ -245,11 +245,11 @@ var result = photonCameraB.getLatestResult();
  public double getAngleID7(){
         var result = photonCameraF.getLatestResult(); 
         if(result.hasTargets()){
-              if(isThereID7()){ 
-         var PhotonVisionResult = getID7(); 
-        return PhotonVisionResult.getYaw() + VisionConstants.cameraYaw;
-        }
-        return 0;
+                if(isThereID7()){ 
+                        var PhotonVisionResult = getID7(); 
+                        return PhotonVisionResult.getYaw() + VisionConstants.cameraYaw;
+                }
+                return 0;
         }
         return 0;
 }
