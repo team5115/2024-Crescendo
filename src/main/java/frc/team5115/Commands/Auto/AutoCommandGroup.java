@@ -26,9 +26,9 @@ public class AutoCommandGroup extends SequentialCommandGroup {
     private final AutoAimAndRange autoAimAndRange; 
 
     
-    public AutoCommandGroup(Drivetrain drivetrain, boolean actuallyRun, Intake intake, Shooter shooter, Arm arm, DigitalInput d, AutoAimAndRange a){
+    public AutoCommandGroup(Drivetrain drivetrain, boolean actuallyRun, Intake intake, Shooter shooter, Arm arm, DigitalInput d, AutoAimAndRange aAR){
         this.drivetrain = drivetrain;
-        autoAimAndRange = a;
+        autoAimAndRange = aAR;
         if (!actuallyRun) return;
 
         addCommands(

@@ -48,7 +48,7 @@ public class RobotContainer {
     private final Intake intake;
     private final Shooter shooter;
     private final DigitalInput reflectiveSensor;
-    private AutoAimAndRange a;
+    private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
 
     private final Climb climb;
@@ -88,7 +88,7 @@ public class RobotContainer {
         // the sign of the delta for these commands can be used to change the direction
         climb = new Climb(climber, +12);
         deployClimber = new DeployClimber(climber, +1);
-        a = new AutoAimAndRange(hardwareDrivetrain, p);
+        aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         configureButtonBindings();
     }
 
@@ -158,7 +158,7 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, a);
+        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
         autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
@@ -180,7 +180,7 @@ public class RobotContainer {
         // manual climber
         if(climber.isDeployed()) climber.setBoth(joyManips.getRawAxis(1));
 
-        //a.periodic1();
+        //aAR.periodic1();
 
         /*
         final boolean MANUAL_CLIMB = false;

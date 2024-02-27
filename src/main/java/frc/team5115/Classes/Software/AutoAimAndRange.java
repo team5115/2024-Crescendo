@@ -29,17 +29,16 @@ import org.photonvision.PhotonUtils;
 
 
 public class AutoAimAndRange extends SubsystemBase{
-    HardwareDrivetrain j;
-    Drivetrain d;
+    HardwareDrivetrain hd;
+   // Drivetrain d;
     NAVx gyro;
     PhotonVision photonVision;
     int x = 0;
 
     
-    public AutoAimAndRange(HardwareDrivetrain j, PhotonVision photonVision){  
-        this.j = j;
+    public AutoAimAndRange(HardwareDrivetrain hd, PhotonVision photonVision){  
+        this.hd = hd;
         this.photonVision = photonVision;
-        x=1;
 
 
     }
@@ -90,14 +89,14 @@ public class AutoAimAndRange extends SubsystemBase{
 
 
 
-       j.drive(forwardSpeed, 0, rotationSpeed, true, false);
+       hd.drive(forwardSpeed, 0, rotationSpeed, true, false);
 
      }
 
      else{
         forwardSpeed = 100000;
         rotationSpeed = 10000;
-        j.drive(0, 0, 0, true, false); 
+        hd.drive(0, 0, 0, true, false); 
      }
 
      double[] x = {forwardSpeed/0.03, rotationSpeed/0.0025};
