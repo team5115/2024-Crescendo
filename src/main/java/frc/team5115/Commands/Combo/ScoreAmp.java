@@ -49,7 +49,7 @@ public class ScoreAmp extends Command {
             this.intake = intake;
             this.shooter = shooter;
             addCommands(
-                new DeployArm(intake, shooter, arm, 92).withTimeout(5),
+                new DeployArm(intake, shooter, arm, 100).withTimeout(5),
                 new InstantCommand(intake :: out),
                 new WaitForSensorChange(false, sensor).withTimeout(5),
                 new WaitCommand(3),
@@ -60,7 +60,7 @@ public class ScoreAmp extends Command {
         public void interrupt() {
             intake.stop();
             shooter.stop();
-            cancel();
+            cancel(); 
         }
     }
 }
