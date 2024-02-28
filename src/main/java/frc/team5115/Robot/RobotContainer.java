@@ -99,7 +99,7 @@ public class RobotContainer {
         HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
 
-        HardwareAmper hardwareAmper = new HardwareAmper(Constants.SNOWBLOWER_MOTOR_ID, -1); // TODO canID and encoderID for snowblower motor & encoder
+        HardwareAmper hardwareAmper = new HardwareAmper(Constants.SNOWBLOWER_MOTOR_ID); // TODO canID and encoderID for snowblower motor & encoder
         amper = new Amper(hardwareAmper);
 
         // the sign of the delta for these commands can be used to change the direction
