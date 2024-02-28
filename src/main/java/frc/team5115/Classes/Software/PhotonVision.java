@@ -103,9 +103,9 @@ public class PhotonVision extends SubsystemBase{
          photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
 
 
-
-
     }
+
+    
 
     /**
  * 
@@ -319,10 +319,11 @@ public double getRange(){
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
                 int ID = -1;
-                for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                                ID = result.getBestTarget().getFiducialId();  
+                if(isThereID4()){
+                for(PhotonTrackedTarget i : result.getTargets()){
+                        if(i.getFiducialId() == 4){
+                                ID = 4;
+                                target = aprilTagList.get(ID-1);
                         }
                 }
                 // First calculate range
@@ -331,10 +332,45 @@ public double getRange(){
                                 VisionConstants.cameraPosY,
                                 aprilTagList.get(ID-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+                                Units.degreesToRadians(getID4().getPitch())); 
 
                 return (range);
-                
+        }
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+        }
+
+
+         return 0;
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+      public double getRangeID7(){
+        ArrayList<Double> x = new ArrayList<>();
+        AprilTag target = new AprilTag(7, null);
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                int ID = -1;
+                if(isThereID4()){
+                for(PhotonTrackedTarget i : result.getTargets()){
+                        if(i.getFiducialId() == 7){
+                                ID = 7;
+                                target = aprilTagList.get(ID-1);
+                        }
+                }
+                // First calculate range
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(ID-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
+                                Units.degreesToRadians(getID7().getPitch())); 
+
+                return (range);
+        }
                 // Use this range as the measurement we give to the PID controller.
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
