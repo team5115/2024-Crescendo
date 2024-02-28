@@ -178,7 +178,9 @@ public class RobotContainer {
     public void teleopPeriodic() {
 
         // manual climber
-        if(climber.isDeployed()) climber.setBoth(joyManips.getRawAxis(1));
+        if(climber.isDeployed()) {
+            climber.setBoth(joyManips.getRawAxis(1));
+        }
 
         //aAR.periodic1();
 
