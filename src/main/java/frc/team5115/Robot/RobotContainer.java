@@ -1,5 +1,10 @@
 package frc.team5115.Robot;
 
+import org.photonvision.PhotonVersion;
+
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
@@ -50,7 +55,8 @@ public class RobotContainer {
     private final DigitalInput reflectiveSensor;
     private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
-
+    private Paths paths;
+    private final AutoBuilder autoBuilder;
     private final Climb climb;
     private final DeployClimber deployClimber;
 
@@ -66,6 +72,8 @@ public class RobotContainer {
         joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
+        autoBuilder = new AutoBuilder();
+
 
         PhotonVision p = new PhotonVision();
 
@@ -91,6 +99,35 @@ public class RobotContainer {
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         configureButtonBindings();
     }
+
+    // public void registerCommand() {
+
+    // // Register Named Commands for pathplanner
+
+    //   NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
+
+    //   NamedCommands.registerCommand("top to middle", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("top to bottom", drivetrain.pathplanner());
+
+    //   NamedCommands.registerCommand("middle to bottom", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("middle to top", drivetrain.pathplanner());
+
+    //   NamedCommands.registerCommand("bottom to top", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("bottom to middle", drivetrain.pathplanner());
+
+    //   NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
+
+    //   NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
+
+    //   NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
+
+    // }
 
     public void configureButtonBindings() {
 
