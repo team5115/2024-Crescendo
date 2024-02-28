@@ -10,6 +10,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,7 +30,7 @@ public class HardwareArm extends SubsystemBase{
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
     
-    private final DutyCycleEncoder armEncoder;
+    // private final DutyCycleEncoder armEncoder;
 
 
     public HardwareArm(I2CHandler i2c, int canIdRight, int canIdLeft){
@@ -47,7 +48,7 @@ public class HardwareArm extends SubsystemBase{
         turnRight.setInverted(false);
         turnLeft.setInverted(true);
 
-        armEncoder = new DutyCycleEncoder(0);
+        // armEncoder = new DutyCycleEncoder(0);
         
     }
 
@@ -99,12 +100,12 @@ public class HardwareArm extends SubsystemBase{
         turnRight.setIdleMode(mode);
         turnLeft.setIdleMode(mode);
     }
-    public void restEncoder(){
-        armEncoder.reset();
-    }
+    // public void restEncoder(){
+    //     armEncoder.reset();
+    // }
 
-    public double getEncoderPosition(){
-        return armEncoder.getPositionOffset() * 0.5;
-    }
+    // public double getEncoderPosition(){
+    //     return armEncoder.getPositionOffset() * 0.5;
+    // }
 
 }
