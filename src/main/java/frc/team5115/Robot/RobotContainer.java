@@ -207,6 +207,6 @@ public class RobotContainer {
         //   System.out.println("bno angle: " + i2cHandler.getPitch());
 
         arm.updateController(i2cHandler);
-        //drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }
