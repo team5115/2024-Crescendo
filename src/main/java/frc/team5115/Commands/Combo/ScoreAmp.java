@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.team5115.Classes.Software.Amper;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.Shooter;
@@ -15,11 +16,11 @@ public class ScoreAmp extends Command {
     final Intake intake;
     final Shooter shooter;
 
-    public ScoreAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+    public ScoreAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, Amper amper) {
         addRequirements(intake, shooter, arm);
         this.intake = intake;
         this.shooter = shooter;
-        wrapped = new WrappedScoreAmp(intake, shooter, arm, sensor);
+        wrapped = new WrappedScoreAmp(intake, shooter, arm, sensor, amper);
     }
 
     @Override
@@ -45,15 +46,22 @@ public class ScoreAmp extends Command {
         final Intake intake;
         final Shooter shooter;
 
-        public WrappedScoreAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+        public WrappedScoreAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, Amper amper) {
             this.intake = intake;
             this.shooter = shooter;
             addCommands(
+                // deploy both
                 new DeployArm(intake, shooter, arm, 100).withTimeout(5),
+                new SpinAmper(amper, Amper.OUT_ANGLE, 0.1),
+
+                // score
                 new InstantCommand(intake :: out),
                 new WaitForSensorChange(false, sensor).withTimeout(5),
                 new WaitCommand(3),
-                new InstantCommand(intake :: stop)
+                new InstantCommand(intake :: stop),
+                
+                // stow amper
+                new SpinAmper(amper, Amper.IN_ANGLE, -0.1)
             );
         }
 

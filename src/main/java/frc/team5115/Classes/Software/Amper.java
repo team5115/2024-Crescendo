@@ -1,45 +1,40 @@
 package frc.team5115.Classes.Software;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareAmper;
 
 public class Amper extends SubsystemBase {
-    private HardwareAmper hardwareAmper;
 
-    private PIDController pid;
-    /*public final double kp;
-    public final double ki;
-    public final double kd;*/
-    public final int PID_TOLERANCE = 0;
+    public final static Angle IN_ANGLE = new Angle(0);
+    public final static Angle OUT_ANGLE = new Angle(90); // TODO determine deployed angle
 
-    private final Angle setpoint;
+    private final HardwareAmper hardwareAmper;
+    private final Angle angle;
     
-    public Amper(){
-        hardwareAmper = new HardwareAmper();
-        pid = new PIDController(0, 0, 0);
-        setpoint = new Angle(0);
-    }
-
-    public Angle getSetpoint(){
-        return setpoint;
-    }
-
-    public boolean updateController(){
-        final double pidOutput = pid.calculate(getAngle().getDegrees(0), setpoint.getDegrees(0));
-
-        boolean atSetpoint = atSetpoint();
-        if(!atSetpoint) hardwareAmper.set(pidOutput);
-        return atSetpoint;
-    }
-
-    public boolean atSetpoint(){
-        return Math.abs(getAngle().angle-setpoint.angle)>PID_TOLERANCE;
+    public Amper(HardwareAmper hardwareAmper){
+        this.hardwareAmper = hardwareAmper;
+        angle = new Angle(IN_ANGLE.angle);
     }
 
     public Angle getAngle(){
-        return hardwareAmper.getAngle();
+        angle.angle = hardwareAmper.getAngle();
+        return angle;
     }
     
+    public void forward() {
+        hardwareAmper.set(+0.2);
+    }
+
+    public void backward() {
+        hardwareAmper.set(-0.2);
+    }
+
+    public void stop(){
+        hardwareAmper.set(0);
+    }
+
+    public void setSpeed(double speed) {
+        hardwareAmper.set(speed);
+    }
 }

@@ -19,12 +19,14 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
+import frc.team5115.Classes.Hardware.HardwareAmper;
 import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Classes.Software.Amper;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.AutoAimAndRange;
 import frc.team5115.Classes.Software.Climber;
@@ -55,6 +57,7 @@ public class RobotContainer {
     private final Arm arm;
     private final Intake intake;
     private final Shooter shooter;
+    private final Amper amper;
     private final DigitalInput reflectiveSensor;
     private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
@@ -95,6 +98,9 @@ public class RobotContainer {
         HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
         HardwareClimber rightClimber = new HardwareClimber(Constants.CLIMBER_RIGHT_MOTOR_ID, false, Constants.CLIMB_RIGHT_SENSOR_ID);
         climber = new Climber(leftClimber, rightClimber);
+
+        HardwareAmper hardwareAmper = new HardwareAmper(Constants.SNOWBLOWER_MOTOR_ID, -1); // TODO canID and encoderID for snowblower motor & encoder
+        amper = new Amper(hardwareAmper);
 
         // the sign of the delta for these commands can be used to change the direction
         climb = new Climb(climber, +12);
@@ -149,7 +155,7 @@ public class RobotContainer {
         );
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor));
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         // new JoystickButton(joyManips, XboxController.Button.kB.value)
         // .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
@@ -164,9 +170,6 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
         .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-        new JoystickButton(joyManips, XboxController.Button.kStart.value)
-        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));
@@ -189,6 +192,8 @@ public class RobotContainer {
     }
 
     public void testPeriodic() {
+        amper.setSpeed(joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
+        System.out.println(amper.getAngle());
     }
 
     public void startAuto(){

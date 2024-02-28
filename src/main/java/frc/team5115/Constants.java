@@ -26,6 +26,7 @@ public class Constants{
     public static final byte BACK_RIGHT_TURN_MOTOR_ID = 25;
 
     public static final byte INTAKE_MOTOR_ID = 32;
+    public static final byte SNOWBLOWER_MOTOR_ID = 21;
     public static final byte ARM_LEFT_MOTOR_ID = 3;
     public static final byte ARM_RIGHT_MOTOR_ID = 33;
     public static final byte SHOOTER_CLOCKWISE_MOTOR_ID = 27;
