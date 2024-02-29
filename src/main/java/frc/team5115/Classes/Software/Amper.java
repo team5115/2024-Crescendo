@@ -7,7 +7,7 @@ import frc.team5115.Classes.Hardware.HardwareAmper;
 public class Amper extends SubsystemBase {
 
     public final static Angle IN_ANGLE = new Angle(0);
-    public final static Angle OUT_ANGLE = new Angle(-180); // TODO determine deployed
+    public final static Angle OUT_ANGLE = new Angle(170); // TODO real value should be 183 degs for deployed
 
     private final HardwareAmper hardwareAmper;
     private final Angle angle;

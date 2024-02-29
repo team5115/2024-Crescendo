@@ -8,23 +8,25 @@ public class SpinAmper extends Command {
     private final Amper amper;
     private final Angle setpoint;
     private final double speed;
+    private final double direction;
     private final double tolerance;
     
     public SpinAmper(Amper amper, Angle setpoint, double speed) {
         this.amper = amper;
         this.setpoint = setpoint;
-        this.speed = speed;
+        this.speed = Math.abs(speed);
+        this.direction = Math.signum(speed);
         tolerance = 5;
     }
 
     @Override
     public void initialize() {
-        amper.setSpeed(speed);
+        amper.setSpeed(speed * direction);
     }
 
     @Override
     public boolean isFinished() {
-        final double delta = amper.getAngle().getDelta(setpoint);
+        final double delta = amper.getAngle().getDelta(setpoint, (int)direction);
         return Math.abs(delta) < tolerance;
     }
 

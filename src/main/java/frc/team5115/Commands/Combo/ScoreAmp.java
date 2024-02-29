@@ -20,7 +20,7 @@ public class ScoreAmp extends SequentialCommandGroup {
         addCommands(
             // deploy both
             new DeployArm(intake, shooter, arm, 100).withTimeout(5),
-            new SpinAmper(amper, Amper.OUT_ANGLE, 0.5),
+            new SpinAmper(amper, Amper.OUT_ANGLE, +0.15),
 
             // score
             new InstantCommand(intake :: out),
@@ -29,7 +29,7 @@ public class ScoreAmp extends SequentialCommandGroup {
             new InstantCommand(intake :: stop),
             
             // stow amper
-            new SpinAmper(amper, Amper.IN_ANGLE, -0.1)
+            new SpinAmper(amper, Amper.IN_ANGLE, -0.15)
         );
     }
 }
