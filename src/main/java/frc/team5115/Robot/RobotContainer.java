@@ -142,6 +142,7 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
         .onTrue(deployClimber);
+        
         new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
         .onTrue(climb);
 
@@ -151,25 +152,21 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kA.value)
         .onTrue(new IntakeSequence(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf)
-        );
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
-        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper).withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
-
-        // new JoystickButton(joyManips, XboxController.Button.kB.value)
-        // .onTrue(new ShootSequence(intake, shooter, arm, reflectiveSensor)
-        // .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-        final Command prepareShoot = new PrepareShoot(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
-        final Command triggerShoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+        .onTrue(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper)
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(prepareShoot)
-        .onFalse(triggerShoot);
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
+        .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kY.value)
-        .onTrue(new StowArm(intake, shooter, arm).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        .onTrue(new StowArm(intake, shooter, arm)
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));
