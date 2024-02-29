@@ -1,5 +1,7 @@
 package frc.team5115.Classes.Software;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -9,6 +11,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
@@ -40,6 +43,8 @@ public class Drivetrain extends SubsystemBase {
             getStartingPoseGuess());
 
         System.out.println("Angle from navx" + navx.getYawDeg());
+
+        AutoBuilder.configureHolonomic(this :: getEstimatedPose, null, null, null, null, null, navx);
     }
 
     private Pose2d getStartingPoseGuess() {
@@ -119,4 +124,13 @@ public class Drivetrain extends SubsystemBase {
     public double getYawDeg() {
         return navx.getPitchDeg();
     }
+
+    // public void resetPose(){
+    //     poseEstimator.resetPosition(null, null, getEstimatedPose());
+    // }
+
+    // public Command pathplanner(){
+    //     return AutoBuilder.getAutonomousCommand();
+        
+    // }
 }
