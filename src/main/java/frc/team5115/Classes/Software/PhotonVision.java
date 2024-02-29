@@ -143,7 +143,7 @@ var result = photonCameraNA.getLatestResult();
 
 
 public PhotonTrackedTarget getID7(){
-        var result = photonCameraNA.getLatestResult(); 
+        var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
@@ -155,11 +155,12 @@ public PhotonTrackedTarget getID7(){
 }
 
 public boolean isThereID7(){
-        var result = photonCameraNA.getLatestResult(); 
+        var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
                 if(i.getFiducialId() == 7){
+                        System.out.println("True");
                         return true;
                 }
         }
@@ -167,7 +168,7 @@ public boolean isThereID7(){
 }
 
 public PhotonTrackedTarget getID4(){
-        var result = photonCameraNA.getLatestResult(); 
+        var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
@@ -179,7 +180,7 @@ public PhotonTrackedTarget getID4(){
 }
 
 public boolean isThereID4(){
-        var result = photonCameraNA.getLatestResult(); 
+        var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
