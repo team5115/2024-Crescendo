@@ -52,7 +52,7 @@ public class ScoreAmp extends Command {
             addCommands(
                 // deploy both
                 new DeployArm(intake, shooter, arm, 100).withTimeout(5),
-                new SpinAmper(amper, Amper.OUT_ANGLE, 0.1),
+                new SpinAmper(amper, Amper.OUT_ANGLE, 0.5),
 
                 // score
                 new InstantCommand(intake :: out),
