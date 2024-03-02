@@ -15,7 +15,7 @@ public class PrepareAmp extends SequentialCommandGroup {
     public PrepareAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, Amper amper) {
         addCommands(
             // deploy both
-            new DeployArm(intake, shooter, arm, 100).alongWith(new WaitCommand(1)),
+            new DeployArm(intake, shooter, arm, 102).alongWith(new WaitCommand(1)),
             new SpinAmper(amper, Amper.OUT_ANGLE).withTimeout(2)
         );
     }
