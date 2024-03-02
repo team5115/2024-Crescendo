@@ -112,18 +112,18 @@ public class RobotContainer {
 
     // public void registerCommand() {
 
-    // // Register Named Commands for pathplanner
+    // Register Named Commands for pathplanner
 
     //   NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("top to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("top to bottom", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("Path Uno", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("Path Dos", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("middle to bottom", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("middle to top", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("Path Tres", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("Path Quatro", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("bottom to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("bottom to middle", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("Path Cinco", drivetrain.pathplanner());
+    //   NamedCommands.registerCommand("Path Seis", drivetrain.pathplanner());
 
     //   NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
     //   NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
@@ -204,12 +204,13 @@ public class RobotContainer {
         drivetrain.init();
 
         autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-        autoCommandGroup.schedule();
+        //autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
+        aAR.if7();
         arm.updateController(i2cHandler);
     }
 

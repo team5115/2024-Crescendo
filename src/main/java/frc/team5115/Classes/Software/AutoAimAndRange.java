@@ -78,11 +78,12 @@ public class AutoAimAndRange extends SubsystemBase{
 
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
-        if(photonVision.isThereID4()){
-            rotationSpeed = -turnController.calculate(photonVision.getAngleID4(), 0); 
-        } else if (photonVision.isThereID7()){
-            rotationSpeed = -turnController.calculate(photonVision.getAngleID7(), 0); 
-        }
+        rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
+
+        hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
+            
+
+      }
         //System.out.println(photonVision.getRange());
      
     
@@ -104,7 +105,17 @@ public class AutoAimAndRange extends SubsystemBase{
      return x;
 
     }
+
+    public void if7(){
+        if(photonVision.isThereID7()) hd.drive(1, 0, 0, false, false);
+        else hd.drive(0, 0, 0, true, false);
+    }
     
+     public void if4(){
+        if(photonVision.isThereID4()) hd.drive(1, 0, 0, false, false);
+        else hd.drive(0, 0, 0, true, false);
+    }
+
     public boolean isFinished(double[] i){ 
 
          
