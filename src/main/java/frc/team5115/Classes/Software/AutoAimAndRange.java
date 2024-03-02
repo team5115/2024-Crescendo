@@ -74,23 +74,26 @@ public class AutoAimAndRange extends SubsystemBase{
              
 
         //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
-        forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+        //forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
 
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
-            rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
+        rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
 
-            hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
+        hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
             
-        }
+
+      }
         //System.out.println(photonVision.getRange());
      
     
 
 
 
+       hd.drive(forwardSpeed, 0, rotationSpeed, true, false);
 
-    
+     }
+
      else{
         forwardSpeed = 100000;
         rotationSpeed = 10000;
