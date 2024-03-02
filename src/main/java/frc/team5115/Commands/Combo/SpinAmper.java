@@ -7,13 +7,15 @@ import frc.team5115.Classes.Software.Amper;
 public class SpinAmper extends Command {
     private final Amper amper;
     private final Angle setpoint;
-    private final double tolerance;
+    private final double angle_tolerance;
+    private final double pid_tolerance;
     private double pid;
     
     public SpinAmper(Amper amper, Angle setpoint) {
         this.amper = amper;
         this.setpoint = setpoint;
-        tolerance = 3.5;
+        angle_tolerance = 3.5;
+        pid_tolerance = 0.02;
     }
 
     @Override
@@ -25,7 +27,9 @@ public class SpinAmper extends Command {
     public boolean isFinished() {
         final double delta = amper.getAngle().getDelta(setpoint);
         System.out.println("Amper delta: " + delta);
-        return Math.abs(delta) < tolerance;
+
+        // return Math.abs(delta) < angle_tolerance;
+        return Math.abs(pid) < pid_tolerance;
     }
 
     @Override

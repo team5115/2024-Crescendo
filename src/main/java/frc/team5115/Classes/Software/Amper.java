@@ -11,7 +11,7 @@ import frc.team5115.Classes.Hardware.HardwareAmper;
 public class Amper extends SubsystemBase {
 
     public final static Angle IN_ANGLE = new Angle(0);
-    public final static Angle OUT_ANGLE = new Angle(175);
+    public final static Angle OUT_ANGLE = new Angle(178);
 
     private final HardwareAmper hardwareAmper;
     private final Angle angle;
@@ -33,11 +33,11 @@ public class Amper extends SubsystemBase {
     }
     
     public void forward() {
-        hardwareAmper.set(+0.2);
+        hardwareAmper.set(+0.6);
     }
 
     public void backward() {
-        hardwareAmper.set(-0.2);
+        hardwareAmper.set(-0.6);
     }
 
     public void stop(){

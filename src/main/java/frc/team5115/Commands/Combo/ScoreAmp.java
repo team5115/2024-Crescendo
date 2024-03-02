@@ -15,14 +15,16 @@ public class ScoreAmp extends SequentialCommandGroup {
         
         addCommands(
             // score
-            new InstantCommand(intake :: out),
+            new InstantCommand(intake :: ampOut),
             new WaitForSensorChange(false, sensor).withTimeout(5),
-            new WaitCommand(0.15),
+            new WaitCommand(0.22),
             new InstantCommand(intake :: stop),
-            new WaitCommand(2.0),
+            new WaitCommand(1.5),
+            // new WiggleAmper(amper),
             
-            // stow amper
-            new SpinAmper(amper, Amper.IN_ANGLE)
+            // reset/stow
+            new SpinAmper(amper, Amper.IN_ANGLE),
+            new InstantCommand(shooter :: breakMode)
         );
     }
 }
