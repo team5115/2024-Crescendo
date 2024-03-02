@@ -40,6 +40,6 @@ public class DeployArm extends Command {
     public void end(boolean interrupted) {
         intake.stop();
         shooter.stop();
-        System.out.println("DeployArm finished");
+        System.out.println("DeployArm finished @ " + arm.getAngle());
     }
 }
