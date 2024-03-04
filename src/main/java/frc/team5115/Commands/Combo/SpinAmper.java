@@ -26,10 +26,8 @@ public class SpinAmper extends Command {
     @Override
     public boolean isFinished() {
         final double delta = amper.getAngle().getDelta(setpoint);
-        System.out.println("Amper delta: " + delta);
-
-        // return Math.abs(delta) < angle_tolerance;
-        return Math.abs(pid) < pid_tolerance;
+        System.out.println("Amper delta: " + delta + " | PID: " + pid);
+        return Math.abs(pid) < pid_tolerance && Math.abs(delta) < angle_tolerance;
     }
 
     @Override

@@ -49,7 +49,7 @@ public class Amper extends SubsystemBase {
     }
 
     public double spinPid(Angle setpoint) {
-        pidController.setP(entry.getDouble(pidController.getP()));
+        // pidController.setP(entry.getDouble(pidController.getP()));
         final double pidOutput = pidController.calculate(getAngle().getDegrees(-60), setpoint.getDegrees(-60));
         hardwareAmper.set(pidOutput);
         return pidOutput;
