@@ -16,7 +16,7 @@ public class ScoreAmp extends SequentialCommandGroup {
         
         addCommands(
             // score
-            new InstantCommand(intake :: ampOut),
+            new InstantCommand(intake :: fastOut),
             new WaitForSensorChange(false, sensor).withTimeout(5),
             new WaitCommand(0.22),
             new InstantCommand(intake :: stop),
