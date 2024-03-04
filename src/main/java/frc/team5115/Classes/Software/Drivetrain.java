@@ -1,6 +1,9 @@
 package frc.team5115.Classes.Software;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -14,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
+import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
 
@@ -33,6 +37,26 @@ public class Drivetrain extends SubsystemBase {
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0,
                 new TrapezoidProfile.Constraints(6.28, 3.14))); 
+
+        AutoBuilder.configureHolonomic(
+            this::getEstimatedPose,
+            this::resetPose,
+            hardwareDrivetrain::getChassisSpeeds,
+            hardwareDrivetrain::driveChassisSpeeds,
+            new HolonomicPathFollowerConfig(
+                new PIDConstants(5),
+                new PIDConstants(5),
+                3,
+                DriveConstants.kTrackWidth,
+                new ReplanningConfig()
+            ),
+            this::isRedTeam,
+            this
+        );
+    }
+
+    public boolean isRedTeam() {
+        return false;
     }
 
     public void init() {
@@ -129,9 +153,9 @@ public class Drivetrain extends SubsystemBase {
         return navx.getPitchDeg();
     }
 
-    // public void resetPose(){
-    //     poseEstimator.resetPosition(null, null, getEstimatedPose());
-    // }
+    public void resetPose(Pose2d pose){
+        poseEstimator.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
+    }
 
     // public Command pathplanner(){
     //     return AutoBuilder.getAutonomousCommand();

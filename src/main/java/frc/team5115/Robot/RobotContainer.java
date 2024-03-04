@@ -63,7 +63,6 @@ public class RobotContainer {
     private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
     private Paths paths;
-    private final AutoBuilder autoBuilder;
     private final Climb climb;
     private final DeployClimber deployClimber;
 
@@ -79,8 +78,6 @@ public class RobotContainer {
         joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
-        autoBuilder = new AutoBuilder();
-
 
         PhotonVision p = new PhotonVision();
 
@@ -203,6 +200,14 @@ public class RobotContainer {
         navx.resetNAVx();
         drivetrain.stop();
         drivetrain.init();
+
+        if (AutoBuilder.isConfigured()) {
+            PathPlannerPath path = PathPlannerPath.fromPathFile("Unbasic Test");
+            Command test = AutoBuilder.followPath(path);
+            test.schedule();
+        } else {
+            System.out.println("ERROR! AutoBuilder has not been configured!");
+        }
 
         autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
         //autoCommandGroup.schedule();
