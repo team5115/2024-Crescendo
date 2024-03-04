@@ -107,6 +107,7 @@ public class RobotContainer {
         climb = new Climb(climber, +12);
         deployClimber = new DeployClimber(climber, +1);
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
+
         configureButtonBindings();
     }
 
@@ -209,7 +210,7 @@ public class RobotContainer {
     }
 
     public void autoPeriod() {
-        // drivetrain.updateOdometry();
+        drivetrain.updatePoseEstimator();
         aAR.if7();
         arm.updateController(i2cHandler);
     }

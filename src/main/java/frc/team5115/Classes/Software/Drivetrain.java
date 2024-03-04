@@ -100,6 +100,10 @@ public class Drivetrain extends SubsystemBase {
         hardwareDrivetrain.setModuleStates(moduleStates);
     }
 
+    public void updatePoseEstimator() {
+        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
+    }
+
     public void stop() {
         hardwareDrivetrain.drive(0, 0, 0, false, false);
     }
