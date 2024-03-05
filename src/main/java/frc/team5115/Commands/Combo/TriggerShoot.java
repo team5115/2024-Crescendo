@@ -13,7 +13,7 @@ public class TriggerShoot extends SequentialCommandGroup {
         addRequirements(intake, shooter, arm);
         addCommands(
             new InstantCommand(intake :: fastIn),
-            new WaitCommand(1.5),
+            new WaitCommand(0.5),
             new StopBoth(intake, shooter)
         );
     }

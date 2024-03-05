@@ -3,6 +3,7 @@ package frc.team5115.Classes.Hardware;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -43,5 +44,10 @@ public class HardwareShooter extends SubsystemBase{
 
     public double getCounterClockwiseVelocity() {
         return ccwEncoder.getVelocity();
+    }
+
+    public void setIdleMode(IdleMode mode) {
+        cwMotor.setIdleMode(mode);
+        ccwMotor.setIdleMode(mode);
     }
 }

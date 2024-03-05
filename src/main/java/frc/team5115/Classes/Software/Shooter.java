@@ -1,5 +1,7 @@
 package frc.team5115.Classes.Software;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,6 +47,10 @@ public class Shooter extends SubsystemBase {
         hardwareShooter.setNormalized(0.08);
     }
 
+    public void ampCockSpeed() {
+        hardwareShooter.setNormalized(0.15);
+    }
+
     public void fast () {
         hardwareShooter.setNormalized(+0.9);
     }
@@ -82,5 +88,13 @@ public class Shooter extends SubsystemBase {
         System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
 
         return new double[] { cwPIDValue, ccwPIDValue };
+    }
+
+    public void breakMode() {
+        hardwareShooter.setIdleMode(IdleMode.kBrake);
+    }
+
+    public void coastMode() {
+        hardwareShooter.setIdleMode(IdleMode.kCoast);
     }
 }

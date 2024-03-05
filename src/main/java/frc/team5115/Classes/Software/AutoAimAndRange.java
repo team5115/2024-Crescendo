@@ -73,33 +73,40 @@ public class AutoAimAndRange extends SubsystemBase{
 
              
 
-        //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
-        forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+            //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
+            //forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
 
-        // Also calculate angular power
-        // -1.0 required to ensure positive PID controller effort _increases_ yaw
+            // Also calculate angular power
+            // -1.0 required to ensure positive PID controller effort _increases_ yaw
             rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
+
+            hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
+            
+
         }
-        //System.out.println(photonVision.getRange());
-     
-    
 
+        else{
+            forwardSpeed = 100000;
+            rotationSpeed = 10000;
+            hd.drive(0, 0, 0, true, false); 
+        }
 
+        double[] x = {forwardSpeed/0.03, rotationSpeed/0.0025};
 
-
-    
-     else{
-        forwardSpeed = 100000;
-        rotationSpeed = 10000;
-        hd.drive(0, 0, 0, true, false); 
-     }
-
-     double[] x = {forwardSpeed/0.03, rotationSpeed/0.0025};
-
-     return x;
+        return x;
 
     }
+
+    public void if7(){
+        if(photonVision.isThereID7()) hd.drive(1, 0, 0, false, false);
+        else hd.drive(0, 0, 0, true, false);
+    }
     
+     public void if4(){
+        if(photonVision.isThereID4()) hd.drive(1, 0, 0, false, false);
+        else hd.drive(0, 0, 0, true, false);
+    }
+
     public boolean isFinished(double[] i){ 
 
          
