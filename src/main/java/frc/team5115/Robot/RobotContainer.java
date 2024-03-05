@@ -202,7 +202,7 @@ public class RobotContainer {
         drivetrain.init();
 
         if (AutoBuilder.isConfigured()) {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("Unbasic Test");
+            PathPlannerPath path = PathPlannerPath.fromPathFile("test one");
             Command test = AutoBuilder.followPath(path);
             test.schedule();
         } else {
