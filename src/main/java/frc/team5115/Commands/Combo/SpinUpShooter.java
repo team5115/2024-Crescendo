@@ -36,6 +36,7 @@ public class SpinUpShooter extends Command{
     @Override
     public void execute() {
         double[] x = shooter.spinByPid(rpm * 1);
+        System.out.println("error amount: " + x[0] + " & " + x[1]);
         atSpeed = Math.abs(x[0]) < 10 && Math.abs(x[1]) < 10;
     }
 

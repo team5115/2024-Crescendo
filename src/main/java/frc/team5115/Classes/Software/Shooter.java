@@ -85,7 +85,7 @@ public class Shooter extends SubsystemBase {
         cwVolts += cwPIDValue;
         cwVolts += ccwPIDValue;
         hardwareShooter.setVoltage(cwVolts, ccwVolts);
-        System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
+        //System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
 
         return new double[] { cwPIDValue, ccwPIDValue };
     }
