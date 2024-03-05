@@ -15,15 +15,15 @@ public class Constants{
     public static final boolean MECANUM = false; 
   
     //motor ids
-    public static final byte FRONT_LEFT_MOTOR_ID = 1;
+    public static final byte FRONT_LEFT_MOTOR_ID = 2;
     public static final byte FRONT_RIGHT_MOTOR_ID = 7;
     public static final byte BACK_LEFT_MOTOR_ID = 3;
-    public static final byte BACK_RIGHT_MOTOR_ID = 5;
+    public static final byte BACK_RIGHT_MOTOR_ID = 6;
 
-    public static final byte FRONT_LEFT_TURN_MOTOR_ID = 2;
+    public static final byte FRONT_LEFT_TURN_MOTOR_ID = 1;
     public static final byte FRONT_RIGHT_TURN_MOTOR_ID = 8;
     public static final byte BACK_LEFT_TURN_MOTOR_ID = 4;
-    public static final byte BACK_RIGHT_TURN_MOTOR_ID = 6;
+    public static final byte BACK_RIGHT_TURN_MOTOR_ID = 5;
 
     public static final byte INTAKE_MOTOR_ID = 32;
     public static final byte SNOWBLOWER_MOTOR_ID = 21;
@@ -71,6 +71,8 @@ public class Constants{
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
+    // robot radius -- from center of robot to furthest module
+    public static final double kRobotRadius = Units.inchesToMeters(16.26);
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(23);
     // Distance between centers of right and left wheels on robot

@@ -57,10 +57,10 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
+                new PIDConstants(0.05),
                 new PIDConstants(0.1),
-                new PIDConstants(0.1),
-                0.1,
-                DriveConstants.kTrackWidth,
+                0.01,
+                DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
             this::isRedTeam,
@@ -113,6 +113,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
     public Pose2d getEstimatedPose() {
+        System.out.println(poseEstimator.getEstimatedPosition());
         return poseEstimator.getEstimatedPosition();
     }
 
