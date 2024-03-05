@@ -15,7 +15,7 @@ public class SpinAmper extends Command {
         this.amper = amper;
         this.setpoint = setpoint;
         angle_tolerance = 3.5;
-        pid_tolerance = 0.02;
+        pid_tolerance = 0.1;
     }
 
     @Override
