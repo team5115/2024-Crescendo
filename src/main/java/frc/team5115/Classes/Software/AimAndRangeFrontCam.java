@@ -60,45 +60,58 @@ public class AimAndRangeFrontCam extends SubsystemBase{
 
 // Calculate robot's field relative pose
 
-    public double[] periodic1() { 
-        double forwardSpeed = 0;
-        double rotationSpeed = 0;
-        double GOAL_RANGE_METERS = 0.3; // cam height = 0.68
+public void periodicIDBased() { 
+    double forwardSpeed = 0;
+    double rotationSpeed = 0;
+    double GOAL_RANGE_METERS = 0.3; // cam height = 0.68
+    
+
+    // Vision-alignment mode
+        // Query the latest result from PhotonVision
+
+    if(photonVision.isTargetPresent()){
+
+    //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
+    if(photonVision.isThereID4()){
+    forwardSpeed = forwardController.calculate(photonVision.getRangeID4(), GOAL_RANGE_METERS);
+
+    // Also calculate angular power
+    // -1.0 required to ensure positive PID controller effort _increases_ yaw
+        rotationSpeed = -turnController.calculate(photonVision.getAngleID4(), 0); 
+
+        hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
         
-
-        // Vision-alignment mode
-            // Query the latest result from PhotonVision
-
-        if(photonVision.isTargetPresent()){
-
-             
-
-        //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
-        forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
-
-        // Also calculate angular power
-        // -1.0 required to ensure positive PID controller effort _increases_ yaw
-            rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
-        }
-        //System.out.println(photonVision.getRange());
-     
-    
-
-
-
-
-    
-     else{
-        forwardSpeed = 100000;
-        rotationSpeed = 10000;
-        hd.drive(0, 0, 0, true, false); 
-     }
-
-     double[] x = {forwardSpeed/0.03, rotationSpeed/0.0025};
-
-     return x;
-
     }
+    else if(photonVision.isThereID7()){
+    forwardSpeed = forwardController.calculate(photonVision.getRangeID7(), GOAL_RANGE_METERS);
+
+    // Also calculate angular power
+    // -1.0 required to ensure positive PID controller effort _increases_ yaw
+        rotationSpeed = -turnController.calculate(photonVision.getAngleID7(), 0); 
+
+        hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
+    }
+    else{
+    forwardSpeed = 100000;
+    rotationSpeed = 10000;
+   // hd.drive(0, 0, 0, true, false);             
+    }
+}
+    //System.out.println(photonVision.getRange());
+ 
+
+
+
+
+
+
+ else{
+    forwardSpeed = 100000;
+    rotationSpeed = 10000;
+   // hd.drive(0, 0, 0, true, false); 
+ }
+
+}
     
     public boolean isFinished(double[] i){ 
 

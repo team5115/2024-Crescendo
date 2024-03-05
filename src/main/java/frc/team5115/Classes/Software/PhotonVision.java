@@ -97,10 +97,10 @@ public class PhotonVision extends SubsystemBase{
                PhotonPoseEstimator photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraB, robotToCam);
 
       
-         photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraF, VisionConstants.robotToCamL);
-         PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
-         photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
-         photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraF, VisionConstants.robotToCamL);
+         PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraR, VisionConstants.robotToCamR);
 
 
 
@@ -118,7 +118,7 @@ public class PhotonVision extends SubsystemBase{
  }
  
  
-public Pose3d j2(){
+public Pose3d getBestPose(){
 AprilTag target = new AprilTag(0, null);
 var result = photonCameraF.getLatestResult(); 
 
@@ -182,22 +182,6 @@ public boolean isThereID4(){
         return false;
 }
 
-
-
-public Pose3d j2R(){
-AprilTag target = new AprilTag(0, null);
-var result = photonCameraR.getLatestResult(); 
-
- for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                        }
-                }
-       return target.pose;
-}
-
-
-
  public boolean isTargetPresent(){
     return photonCameraF.getLatestResult().hasTargets();
  }
@@ -238,14 +222,11 @@ var result = photonCameraR.getLatestResult();
   
 
 public double getRange(){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(0, null);
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
                 int ID = -1;
                 for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
                                 ID = result.getBestTarget().getFiducialId();  
                         }
                 }
@@ -272,15 +253,13 @@ public double getRange(){
     }
 
     public double getRangeID4(){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(4, null);
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
                 int ID = -1;
-                for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                                ID = result.getBestTarget().getFiducialId();  
+                if(isThereID4()){
+                for(PhotonTrackedTarget i : result.getTargets()){
+                        if(i.getFiducialId() == 4){
+                                ID = 4;
                         }
                 }
                 // First calculate range
@@ -289,10 +268,42 @@ public double getRange(){
                                 VisionConstants.cameraPosY,
                                 aprilTagList.get(ID-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+                                Units.degreesToRadians(getID4().getPitch())); 
 
                 return (range);
-                
+        }
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+        }
+
+
+         return 0;
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+      public double getRangeID7(){
+        var result = photonCameraF.getLatestResult(); 
+            if (result.hasTargets()) { 
+                int ID = -1;
+                if(isThereID4()){
+                for(PhotonTrackedTarget i : result.getTargets()){
+                        if(i.getFiducialId() == 7){
+                                ID = 7;
+                        }
+                }
+                // First calculate range
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(ID-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
+                                Units.degreesToRadians(getID7().getPitch())); 
+
+                return (range);
+        }
                 // Use this range as the measurement we give to the PID controller.
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
@@ -306,19 +317,14 @@ public double getRange(){
     }
 
 
-   public double getID(){
-
+   public double getBestID(){
         if(photonCameraF.getLatestResult().hasTargets()){ 
         double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
         return (FidicualID);
 
         }
-        return 0;
+        return -1;
     }
-
-    
-
-
     
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         // The team assignment of the first grid the robot looks at is the team assignment of the robot
