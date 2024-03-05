@@ -36,7 +36,20 @@ public class Drivetrain extends SubsystemBase {
             new PIDController(1, 0, 0),
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0,
-                new TrapezoidProfile.Constraints(6.28, 3.14))); 
+                new TrapezoidProfile.Constraints(6.28, 3.14)));    
+    }
+
+    public boolean isRedTeam() {
+        return false;
+    }
+
+    public void init() {
+        poseEstimator = new SwerveDrivePoseEstimator(
+            DriveConstants.kDriveKinematics,
+            navx.getYawRotation2D(),
+            hardwareDrivetrain.getModulePositions(),
+            getStartingPoseGuess()
+        );
 
         AutoBuilder.configureHolonomic(
             this::getEstimatedPose,
@@ -53,22 +66,8 @@ public class Drivetrain extends SubsystemBase {
             this::isRedTeam,
             this
         );
-    }
-
-    public boolean isRedTeam() {
-        return false;
-    }
-
-    public void init() {
-        poseEstimator = new SwerveDrivePoseEstimator(
-            DriveConstants.kDriveKinematics,
-            navx.getYawRotation2D(),
-            hardwareDrivetrain.getModulePositions(),
-            getStartingPoseGuess());
-
+        
         System.out.println("Angle from navx" + navx.getYawDeg());
-
-        AutoBuilder.configureHolonomic(this :: getEstimatedPose, null, null, null, null, null, navx);
     }
 
     private Pose2d getStartingPoseGuess() {
