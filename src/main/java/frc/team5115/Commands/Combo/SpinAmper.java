@@ -15,7 +15,7 @@ public class SpinAmper extends Command {
         this.amper = amper;
         this.setpoint = setpoint;
         angle_tolerance = 3.5;
-        pid_tolerance = 0.1;
+        pid_tolerance = 0.05;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SpinAmper extends Command {
     public boolean isFinished() {
         final double delta = amper.getAngle().getDelta(setpoint);
         System.out.println("Amper delta: " + delta + " | PID: " + pid);
-        return Math.abs(pid) < pid_tolerance && Math.abs(delta) < angle_tolerance;
+        return Math.abs(pid) < pid_tolerance;
     }
 
     @Override

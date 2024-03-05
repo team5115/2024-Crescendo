@@ -83,7 +83,6 @@ public class Drivetrain extends SubsystemBase {
         if (!fieldOriented) {
             forward *= -1;
             right *= -1;
-            turn *= -1;
         }
 
         hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
