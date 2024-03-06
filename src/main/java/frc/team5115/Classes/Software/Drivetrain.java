@@ -25,7 +25,7 @@ public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
     private final HolonomicDriveController holonomicDriveController;
-    private SwerveDrivePoseEstimator poseEstimator;
+    private SwerveDrivePoseEstimator photonPoseEstimatorF;
    
     public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
         this.hardwareDrivetrain = hardwareDrivetrain;
@@ -44,7 +44,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void init() {
-        poseEstimator = new SwerveDrivePoseEstimator(
+        photonPoseEstimatorF = new SwerveDrivePoseEstimator(
             DriveConstants.kDriveKinematics,
             navx.getYawRotation2D(),
             hardwareDrivetrain.getModulePositions(),
@@ -113,8 +113,8 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
     public Pose2d getEstimatedPose() {
-        System.out.println(poseEstimator.getEstimatedPosition());
-        return poseEstimator.getEstimatedPosition();
+        System.out.println(photonPoseEstimatorF.getEstimatedPosition());
+        return photonPoseEstimatorF.getEstimatedPosition();
     }
 
     public void followTrajectoryState(Trajectory trajectory, double time) {
@@ -125,7 +125,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updatePoseEstimator() {
-        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
+        photonPoseEstimatorF.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
     }
 
     public void stop() {
@@ -154,7 +154,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose){
-        poseEstimator.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
+        photonPoseEstimatorF.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
     }
 
     public Command pathplanner() {
