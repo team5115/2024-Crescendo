@@ -6,7 +6,7 @@ import com.pathplanner.lib.path.PathPlannerTrajectory;
  * A collection of all the paths used by the robot.
  */
 public class Paths {
-    public final static PathPlannerPath SideAutoPt1 = PathPlannerPath.fromPathFile("Example Path");
+    public final static PathPlannerPath SideAutoPt1 = PathPlannerPath.fromPathFile("Unbasic Test");
 
 // // from top note 
 //     public final static PathPlannerPath AutoNoteToNote1 = PathPlannerPath.fromPathFile("top to middle");

@@ -108,34 +108,32 @@ public class RobotContainer {
         configureButtonBindings();
     }
 
-    // public void registerCommand() {
+     public void registerCommand() {
 
-    // Register Named Commands for pathplanner
+      NamedCommands.registerCommand("Unbasic Test", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
+      NamedCommands.registerCommand("Path Uno", drivetrain.pathplanner());
+      NamedCommands.registerCommand("Path Dos", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("Path Uno", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Dos", drivetrain.pathplanner());
+      NamedCommands.registerCommand("Path Tres", drivetrain.pathplanner());
+      NamedCommands.registerCommand("Path Quatro", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("Path Tres", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Quatro", drivetrain.pathplanner());
+      NamedCommands.registerCommand("Path Cinco", drivetrain.pathplanner());
+      NamedCommands.registerCommand("Path Seis", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("Path Cinco", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Seis", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
+      NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
 
-    //   NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
-
-    // }
+    }
 
     public void configureButtonBindings() {
 

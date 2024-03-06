@@ -157,6 +157,11 @@ public class Drivetrain extends SubsystemBase {
         poseEstimator.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
     }
 
+    public Command pathplanner() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'pathplanner'");
+    }
+
     // public Command pathplanner(){
     //     return AutoBuilder.getAutonomousCommand();
         
