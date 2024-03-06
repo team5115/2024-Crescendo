@@ -36,23 +36,7 @@ public class Drivetrain extends SubsystemBase {
             new PIDController(1, 0, 0),
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0,
-                new TrapezoidProfile.Constraints(6.28, 3.14))); 
-
-        AutoBuilder.configureHolonomic(
-            this::getEstimatedPose,
-            this::resetPose,
-            hardwareDrivetrain::getChassisSpeeds,
-            hardwareDrivetrain::driveChassisSpeeds,
-            new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(0.1),
-                new PIDConstants(0.1),
-                0.1,
-                DriveConstants.kTrackWidth,
-                new ReplanningConfig()
-            ),
-            this::isRedTeam,
-            this
-        );
+                new TrapezoidProfile.Constraints(6.28, 3.14)));    
     }
 
     public boolean isRedTeam() {
@@ -64,11 +48,26 @@ public class Drivetrain extends SubsystemBase {
             DriveConstants.kDriveKinematics,
             navx.getYawRotation2D(),
             hardwareDrivetrain.getModulePositions(),
-            getStartingPoseGuess());
+            getStartingPoseGuess()
+        );
 
+        AutoBuilder.configureHolonomic(
+            this::getEstimatedPose,
+            this::resetPose,
+            hardwareDrivetrain::getChassisSpeeds,
+            hardwareDrivetrain::driveChassisSpeeds,
+            new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
+                new PIDConstants(0.05),
+                new PIDConstants(0.1),
+                0.01,
+                DriveConstants.kRobotRadius,
+                new ReplanningConfig()
+            ),
+            this::isRedTeam,
+            this
+        );
+        
         System.out.println("Angle from navx" + navx.getYawDeg());
-
-        AutoBuilder.configureHolonomic(this :: getEstimatedPose, null, null, null, null, null, navx);
     }
 
     private Pose2d getStartingPoseGuess() {
@@ -114,6 +113,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
     public Pose2d getEstimatedPose() {
+        System.out.println(poseEstimator.getEstimatedPosition());
         return poseEstimator.getEstimatedPosition();
     }
 
