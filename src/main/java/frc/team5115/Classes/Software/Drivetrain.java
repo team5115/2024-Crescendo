@@ -57,9 +57,9 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(0.05),
-                new PIDConstants(0.1),
-                0.01,
+                new PIDConstants(0.0001),
+                new PIDConstants(0.0001),
+                0.0001,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
