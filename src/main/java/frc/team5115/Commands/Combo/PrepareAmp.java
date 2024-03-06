@@ -2,7 +2,6 @@ package frc.team5115.Commands.Combo;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.team5115.Classes.Software.Amper;
@@ -16,7 +15,15 @@ public class PrepareAmp extends SequentialCommandGroup {
         addCommands(
             // deploy both
             new DeployArm(intake, shooter, arm, 102).alongWith(new WaitCommand(1)),
-            new SpinAmper(amper, Amper.OUT_ANGLE).withTimeout(5)
+            new SpinAmper(amper, Amper.OUT_ANGLE).withTimeout(5),
+            
+            // "backwards" rack by spinning intake and primary shooter in and holding extra shooter in brake mode 
+            new InstantCommand(shooter :: brakeMode),
+            new InstantCommand(intake :: in),
+            new InstantCommand(shooter :: ampRackSpeed),
+            new WaitCommand(0.5),
+            new InstantCommand(shooter :: stop),
+            new InstantCommand(intake :: fastOut) // start spinning up intake
         );
     }
 }
