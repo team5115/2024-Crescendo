@@ -1,11 +1,8 @@
 package frc.team5115.Classes.Hardware;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import org.apache.commons.collections4.functors.ExceptionFactory;
-
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class I2CHandler extends SubsystemBase {
     
