@@ -2,7 +2,9 @@ package frc.team5115.Robot;
 
 import java.nio.file.Paths;
 
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonVersion;
+import org.photonvision.proto.Photon;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -62,6 +64,8 @@ public class RobotContainer {
     // private final DigitalInput reflectiveSensor;
     // private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
+    //photonPoseEstimator = new photonPoseEstimatorF(); 
+    private final PhotonPoseEstimator photonPoseEstimatorF;
     // private Paths paths;
     // private final Climb climb;
     // private final DeployClimber deployClimber;
@@ -77,12 +81,15 @@ public class RobotContainer {
         joyDrive = new Joystick(0);
         // joyManips = new Joystick(1);
         navx = new NAVx();
+        photonPoseEstimatorF = new PhotonPoseEstimator(null, null, null , null);
+        //rivate final PhotonPoseEstimator photonPoseEstimatorFP
+        
         // i2cHandler = new I2CHandler();
 
         // PhotonVision p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        drivetrain = new Drivetrain(hardwareDrivetrain, navx);
+        drivetrain = new Drivetrain(hardwareDrivetrain, navx, photonPoseEstimatorF);
         
         // HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         // arm = new Arm(hardwareArm, i2cHandler);

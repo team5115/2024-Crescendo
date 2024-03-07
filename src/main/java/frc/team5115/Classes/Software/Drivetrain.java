@@ -1,13 +1,17 @@
 package frc.team5115.Classes.Software;
 
+import org.photonvision.PhotonPoseEstimator;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,17 +24,20 @@ import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
+import edu.wpi.first.math.estimator.PoseEstimator;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
     private final HolonomicDriveController holonomicDriveController;
-    private SwerveDrivePoseEstimator photonPoseEstimatorF;
+    private SwerveDrivePoseEstimator poseEstimator;
+
+    private final PhotonPoseEstimator photonPoseEstimatorF;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonPoseEstimator photonPoseEstimatorF) {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
-
+        this.photonPoseEstimatorF = photonPoseEstimatorF;
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -44,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void init() {
-        photonPoseEstimatorF = new SwerveDrivePoseEstimator(
+        poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.kDriveKinematics,
             navx.getYawRotation2D(),
             hardwareDrivetrain.getModulePositions(),
@@ -113,8 +120,9 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
     public Pose2d getEstimatedPose() {
-        System.out.println(photonPoseEstimatorF.getEstimatedPosition());
-        return photonPoseEstimatorF.getEstimatedPosition();
+        System.out.println(poseEstimator.getEstimatedPosition());
+        return poseEstimator.getEstimatedPosition();
+       // return poseEstimator.addVisionMeasurements(photonPoseEstimatorF, 1 ,VecBuilder.fill(1 / 2, 1 / 2, 100));
     }
 
     public void followTrajectoryState(Trajectory trajectory, double time) {
@@ -125,7 +133,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updatePoseEstimator() {
-        photonPoseEstimatorF.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
+        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
     }
 
     public void stop() {
@@ -154,7 +162,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose){
-        photonPoseEstimatorF.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
+        poseEstimator.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
     }
 
     public Command pathplanner() {
