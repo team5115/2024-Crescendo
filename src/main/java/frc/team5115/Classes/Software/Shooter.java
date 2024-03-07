@@ -53,7 +53,11 @@ public class Shooter extends SubsystemBase {
     }
 
     public void ampRackSpeed() {
-        hardwareShooter.setNormalized(0.15, 0.15, 0);
+        hardwareShooter.setNormalized(0.25, 0.25, 0);
+    }
+
+    public void slowBackwards() {
+        hardwareShooter.setNormalized(-0.2);
     }
 
     public void fast () {

@@ -17,13 +17,13 @@ public class PrepareAmp extends SequentialCommandGroup {
             new DeployArm(intake, shooter, arm, 102).alongWith(new WaitCommand(1)),
             new SpinAmper(amper, Amper.OUT_ANGLE).withTimeout(5)
             
-            // // "backwards" rack by spinning intake and primary shooter in and holding extra shooter in brake mode 
-            // ,new InstantCommand(shooter :: brakeMode),
-            // new InstantCommand(intake :: in),
-            // new InstantCommand(shooter :: ampRackSpeed),
-            // new WaitCommand(0.5),
-            // new InstantCommand(shooter :: stop),
-            // new InstantCommand(intake :: fastOut) // start spinning up intake
+            // "backwards" rack by spinning intake and primary shooter in and holding extra shooter in brake mode 
+            ,new InstantCommand(shooter :: brakeMode),
+            new InstantCommand(intake :: in),
+            new InstantCommand(shooter :: ampRackSpeed),
+            new WaitCommand(0.8),
+            new InstantCommand(shooter :: stop),
+            new InstantCommand(intake :: fastOut) // start spinning up intake
         );
     }
 }

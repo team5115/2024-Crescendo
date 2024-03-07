@@ -157,7 +157,7 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kX.value)
         .onTrue(new PrepareAmp(intake, shooter, arm, reflectiveSensor, amper)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming))
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
