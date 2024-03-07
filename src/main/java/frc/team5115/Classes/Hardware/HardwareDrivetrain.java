@@ -78,15 +78,6 @@ public class HardwareDrivetrain{
               return new ChassisSpeeds(twist.dx / dtSeconds, twist.dy / dtSeconds, twist.dtheta / dtSeconds);
             }
 
-
-    /**
-     * Drive the robot by chassis speeds, field relative
-     * @param speeds the speeds object
-     */
-    public void driveChassisSpeeds(ChassisSpeeds speeds) {
-        drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, false);
-    }
-
     /**
      * Method to drive the robot using joystick info.
      *
@@ -117,7 +108,10 @@ public class HardwareDrivetrain{
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getYawDeg360()))
                 : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
         x = discretize(x, 0.02);
+        driveChassisSpeeds(x);
+    }
 
+    public void driveChassisSpeeds(ChassisSpeeds x) {
         SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(x);
         SwerveDriveKinematics.desaturateWheelSpeeds(
             swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);

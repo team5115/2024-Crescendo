@@ -17,7 +17,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
-import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
 
@@ -57,9 +56,9 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(0.0001),
-                new PIDConstants(0.0001),
-                0.0001,
+                new PIDConstants(0, 0.0, 0.0),
+                new PIDConstants(0, 0.0, 0.0),
+                0,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
