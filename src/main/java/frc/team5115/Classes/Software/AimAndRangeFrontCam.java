@@ -64,6 +64,7 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         double forwardSpeed = 0;
         double rotationSpeed = 0;
         double GOAL_RANGE_METERS = 0.3; // cam height = 0.68
+        double poseStartingPosition = 0; 
         
 
         // Vision-alignment mode
@@ -74,11 +75,13 @@ public class AimAndRangeFrontCam extends SubsystemBase{
              
 
         //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
-        forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+        //forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+            forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+
 
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
-            rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
+            rotationSpeed = -turnController.calculate(photonVision.getAngle(), poseStartingPosition); 
         }
         //System.out.println(photonVision.getRange());
      
