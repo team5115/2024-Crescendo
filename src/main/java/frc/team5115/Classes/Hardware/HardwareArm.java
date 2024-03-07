@@ -52,7 +52,7 @@ public class HardwareArm extends SubsystemBase{
 
         // armEncoder = new DutyCycleEncoder(0);
         relativeEncoder = turnRight.getEncoder();
-        relativeEncoder.setPositionConversionFactor(360.0);
+        relativeEncoder.setPositionConversionFactor(360.0 * 50.0);
     }
 
     public void setTurn(double speed, Angle setpoint){
@@ -99,7 +99,7 @@ public class HardwareArm extends SubsystemBase{
             armAngle.angle = i2c.getPitch();
             relativeEncoder.setPosition(armAngle.getDegrees(-90));
         } catch (ReadAbortedException exception) {
-               
+               armAngle.angle = relativeEncoder.getPosition();
         }
         return armAngle;
     }
