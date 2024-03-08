@@ -11,6 +11,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -102,11 +103,21 @@ public class PhotonVision extends SubsystemBase{
          photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraB, VisionConstants.robotToCamR);
          photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraF, VisionConstants.robotToCamR);
 
-
+        
 
 
     }
-
+/*
+ * param fieldTags A WPILib {@link AprilTagFieldLayout} linking AprilTag IDs to Pose3d objects
+     *     with respect to the FIRST field using the <a href=
+     *     "https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#field-coordinate-system">Field
+     *     Coordinate System</a>. Note that setting the origin of this layout object will affect the
+     *     results from this class.
+     * @param strategy The strategy it should use to determine the best pose.
+     * @param camera PhotonCamera
+     * @param robotToCamera
+*/
+ 
     /**
  * 
  */
@@ -327,6 +338,9 @@ public double getRange(){
         //Trusting the left camera more, no idea on how to use filters to get the most information out of both cameras 2-6-2022
 
         if(photonPoseEstimatorF.update().isPresent()) return photonPoseEstimatorF.update();
+        if(photonPoseEstimatorB.update().isPresent()) return photonPoseEstimatorB.update();
+        if(photonPoseEstimatorL.update().isPresent()) return photonPoseEstimatorL.update();
+        if(photonPoseEstimatorR.update().isPresent()) return photonPoseEstimatorR.update();
         return Optional.empty();
 
     }
