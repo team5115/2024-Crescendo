@@ -26,6 +26,7 @@ import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Classes.Software.AimAndRangeFrontCam;
 import frc.team5115.Classes.Software.Amper;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.AutoAimAndRange;
@@ -45,6 +46,7 @@ import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
+import frc.team5115.Classes.Software.AimAndRangeFrontCam;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -66,6 +68,7 @@ public class RobotContainer {
     private final AutoBuilder autoBuilder;
     private final Climb climb;
     private final DeployClimber deployClimber;
+    private final AimAndRangeFrontCam aimAndRangeFrontCam;
 
     boolean fieldOriented = true;
 
@@ -107,6 +110,7 @@ public class RobotContainer {
         climb = new Climb(climber, +12);
         deployClimber = new DeployClimber(climber, +1);
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
+        aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
         configureButtonBindings();
     }
 
@@ -216,19 +220,23 @@ public class RobotContainer {
 
     public void startTeleop(){
         if(autoCommandGroup != null) autoCommandGroup.cancel();
-        
+
+       
+
         drivetrain.resetEncoders();
         System.out.println("Starting teleop");
     }
 
     public void teleopPeriodic() {
+        //if(joyDrive.getRawButton(2)) aimAndRangeFrontCam.periodicIDBased(joyDrive.getRawButton(2));
+        //else 
+        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
 
         // manual climber
         if(climber.isDeployed()) {
             climber.setBoth(joyManips.getRawAxis(1));
         }
 
-        //aAR.periodic1();
 
         /*
         final boolean MANUAL_CLIMB = false;
@@ -253,6 +261,5 @@ public class RobotContainer {
         //   System.out.println("bno angle: " + i2cHandler.getPitch());
 
         arm.updateController(i2cHandler);
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
     }
 }
