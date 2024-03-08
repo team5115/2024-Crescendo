@@ -31,12 +31,12 @@ public class Drivetrain extends SubsystemBase {
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
 
-    private final PhotonPoseEstimator photonPoseEstimatorF;
+    private final PhotonVision photonVision;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonPoseEstimator photonPoseEstimatorF) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision photonVision) {
         this.hardwareDrivetrain = hardwareDrivetrain;
+        this.photonVision = photonVision;
         this.navx = navx;
-        this.photonPoseEstimatorF = photonPoseEstimatorF;
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -122,7 +122,7 @@ public class Drivetrain extends SubsystemBase {
 	 */
     public Pose2d getEstimatedPose() {
         System.out.println(poseEstimator.getEstimatedPosition());
-        return poseEstimator.getEstimatedPosition();
+        return photonVision.getEstimatedGlobalPose();
        // return poseEstimator.addVisionMeasurements(photonPoseEstimatorF, 1 ,VecBuilder.fill(1 / 2, 1 / 2, 100));
     }
 

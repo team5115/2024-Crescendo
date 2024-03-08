@@ -332,7 +332,7 @@ public double getRange(){
 
 
     
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         // The team assignment of the first grid the robot looks at is the team assignment of the robot
         // otherwise if we cant see any april tags trust the team assignment inputted on shuffle board
         //Trusting the left camera more, no idea on how to use filters to get the most information out of both cameras 2-6-2022

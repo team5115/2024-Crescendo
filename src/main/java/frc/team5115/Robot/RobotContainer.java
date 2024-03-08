@@ -81,15 +81,14 @@ public class RobotContainer {
         joyDrive = new Joystick(0);
         // joyManips = new Joystick(1);
         navx = new NAVx();
-        photonPoseEstimatorF = new PhotonPoseEstimator(null, null, null , null);
         //rivate final PhotonPoseEstimator photonPoseEstimatorFP
         
         // i2cHandler = new I2CHandler();
 
-        // PhotonVision p = new PhotonVision();
+        PhotonVision p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        drivetrain = new Drivetrain(hardwareDrivetrain, navx, photonPoseEstimatorF);
+        drivetrain = new Drivetrain(hardwareDrivetrain, navx, p);
         
         // HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         // arm = new Arm(hardwareArm, i2cHandler);
