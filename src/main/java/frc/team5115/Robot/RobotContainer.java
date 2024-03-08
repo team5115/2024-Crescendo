@@ -65,7 +65,6 @@ public class RobotContainer {
     // private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
     //photonPoseEstimator = new photonPoseEstimatorF(); 
-    private final PhotonPoseEstimator photonPoseEstimatorF;
     // private Paths paths;
     // private final Climb climb;
     // private final DeployClimber deployClimber;
