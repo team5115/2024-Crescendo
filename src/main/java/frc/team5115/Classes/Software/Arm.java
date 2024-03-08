@@ -16,8 +16,8 @@ import edu.wpi.first.math.controller.PIDController;
 public class Arm extends SubsystemBase{
     //private final GenericEntry rookie;
     private static final double MIN_DEGREES = -90.0;
-    private static final double TURN_PID_TOLERANCE = 10;
-    private static final double TURN_PID_KP = 0.31;
+    private static final double TURN_PID_TOLERANCE = 5;
+    private static final double TURN_PID_KP = 0.4;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     private final I2CHandler bno;
@@ -74,8 +74,7 @@ public class Arm extends SubsystemBase{
 
     public boolean deployed() {
         updateController(bno);
-                return Math.abs(getAngle().angle-(-1)) < 20;
-
+        return Math.abs(getAngle().angle-(-1)) < 20;
     }
 
     public boolean atSetpoint() {
@@ -99,11 +98,11 @@ public class Arm extends SubsystemBase{
     public void deployToAngle(double newSetpoint){
         setpoint.angle = newSetpoint;
         if(newSetpoint == Constants.AmpArmAngle) turnController.setP(0.25);
-        else turnController.setP(0.31);
+        else turnController.setP(0.4);
     }
 
     public void stow() {
         setpoint.angle = HardwareArm.STOWED_ANGLE;
-        turnController.setP(0.31);
+        turnController.setP(0.4);
     }
 }
