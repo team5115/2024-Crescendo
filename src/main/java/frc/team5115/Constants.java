@@ -55,6 +55,8 @@ public class Constants{
     public static final byte CLIMB_LEFT_SENSOR_ID = 8;
     public static final byte CLIMB_RIGHT_SENSOR_ID = 9;
 
+    public static final double AmpArmAngle = 102;
+
     public static final double TARGET_ANGLE = 1;
 
     // Copyright (c) FIRST and other WPILib contributors.

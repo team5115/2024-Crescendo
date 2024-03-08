@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team5115.Constants;
 import frc.team5115.Classes.Accessory.Angle;
 import frc.team5115.Classes.Hardware.HardwareArm;
 import frc.team5115.Classes.Hardware.I2CHandler;
@@ -97,9 +98,12 @@ public class Arm extends SubsystemBase{
 
     public void deployToAngle(double newSetpoint){
         setpoint.angle = newSetpoint;
+        if(newSetpoint == Constants.AmpArmAngle) turnController.setP(0.25);
+        else turnController.setP(0.31);
     }
 
     public void stow() {
         setpoint.angle = HardwareArm.STOWED_ANGLE;
+        turnController.setP(0.31);
     }
 }
