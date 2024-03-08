@@ -57,7 +57,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void slowBackwards() {
-        hardwareShooter.setNormalized(-0.2);
+        hardwareShooter.setNormalized(-0.5);
     }
 
     public void fast () {
