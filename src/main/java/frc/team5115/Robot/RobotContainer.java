@@ -68,6 +68,7 @@ public class RobotContainer {
     private final DeployClimber deployClimber;
 
     boolean fieldOriented = true;
+    double shooterAngle;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
@@ -162,7 +163,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, shooterAngle, 5000, () -> shooterAngle)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
@@ -219,14 +220,20 @@ public class RobotContainer {
         
         drivetrain.resetEncoders();
         System.out.println("Starting teleop");
+        shooterAngle = 20;
     }
 
     public void teleopPeriodic() {
+
 
         // manual climber
         if(climber.isDeployed()) {
             climber.setBoth(joyManips.getRawAxis(1));
         }
+
+        double input = joyManips.getRawAxis(XboxController.Axis.kRightY.value);
+        shooterAngle = 30;
+        
 
         //aAR.periodic1();
 
