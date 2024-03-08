@@ -183,7 +183,7 @@ public class RobotContainer {
     public void startAuto(){
         if(autoCommandGroup != null) autoCommandGroup.cancel();
         drivetrain.resetEncoders();
-        navx.resetNAVx();
+        //navx.resetNAVx();
         drivetrain.stop();
         drivetrain.init();
 

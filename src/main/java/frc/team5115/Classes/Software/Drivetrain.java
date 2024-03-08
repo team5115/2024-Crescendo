@@ -50,14 +50,16 @@ public class Drivetrain extends SubsystemBase {
             getStartingPoseGuess()
         );
 
+        resetPose(new Pose2d());
+
         AutoBuilder.configureHolonomic(
             this::getEstimatedPose,
             this::resetPose,
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(0, 0.0, 0.0),
-                new PIDConstants(0, 0.0, 0.0),
+                new PIDConstants(1, 0.0, 0.0),
+                new PIDConstants(1, 0.0, 0.0),
                 0,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
