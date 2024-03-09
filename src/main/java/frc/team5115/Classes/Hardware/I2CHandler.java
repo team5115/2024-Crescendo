@@ -1,8 +1,8 @@
 package frc.team5115.Classes.Hardware;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class I2CHandler extends SubsystemBase {
     
@@ -23,6 +23,7 @@ public class I2CHandler extends SubsystemBase {
     short gravY;
     short gravZ;
     double pitch = 3600;
+    boolean readAborted;
 
     public I2CHandler() {
         i2c = new I2C(Port.kMXP, 0x28);
@@ -56,14 +57,23 @@ public class I2CHandler extends SubsystemBase {
         pitch = -degrees - 90.0; // ! offset because of how it's oriented on the robot
     }
 
-    public double getPitch() {
+    public class ReadAbortedException extends Exception {}
+
+    public double getPitch() throws ReadAbortedException{
+        if (readAborted) {
+            throw new ReadAbortedException();
+        }
         return pitch;
     }
 
+    public double getPitchNoExceptions() {
+        return pitch;
+    }
+    
     private short readFromSensor(byte registerAddress, int count, short defaultValue) {
-        final boolean aborted = i2c.read(registerAddress, count, buffer);
+        readAborted = i2c.read(registerAddress, count, buffer);
 
-        if (aborted) {
+        if (readAborted) {
             System.out.println("Failed to read from BNO055");
             return defaultValue;
         }
