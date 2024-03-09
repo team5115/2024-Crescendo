@@ -65,10 +65,6 @@ public class I2CHandler extends SubsystemBase {
         }
         return pitch;
     }
-
-    public double getPitchNoExceptions() {
-        return pitch;
-    }
     
     private short readFromSensor(byte registerAddress, int count, short defaultValue) {
         readAborted = i2c.read(registerAddress, count, buffer);

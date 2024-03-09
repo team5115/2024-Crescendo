@@ -4,8 +4,10 @@ import static frc.team5115.Constants.kS;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -18,6 +20,7 @@ public class HardwareArm extends SubsystemBase{
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
+    private final AbsoluteEncoder absoluteEncoder;
     private final I2CHandler i2c;
 
     private final double Ks = 0.4;
@@ -26,9 +29,6 @@ public class HardwareArm extends SubsystemBase{
     private final double Kg = 0.35;
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
-    
-    // private final DutyCycleEncoder armEncoder;
-    private final RelativeEncoder relativeEncoder;
 
     public HardwareArm(I2CHandler i2c, int canIdRight, int canIdLeft){
         this.i2c = i2c;
@@ -45,9 +45,7 @@ public class HardwareArm extends SubsystemBase{
         turnRight.setInverted(false);
         turnLeft.setInverted(true);
 
-        // armEncoder = new DutyCycleEncoder(0);
-        relativeEncoder = turnRight.getEncoder();
-        relativeEncoder.setPositionConversionFactor(360.0 * 50.0);
+        absoluteEncoder = turnLeft.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     }
 
     public void setTurn(double speed, Angle setpoint){
@@ -87,14 +85,11 @@ public class HardwareArm extends SubsystemBase{
      * @return the angle the arm is at relative to the horizontal
      */
     public Angle getAngle(){
-        //armAngle.angle = i2c.getPitch() - navx.getPitchDeg();
-        //armAngle.angle = getEncoderPosition();
-
         try {
             armAngle.angle = i2c.getPitch();
-            relativeEncoder.setPosition(armAngle.getDegrees(-90));
         } catch (ReadAbortedException exception) {
-               armAngle.angle = relativeEncoder.getPosition();
+            System.out.println("Using arm absolute encoder");
+            armAngle.angle = absoluteEncoder.getPosition();
         }
         return armAngle;
     }
@@ -103,12 +98,4 @@ public class HardwareArm extends SubsystemBase{
         turnRight.setIdleMode(mode);
         turnLeft.setIdleMode(mode);
     }
-    // public void restEncoder(){
-    //     armEncoder.reset();
-    // }
-
-    // public double getEncoderPosition(){
-    //     return armEncoder.getPositionOffset() * 0.5;
-    // }
-
 }
