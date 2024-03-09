@@ -27,10 +27,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             // new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d),
             //new IntakeSequence(intake, shooter, arm, d),
 
-            new AutoAimAndRangeCommand(autoAimAndRange).withTimeout(10),
-            new WaitCommand(0.5)
-            ,new PrepareShoot(intake, shooter, arm, d).withTimeout(2)
-            ,new TriggerShoot(intake, shooter, arm, d)
+            new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d, aAR),
+            new TriggerShoot(intake, shooter, arm, d)
 
         );
     }

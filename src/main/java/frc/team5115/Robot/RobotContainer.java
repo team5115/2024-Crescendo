@@ -171,7 +171,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, shootAngle)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
@@ -213,14 +213,14 @@ public class RobotContainer {
         drivetrain.stop();
         //drivetrain.init();
 
-        //autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-        //autoCommandGroup.schedule();
+        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
-        aAR.periodic1();
+        //aAR.periodicIDBased();
         arm.updateController(i2cHandler);
     }
 
