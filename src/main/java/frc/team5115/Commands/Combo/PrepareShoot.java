@@ -14,7 +14,7 @@ import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 
 public class PrepareShoot extends SequentialCommandGroup{
-    public PrepareShoot(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, double angle, double speed, GenericEntry angleSupplier) {
+    public PrepareShoot(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, double angle, double speed, GenericEntry angleSupplier, boolean neverExit) {
         addRequirements(intake, shooter, arm);
         addCommands(
             // deploy
@@ -29,11 +29,7 @@ public class PrepareShoot extends SequentialCommandGroup{
             new DeployArm(intake, shooter, arm, angle, angleSupplier).withTimeout(8),
 
             // spin up
-            new SpinUpShooter(shooter, speed, true)
+            new SpinUpShooter(shooter, speed, neverExit).withTimeout(3)
         );
-    }
-
-    public PrepareShoot(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
-        this(intake, shooter, arm, sensor, 5, 5000, null);
     }
 } 

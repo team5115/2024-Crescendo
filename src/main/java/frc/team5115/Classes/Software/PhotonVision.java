@@ -138,9 +138,12 @@ public PhotonTrackedTarget getID7(){
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
+                System.out.println(i.getFiducialId());
+                if(i.getFiducialId() == 7) System.out.println("Matched");
                 if(i.getFiducialId() == 7){
                         return i;
                 }
+                //edge case here where the id 7 goes under after the last check but before we extract targets
         }
         return null;
 }
@@ -288,7 +291,7 @@ public double getRange(){
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
                 int ID = -1;
-                if(isThereID4()){
+                if(isThereID7()){
                 for(PhotonTrackedTarget i : result.getTargets()){
                         if(i.getFiducialId() == 7){
                                 ID = 7;
