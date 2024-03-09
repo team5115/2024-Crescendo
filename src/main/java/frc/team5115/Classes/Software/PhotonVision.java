@@ -26,14 +26,14 @@ import frc.team5115.Constants.VisionConstants;
 public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraF;
      private PhotonCamera photonCameraR;
-     private PhotonCamera photonCameraB;
+     private PhotonCamera photonCameraL;
      private PhotonCamera photonCameraNA;
      static PhotonTrackedTarget target;
 
      public AprilTagFieldLayout fieldLayout;
      private PhotonPoseEstimator photonPoseEstimatorL;
      private PhotonPoseEstimator photonPoseEstimatorR;
-     private PhotonPoseEstimator photonPoseEstimatorB;
+     private PhotonPoseEstimator photonPoseEstimatorNA;
      private PhotonPoseEstimator photonPoseEstimatorF;
      ArrayList<AprilTag> aprilTagList;
         
@@ -43,7 +43,7 @@ public class PhotonVision extends SubsystemBase{
         //Left 
         photonCameraF = new PhotonCamera("Stereo_Vision_1");
         //Back camera
-        photonCameraB = new PhotonCamera("OV5647");
+        photonCameraL = new PhotonCamera("OV5647");
         //Right camera 
         photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
         //Front camera
@@ -89,18 +89,18 @@ public class PhotonVision extends SubsystemBase{
          fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
 
                // PhotonposeEstimators constructors:
-               PhotonPoseEstimator PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,photonCameraR, robotToCam);
+                photonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS,photonCameraR, robotToCam);
 
-               PhotonPoseEstimator photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraNA, robotToCam);
+                photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraNA, robotToCam);
 
-               PhotonPoseEstimator photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraF, robotToCam);
+                photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraF, robotToCam);
 
-               PhotonPoseEstimator photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraB, robotToCam);
+                photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraL, robotToCam);
 
       
          photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraNA, VisionConstants.robotToCamL);
-         PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
-         photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraB, VisionConstants.robotToCamR);
+         photonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraL, VisionConstants.robotToCamR);
          photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraF, VisionConstants.robotToCamR);
 
         
@@ -331,6 +331,7 @@ public double getRange(){
     
 
 
+
     
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         // The team assignment of the first grid the robot looks at is the team assignment of the robot
@@ -338,9 +339,9 @@ public double getRange(){
         //Trusting the left camera more, no idea on how to use filters to get the most information out of both cameras 2-6-2022
 
         if(photonPoseEstimatorF.update().isPresent()) return photonPoseEstimatorF.update();
-        if(photonPoseEstimatorB.update().isPresent()) return photonPoseEstimatorB.update();
-        if(photonPoseEstimatorL.update().isPresent()) return photonPoseEstimatorL.update();
         if(photonPoseEstimatorR.update().isPresent()) return photonPoseEstimatorR.update();
+        if(photonPoseEstimatorL.update().isPresent()) return photonPoseEstimatorL.update();
+      //  if(photonPoseEstimatorNA.update().isPresent()) return photonPoseEstimatorNA.update();
         return Optional.empty();
 
     }

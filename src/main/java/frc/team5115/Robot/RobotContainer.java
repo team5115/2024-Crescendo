@@ -4,7 +4,6 @@ import java.nio.file.Paths;
 
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonVersion;
-import org.photonvision.proto.Photon;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -65,7 +64,6 @@ public class RobotContainer {
     // private AutoAimAndRange aAR;
     private AutoCommandGroup autoCommandGroup;
     //photonPoseEstimator = new photonPoseEstimatorF(); 
-    private final PhotonPoseEstimator photonPoseEstimatorF;
     // private Paths paths;
     // private final Climb climb;
     // private final DeployClimber deployClimber;

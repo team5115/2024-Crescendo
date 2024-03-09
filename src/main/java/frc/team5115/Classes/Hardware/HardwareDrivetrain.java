@@ -107,15 +107,12 @@ public class HardwareDrivetrain{
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getYawDeg360()))
                 : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
-        x = discretize(x, 0.02);
         driveChassisSpeeds(x);
     }
 
     public void driveChassisSpeeds(ChassisSpeeds x) {
+        x = discretize(x, 0.02);
         SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(x);
-        SwerveDriveKinematics.desaturateWheelSpeeds(
-            swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
-            
         frontLeft.setDesiredState(swerveModuleStates[0]);
         frontRight.setDesiredState(swerveModuleStates[1]);
         backLeft.setDesiredState(swerveModuleStates[2]);

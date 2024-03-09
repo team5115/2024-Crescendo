@@ -15,22 +15,24 @@ import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.NAVx;
-import edu.wpi.first.math.estimator.PoseEstimator;
 
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
-
+    private SwerveDriveOdometry odometry;
     private final PhotonVision photonVision;
    
     public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision photonVision) {
@@ -45,11 +47,9 @@ public class Drivetrain extends SubsystemBase {
                 new TrapezoidProfile.Constraints(6.28, 3.14)));    
     }
 
-    public boolean isRedTeam() {
-        return false;
-    }
 
-    public void init() {
+    public void init() {        
+        odometry = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
         poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.kDriveKinematics,
             navx.getYawRotation2D(),
@@ -65,13 +65,23 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(1, 0.0, 0.0),
-                new PIDConstants(1, 0.0, 0.0),
-                0,
+                new PIDConstants(0.5, 0.0, 0.0),
+                new PIDConstants(0.5, 0.0, 0.0),
+                4.5,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
-            this::isRedTeam,
+            () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
             this
         );
         
@@ -122,8 +132,9 @@ public class Drivetrain extends SubsystemBase {
 	 */
     public Pose2d getEstimatedPose() {
         System.out.println(poseEstimator.getEstimatedPosition());
-        return photonVision.getEstimatedGlobalPose();
-       // return poseEstimator.addVisionMeasurements(photonPoseEstimatorF, 1 ,VecBuilder.fill(1 / 2, 1 / 2, 100));
+        var x = photonVision.getEstimatedGlobalPose();
+        if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
+        return poseEstimator.getEstimatedPosition();
     }
 
     public void followTrajectoryState(Trajectory trajectory, double time) {

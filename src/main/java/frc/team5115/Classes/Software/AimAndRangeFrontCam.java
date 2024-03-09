@@ -82,6 +82,8 @@ public class AimAndRangeFrontCam extends SubsystemBase{
         // Also calculate angular power
         // -1.0 required to ensure positive PID controller effort _increases_ yaw
             rotationSpeed = -turnController.calculate(photonVision.getAngle(), poseStartingPosition); 
+
+            hd.drive(forwardSpeed, 0, rotationSpeed, true, false);
         }
         //System.out.println(photonVision.getRange());
      
