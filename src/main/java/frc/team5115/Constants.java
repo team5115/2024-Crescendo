@@ -170,9 +170,9 @@ public class Constants{
 
         private static final double cameraPosZ = 0.2413; // 0.2413
         public static final double cameraPosX = 0.0;
-        public static final double cameraPosY = 0.368; // 0.0889001778004
+        public static final double cameraPosY = 0.483; // 0.0889001778004
         private static final double cameraRoll = 0.0;
-        public static final double cameraPitch = 33;
+        public static final double cameraPitch = 22;
         public static final double cameraYaw = 1;
 
         //TODO get the pose.... 

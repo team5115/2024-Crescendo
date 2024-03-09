@@ -206,16 +206,16 @@ public class RobotContainer {
         drivetrain.resetEncoders();
         navx.resetNAVx();
         drivetrain.stop();
-        drivetrain.init();
+        //drivetrain.init();
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        //autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
         //autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
-        aAR.if7();
+        aAR.periodic1();
         arm.updateController(i2cHandler);
     }
 

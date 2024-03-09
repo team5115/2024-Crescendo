@@ -47,7 +47,7 @@ public class AutoAimAndRange extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
     // PID constants should be tuned per robot
-    final double LINEAR_P = 0.03;
+    final double LINEAR_P = 0.054;
     final double LINEAR_D = 0.0;
     PIDController forwardController = new PIDController(LINEAR_P, 0, LINEAR_D);
 
@@ -63,7 +63,7 @@ public class AutoAimAndRange extends SubsystemBase{
     public double[] periodic1() { 
         double forwardSpeed = 0;
         double rotationSpeed = 0;
-        double GOAL_RANGE_METERS = 0.3; // cam height = 0.68
+        double GOAL_RANGE_METERS = 3.048; // cam height = 0.68
         
 
         // Vision-alignment mode
@@ -71,7 +71,7 @@ public class AutoAimAndRange extends SubsystemBase{
 
         if(photonVision.isTargetPresent()){
             //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
-            forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+            forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
             System.out.println(photonVision.getRange());
             // Also calculate angular power
             // -1.0 required to ensure positive PID controller effort _increases_ yaw
