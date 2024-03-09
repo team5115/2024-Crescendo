@@ -132,8 +132,9 @@ public class Drivetrain extends SubsystemBase {
 	 */
     public Pose2d getEstimatedPose() {
         System.out.println(poseEstimator.getEstimatedPosition());
-        return photonVision.getEstimatedGlobalPose();
-       // return poseEstimator.addVisionMeasurements(photonPoseEstimatorF, 1 ,VecBuilder.fill(1 / 2, 1 / 2, 100));
+        var x = photonVision.getEstimatedGlobalPose();
+        if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
+        return poseEstimator.getEstimatedPosition();
     }
 
     public void followTrajectoryState(Trajectory trajectory, double time) {
