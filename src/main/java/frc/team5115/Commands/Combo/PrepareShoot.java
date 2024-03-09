@@ -14,7 +14,7 @@ import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.DeployArm;
 
 public class PrepareShoot extends SequentialCommandGroup{
-    public PrepareShoot(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, double angle, double speed, Supplier<Double> angleSupplier) {
+    public PrepareShoot(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, double angle, double speed, GenericEntry angleSupplier) {
         addRequirements(intake, shooter, arm);
         addCommands(
             // deploy

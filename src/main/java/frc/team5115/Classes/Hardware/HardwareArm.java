@@ -2,25 +2,25 @@ package frc.team5115.Classes.Hardware;
 
 import static frc.team5115.Constants.kS;
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DutyCycle;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Classes.Accessory.Angle;
+import frc.team5115.Classes.Hardware.I2CHandler.ReadAbortedException;
 
 public class HardwareArm extends SubsystemBase{
     public static final double STOWED_ANGLE = 75.0;
     private final CANSparkMax turnRight;
     private final CANSparkMax turnLeft;
     
+    private final AbsoluteEncoder absoluteEncoder;
     private final I2CHandler i2c;
 
     private final double Ks = 0.4;
@@ -29,9 +29,6 @@ public class HardwareArm extends SubsystemBase{
     private final double Kg = 0.35;
     private final ArmFeedforward ff = new ArmFeedforward(Ks, Kg, Kv, Ka);
     private final Angle armAngle;
-    
-    // private final DutyCycleEncoder armEncoder;
-
 
     public HardwareArm(I2CHandler i2c, int canIdRight, int canIdLeft){
         this.i2c = i2c;
@@ -48,8 +45,7 @@ public class HardwareArm extends SubsystemBase{
         turnRight.setInverted(false);
         turnLeft.setInverted(true);
 
-        // armEncoder = new DutyCycleEncoder(0);
-        
+        absoluteEncoder = turnLeft.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     }
 
     public void setTurn(double speed, Angle setpoint){
@@ -89,10 +85,12 @@ public class HardwareArm extends SubsystemBase{
      * @return the angle the arm is at relative to the horizontal
      */
     public Angle getAngle(){
-        //armAngle.angle = i2c.getPitch() - navx.getPitchDeg();
-        //armAngle.angle = getEncoderPosition();
-
-        armAngle.angle = i2c.getPitch();
+        try {
+            armAngle.angle = i2c.getPitch();
+        } catch (ReadAbortedException exception) {
+            System.out.println("Using arm absolute encoder");
+            armAngle.angle = absoluteEncoder.getPosition();
+        }
         return armAngle;
     }
 
@@ -100,12 +98,4 @@ public class HardwareArm extends SubsystemBase{
         turnRight.setIdleMode(mode);
         turnLeft.setIdleMode(mode);
     }
-    // public void restEncoder(){
-    //     armEncoder.reset();
-    // }
-
-    // public double getEncoderPosition(){
-    //     return armEncoder.getPositionOffset() * 0.5;
-    // }
-
 }

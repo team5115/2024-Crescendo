@@ -13,7 +13,7 @@ public class DeployArm extends Command {
     double angle;
     final Intake intake;
     final Shooter shooter;
-    final Supplier<Double> angleSupplier;
+    final GenericEntry angleSupplier;
 
     public DeployArm(Intake intake, Shooter shooter, Arm arm, double angle) {
         this.arm = arm;
@@ -24,7 +24,7 @@ public class DeployArm extends Command {
         addRequirements(intake, shooter, arm);
     }
 
-    public DeployArm(Intake intake, Shooter shooter, Arm arm, double angle, Supplier<Double> angleSupplier) {
+    public DeployArm(Intake intake, Shooter shooter, Arm arm, double angle, GenericEntry angleSupplier) {
         this.arm = arm;
         this.angle = angle;
         this.intake = intake;
@@ -36,7 +36,7 @@ public class DeployArm extends Command {
     @Override
     public void initialize() {
         if (angleSupplier != null) {
-            angle = angleSupplier.get();
+            angle = angleSupplier.getDouble(angle);
             System.out.println("Supplier supplies: " + angle);
         }
         arm.deployToAngle(angle);
@@ -44,7 +44,7 @@ public class DeployArm extends Command {
 
     @Override
     public void execute(){
-    System.out.println("Supplier supplies: " + angle);
+        System.out.println("deploying to angle: " + angle);
         arm.deployToAngle(angle);
     }
 

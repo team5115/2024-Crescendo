@@ -54,6 +54,7 @@ public class RobotContainer {
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
+    private final GenericEntry shootAngle;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
     private final Climber climber;
@@ -71,12 +72,12 @@ public class RobotContainer {
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
 
     boolean fieldOriented = true;
-    double shooterAngle;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
 
         joyDrive = new Joystick(0);
@@ -167,7 +168,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, shooterAngle, 5000, () -> shooterAngle)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, shootAngle)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
@@ -221,48 +222,20 @@ public class RobotContainer {
 
     public void startTeleop(){
         if(autoCommandGroup != null) autoCommandGroup.cancel();
-
-       
-
         drivetrain.resetEncoders();
         System.out.println("Starting teleop");
-        shooterAngle = 20;
     }
 
     public void teleopPeriodic() {
-        if(joyDrive.getRawButton(2)) aimAndRangeFrontCam.periodicIDBased();
+        if(joyDrive.getRawButton(2))
+            aimAndRangeFrontCam.periodicIDBased();    
         else 
-        drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+            drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
 
         // manual climber
         if(climber.isDeployed()) {
             climber.setBoth(joyManips.getRawAxis(1));
         }
-
-        double input = joyManips.getRawAxis(XboxController.Axis.kRightY.value);
-        shooterAngle = 30;
-        
-
-
-        /*
-        final boolean MANUAL_CLIMB = false;
-
-        if (MANUAL_CLIMB) {
-            climber.setBoth(-joyManips.getRawAxis(XboxController.Axis.kLeftY.value));
-        } else {
-            if (climber.isDeployed()) {
-                if (joyManips.getRawButton(XboxController.Button.kLeftBumper.value)
-                && joyManips.getRawButton(XboxController.Button.kRightBumper.value)) {
-                    climb.schedule();
-                }
-            } else {
-                if (joyManips.getRawAxis(XboxController.Axis.kLeftTrigger.value) > 0.5
-                && joyManips.getRawAxis(XboxController.Axis.kRightTrigger.value) > 0.5) {
-                    deployClimber.schedule();
-                }
-            }
-        } 
-        */
 
         //   System.out.println("bno angle: " + i2cHandler.getPitch());
 
