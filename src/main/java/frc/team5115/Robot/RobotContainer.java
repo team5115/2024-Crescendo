@@ -230,8 +230,8 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        //if(joyDrive.getRawButton(2)) aimAndRangeFrontCam.periodicIDBased(joyDrive.getRawButton(2));
-        //else 
+        if(joyDrive.getRawButton(2)) aimAndRangeFrontCam.periodicIDBased();
+        else 
         drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
 
         // manual climber

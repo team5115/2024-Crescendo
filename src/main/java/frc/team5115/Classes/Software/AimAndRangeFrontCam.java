@@ -84,27 +84,18 @@ public void periodicIDBased() {
     }
     else if(photonVision.isThereID7()){
     forwardSpeed = forwardController.calculate(photonVision.getRangeID7(), GOAL_RANGE_METERS);
-
+    System.out.println("Range: " + photonVision.getRangeID7());
     // Also calculate angular power
     // -1.0 required to ensure positive PID controller effort _increases_ yaw
         rotationSpeed = -turnController.calculate(photonVision.getAngleID7(), 0); 
-
         hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
     }
     else{
     forwardSpeed = 100000;
     rotationSpeed = 10000;
-   // hd.drive(0, 0, 0, true, false);             
+        hd.drive(0, 0, 0, true, false);             
     }
 }
-    //System.out.println(photonVision.getRange());
- 
-
-
-
-
-
-
  else{
     forwardSpeed = 100000;
     rotationSpeed = 10000;
@@ -124,20 +115,5 @@ public void periodicIDBased() {
      return false;
 
     }
-
-
-     /*     Pose3d y = photonVision.j2F();
-        Pose2d x = new Pose2d(y.getX(), y.getY(), new Rotation2d(y.getRotation().getZ()));
-
-        double distanceToTarget = PhotonUtils.getDistanceToPose(d.getEstimatedPose(), x);
-
-    // Calculate a translation from the camera to the target.
-       Translation2d translation = PhotonUtils.estimateCameraToTargetTranslation(GOAL_RANGE_METERS, Rotation2d.fromDegrees(-PhotonVision.target.getYaw()));
-
-        Rotation2d targetYaw = PhotonUtils.getYawToPose(d.getEstimatedPose(), x);
-}
-}
-*/
-
 
 }

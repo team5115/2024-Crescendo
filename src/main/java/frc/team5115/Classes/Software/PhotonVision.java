@@ -151,7 +151,7 @@ public boolean isThereID7(){
 
         for (PhotonTrackedTarget i : targets){
                 if(i.getFiducialId() == 7){
-                        System.out.println("True");
+                        //System.out.println("True");
                         return true;
                 }
         }
