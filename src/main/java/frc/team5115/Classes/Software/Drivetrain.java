@@ -65,9 +65,9 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(0.5, 0.0, 0.0),
-                new PIDConstants(0.5, 0.0, 0.0),
-                4.5,
+                new PIDConstants(1, 0.0, 0.0),
+                new PIDConstants(1.5, 0.0, 0.0),
+                0,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
@@ -132,9 +132,8 @@ public class Drivetrain extends SubsystemBase {
 	 */
     public Pose2d getEstimatedPose() {
         System.out.println(poseEstimator.getEstimatedPosition());
-        var x = photonVision.getEstimatedGlobalPose();
-        if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
-        return poseEstimator.getEstimatedPosition();
+        return photonVision.getEstimatedGlobalPose();
+       // return poseEstimator.addVisionMeasurements(photonPoseEstimatorF, 1 ,VecBuilder.fill(1 / 2, 1 / 2, 100));
     }
 
     public void followTrajectoryState(Trajectory trajectory, double time) {
