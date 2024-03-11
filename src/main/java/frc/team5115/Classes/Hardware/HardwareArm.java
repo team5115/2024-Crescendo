@@ -85,13 +85,23 @@ public class HardwareArm extends SubsystemBase{
      * @return the angle the arm is at relative to the horizontal
      */
     public Angle getAngle(){
-        try {
-            armAngle.angle = i2c.getPitch();
-        } catch (ReadAbortedException exception) {
-            System.out.println("Using arm absolute encoder");
-            armAngle.angle = absoluteEncoder.getPosition();
-        }
+        // try {
+        //     armAngle.angle = i2c.getPitch();
+        // } catch (ReadAbortedException exception) {
+        //     armAngle.angle = getAngleFromEncoder();
+        //     System.out.println("Using arm absolute encoder @ " + armAngle.getDegrees(-90));
+        // }
+
+        armAngle.angle = getAngleFromEncoder();
+        // System.out.println("Using arm absolute encoder @ " + armAngle.getDegrees(-90));
         return armAngle;
+    }
+
+    private double getAngleFromEncoder() {
+        // ! the -8.40 is because the zero offset in the spark max firmware is not at the zero point
+        // this is because we want the encoder to never return a number that wraps down below zero
+        // so yeah this isn't great but it should work
+        return absoluteEncoder.getPosition() - 8.40; // this is a magic number
     }
 
     public void setIdleMode(IdleMode mode) {

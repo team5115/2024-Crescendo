@@ -60,9 +60,9 @@ public class I2CHandler extends SubsystemBase {
     public class ReadAbortedException extends Exception {}
 
     public double getPitch() throws ReadAbortedException{
-        // if (readAborted) {
-        //     throw new ReadAbortedException();
-        // }
+        if (readAborted) {
+            throw new ReadAbortedException();
+        }
         return pitch;
     }
     
