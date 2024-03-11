@@ -47,7 +47,7 @@ public class AutoAimAndRange extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
     // PID constants should be tuned per robot
-    final double LINEAR_P = 0.054;
+    final double LINEAR_P = 0.063;
     final double LINEAR_D = 0.0;
     PIDController forwardController = new PIDController(LINEAR_P, 0, LINEAR_D);
 

@@ -17,7 +17,7 @@ public class Arm extends SubsystemBase{
     //private final GenericEntry rookie;
     private static final double MIN_DEGREES = -90.0;
     private static final double TURN_PID_TOLERANCE = 5;
-    private static final double TURN_PID_KP = 0.4;
+    private static final double TURN_PID_KP = 0.35;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     private final I2CHandler bno;
@@ -60,6 +60,9 @@ public class Arm extends SubsystemBase{
      */
     public void updateController(I2CHandler bno){
         bno.updatePitch();
+        if(setpoint.getDegrees(-90) == 34.5) turnController.setP(0.5);
+        if(setpoint.getDegrees(-90) == Constants.AmpArmAngle) turnController.setP(0.25);
+        else turnController.setP(0.35);
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
         // System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
@@ -98,7 +101,7 @@ public class Arm extends SubsystemBase{
     public void deployToAngle(double newSetpoint){
         setpoint.angle = newSetpoint;
         if(newSetpoint == Constants.AmpArmAngle) turnController.setP(0.25);
-        else turnController.setP(0.4);
+        else turnController.setP(TURN_PID_KP);
     }
 
     public void stow() {

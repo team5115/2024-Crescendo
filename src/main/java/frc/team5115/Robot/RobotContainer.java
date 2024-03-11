@@ -167,6 +167,12 @@ public class RobotContainer {
         .onFalse(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
+        new JoystickButton(joyManips, XboxController.Button.kLeftStick.value)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 34.5, 5000, null, true)
+        .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
+        .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));     
+
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
@@ -199,7 +205,6 @@ public class RobotContainer {
 
     public void testPeriodic() {
         amper.setSpeed(joyManips.getRawAxis(XboxController.Axis.kLeftY.value) * 0.3);
-        System.out.println(amper.getAngle());
     }
 
     public void startAuto(){
@@ -228,7 +233,7 @@ public class RobotContainer {
 
     public void teleopPeriodic() {
         if(joyDrive.getRawButton(2))
-            aimAndRangeFrontCam.periodicIDBased();    
+            aAR.periodicIDBased();    
         else 
             drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
 

@@ -23,7 +23,7 @@ public class HardwareArm extends SubsystemBase{
     private final AbsoluteEncoder absoluteEncoder;
     private final I2CHandler i2c;
 
-    private final double Ks = 0.4;
+    private final double Ks = 0.3;
     private final double Kv = 0.13509;
     private final double Ka = 0.048686;
     private final double Kg = 0.35;
