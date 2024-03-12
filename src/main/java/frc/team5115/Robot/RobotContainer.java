@@ -193,7 +193,7 @@ public class RobotContainer {
 
         if (AutoBuilder.isConfigured()) {
             PathPlannerPath path = PathPlannerPath.fromPathFile("Unbasic Test");
-            Command test = AutoBuilder.followPath(path);
+            Command test = AutoBuilder.followPath(path).andThen(drivetrain::stop);
             test.schedule();
         } else {
             System.out.println("ERROR! AutoBuilder has not been configured!");
