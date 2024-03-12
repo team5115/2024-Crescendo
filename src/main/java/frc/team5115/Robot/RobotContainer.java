@@ -25,6 +25,7 @@ import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
+import frc.team5115.Classes.Hardware.LedStrip;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.AimAndRangeFrontCam;
 import frc.team5115.Classes.Software.Amper;
@@ -70,6 +71,7 @@ public class RobotContainer {
     private final Climb climb;
     private final DeployClimber deployClimber;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
+    private final LedStrip ledStrip;
 
     boolean fieldOriented = true;
 
@@ -85,7 +87,8 @@ public class RobotContainer {
         navx = new NAVx();
         i2cHandler = new I2CHandler();
         autoBuilder = new AutoBuilder();
-
+        ledStrip = new LedStrip(9, 20);
+        ledStrip.start();
 
         PhotonVision p = new PhotonVision();
 
@@ -193,6 +196,7 @@ public class RobotContainer {
 
     public void disabledInit(){
         drivetrain.stop();
+        ledStrip.setUniformColor(0, 0, 0);
     }
 
     public void stopEverything(){
@@ -241,7 +245,17 @@ public class RobotContainer {
         if(climber.isDeployed()) {
             climber.setBoth(joyManips.getRawAxis(1));
         }
-        
+
+        if (reflectiveSensor.get()) {
+            ledStrip.updateKnightRider();
+        } else {
+            ledStrip.setUniformColor(0, 150, 0);
+        }
+
+        //aAR.periodic1();
+
+        //   System.out.println("bno angle: " + i2cHandler.getPitch());
+
         arm.updateController(i2cHandler);
     }
 }
