@@ -74,6 +74,7 @@ public class RobotContainer {
     private final DeployClimber deployClimber;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
     private final LedStrip ledStrip;
+    private final PhotonVision p;
 
     boolean fieldOriented = true;
 
@@ -92,7 +93,7 @@ public class RobotContainer {
         ledStrip = new LedStrip(0, 20);
         ledStrip.start();
 
-        PhotonVision p = new PhotonVision();
+        p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx);
@@ -253,6 +254,7 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
+        System.out.println("The Skew: " + p.getSkewID7());
         if(joyDrive.getRawButton(2))
             aAR.periodicIDBased();    
         else 

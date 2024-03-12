@@ -212,6 +212,31 @@ public boolean isThereID4(){
         return 0;
 }
  
+ public double getSkewID7(){
+        var result = photonCameraF.getLatestResult(); 
+        if(result.hasTargets()){
+                if(isThereID7()){ 
+                        var PhotonVisionResult = getID7(); 
+                        if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getSkew();
+                }
+                return 0;
+        }
+        return 0;
+}
+ 
+
+ public double getSkewID4(){
+        var result = photonCameraF.getLatestResult(); 
+        if(result.hasTargets()){
+              if(isThereID4()){ 
+         var PhotonVisionResult = getID4(); 
+                if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getSkew();
+        }
+        return 0;
+        }
+        return 0;
+}
+ 
  public double getAngleID7(){
         var result = photonCameraF.getLatestResult(); 
         if(result.hasTargets()){
@@ -223,7 +248,6 @@ public boolean isThereID4(){
         }
         return 0;
 }
- 
   
 
 public double getRange(){
