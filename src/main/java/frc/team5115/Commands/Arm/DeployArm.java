@@ -46,6 +46,7 @@ public class DeployArm extends Command {
     public void execute(){
         System.out.println("deploying to angle: " + angle);
         arm.deployToAngle(angle);
+        System.out.println("PID Output: " + arm.getPID());
     }
 
 

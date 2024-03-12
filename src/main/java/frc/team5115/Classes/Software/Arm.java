@@ -60,9 +60,6 @@ public class Arm extends SubsystemBase{
      */
     public void updateController(I2CHandler bno){
         bno.updatePitch();
-        if(setpoint.getDegrees(-90) == 34.5) turnController.setP(0.5);
-        if(setpoint.getDegrees(-90) == Constants.AmpArmAngle) turnController.setP(0.25);
-        else turnController.setP(0.35);
         final double pidOutput = turnController.calculate(getAngle().getDegrees(MIN_DEGREES), setpoint.getDegrees(MIN_DEGREES));
         // System.out.println("Setpoint: " + setpoint.getDegrees(MIN_DEGREES) + " current angle: "+ getAngle().getDegrees(MIN_DEGREES) + " pid: " + pidOutput);
         
@@ -86,6 +83,10 @@ public class Arm extends SubsystemBase{
         //return Math.abs(getAngle().angle-setpoint.angle) < TURN_PID_TOLERANCE;
     }
 
+    public double getPID(){
+        return turnController.getP();
+    }
+
     public boolean getFault(CANSparkMax.FaultID f){
         return hardwareArm.getFault(f);
     }
@@ -101,6 +102,7 @@ public class Arm extends SubsystemBase{
     public void deployToAngle(double newSetpoint){
         setpoint.angle = newSetpoint;
         if(newSetpoint == Constants.AmpArmAngle) turnController.setP(0.25);
+        else if(newSetpoint == 34.5) turnController.setP(0.65);
         else turnController.setP(TURN_PID_KP);
     }
 

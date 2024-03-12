@@ -38,6 +38,7 @@ import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Commands.Auto.AutoPart1;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -58,6 +59,7 @@ public class RobotContainer {
     private final GenericEntry shootAngle;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
+    private final AutoPart1 autoPart1;
     private final Climber climber;
     private final Arm arm;
     private final Intake intake;
@@ -87,7 +89,7 @@ public class RobotContainer {
         navx = new NAVx();
         i2cHandler = new I2CHandler();
         autoBuilder = new AutoBuilder();
-        ledStrip = new LedStrip(9, 20);
+        ledStrip = new LedStrip(0, 20);
         ledStrip.start();
 
         PhotonVision p = new PhotonVision();
@@ -117,6 +119,8 @@ public class RobotContainer {
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
         configureButtonBindings();
+
+        autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
     }
 
     // public void registerCommand() {
@@ -188,6 +192,19 @@ public class RobotContainer {
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));
+        /* 
+        new JoystickButton(joyDrive, XboxController.Button.kB.value).
+        onTrue(new InstantCommand(this::AutoPart1))
+        .onFalse(new InstantCommand(this :: AutoPart1Cancel));
+        */
+    }
+
+    private void AutoPart1(){
+        autoPart1.schedule();
+    }
+
+    private void AutoPart1Cancel(){
+        autoPart1.cancel();
     }
 
     private void switchFieldOriented() {
