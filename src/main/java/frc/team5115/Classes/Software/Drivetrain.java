@@ -88,6 +88,10 @@ public class Drivetrain extends SubsystemBase {
         hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
     }
 
+    public void driveTranslationBySpeeds(double xSpeed, double ySpeed) {
+        hardwareDrivetrain.driveBySpeeds(xSpeed, ySpeed);
+    }
+
 	/**
 	 * Updates the odometry of the robot.
      * should run every robot tick
