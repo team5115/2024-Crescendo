@@ -6,7 +6,7 @@ import com.pathplanner.lib.path.PathPlannerTrajectory;
  * A collection of all the paths used by the robot.
  */
 public class Paths {
-    public final static PathPlannerPath SideAutoPt1 = PathPlannerPath.fromPathFile("Unbasic Test");
+    public final static PathPlannerPath SideAutoPt1 = PathPlannerPath.fromPathFile("surfers");
 
     public final static PathPlannerPath Part1 = PathPlannerPath.fromPathFile("Path Uno");
     public final static PathPlannerPath Part2 = PathPlannerPath.fromPathFile("Path Dos");

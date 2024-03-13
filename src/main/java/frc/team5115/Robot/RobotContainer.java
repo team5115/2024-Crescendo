@@ -36,7 +36,7 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Commands.Auto.AutoCommandTwo;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -53,22 +53,23 @@ public class RobotContainer {
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
-    // private final I2CHandler i2cHandler;
+    private final I2CHandler i2cHandler;
     private final NAVx navx;
     // private final Climber climber;
-    // private final Arm arm;
-    // private final Intake intake;
-    // private final Shooter shooter;
+    private final Arm arm;
+     private final Intake intake;
+     private final Shooter shooter;
     // private final Amper amper;
-    // private final DigitalInput reflectiveSensor;
-    // private AutoAimAndRange aAR;
-    private AutoCommandGroup autoCommandGroup;
+     private final DigitalInput reflectiveSensor;
+    private AutoAimAndRange aAR;
+    private AutoCommandTwo autoCommandGroup;
     //photonPoseEstimator = new photonPoseEstimatorF(); 
-    // private Paths paths;
+    private Paths paths;
     // private final Climb climb;
     // private final DeployClimber deployClimber;
 
     boolean fieldOriented = true;
+    private AutoCommandTwo autoCommandTwo;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
@@ -79,22 +80,22 @@ public class RobotContainer {
         joyDrive = new Joystick(0);
         // joyManips = new Joystick(1);
         navx = new NAVx();
-        //rivate final PhotonPoseEstimator photonPoseEstimatorFP
+        //private final PhotonPoseEstimator photonPoseEstimatorFP
         
-        // i2cHandler = new I2CHandler();
+        i2cHandler = new I2CHandler();
 
         PhotonVision p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx, p);
         
-        // HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
-        // arm = new Arm(hardwareArm, i2cHandler);
+         HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
+        arm = new Arm(hardwareArm, i2cHandler);
 
-        // HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
-        // shooter = new Shooter(hardwareShooter);
-        // intake = new Intake(Constants.INTAKE_MOTOR_ID);
-        // reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
+         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
+        shooter = new Shooter(hardwareShooter);
+        intake = new Intake(Constants.INTAKE_MOTOR_ID);
+        reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
         // shuffleboardTab.addBoolean("Note Sensor", () -> !reflectiveSensor.get());
 
         // HardwareClimber leftClimber = new HardwareClimber(Constants.CLIMBER_LEFT_MOTOR_ID, true, Constants.CLIMB_LEFT_SENSOR_ID);
@@ -192,7 +193,7 @@ public class RobotContainer {
         drivetrain.init();
 
         if (AutoBuilder.isConfigured()) {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("Unbasic Test");
+            PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
             Command test = AutoBuilder.followPath(path);
             test.schedule();
         } else {
@@ -209,6 +210,8 @@ public class RobotContainer {
         System.out.println(navx.getYawDeg());
         // aAR.if7();
         // arm.updateController(i2cHandler);
+        autoCommandTwo = new AutoCommandTwo(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        autoCommandTwo.schedule();
     }
 
     public void startTeleop(){

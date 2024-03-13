@@ -31,6 +31,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             new WaitCommand(0.5)
             ,new PrepareShoot(intake, shooter, arm, d).withTimeout(2)
             ,new TriggerShoot(intake, shooter, arm, d)
+            
 
         );
     }
