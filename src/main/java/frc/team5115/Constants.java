@@ -55,6 +55,8 @@ public class Constants{
     public static final byte CLIMB_LEFT_SENSOR_ID = 8;
     public static final byte CLIMB_RIGHT_SENSOR_ID = 9;
 
+    public static final double AmpArmAngle = 102;
+
     public static final double TARGET_ANGLE = 1;
 
     // Copyright (c) FIRST and other WPILib contributors.
@@ -170,9 +172,9 @@ public class Constants{
 
         private static final double cameraPosZ = 0.2413; // 0.2413
         public static final double cameraPosX = 0.0;
-        public static final double cameraPosY = 0.368; // 0.0889001778004
+        public static final double cameraPosY = 0.483; // 0.0889001778004
         private static final double cameraRoll = 0.0;
-        public static final double cameraPitch = 33;
+        public static final double cameraPitch = 20;
         public static final double cameraYaw = 1;
 
         //TODO get the pose.... 

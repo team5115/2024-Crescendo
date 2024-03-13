@@ -2,6 +2,8 @@ package frc.team5115.Classes.Software;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -11,7 +13,6 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,14 +27,14 @@ import frc.team5115.Constants.VisionConstants;
 public class PhotonVision extends SubsystemBase{
      private PhotonCamera photonCameraF;
      private PhotonCamera photonCameraR;
-     private PhotonCamera photonCameraL;
+     private PhotonCamera photonCameraB;
      private PhotonCamera photonCameraNA;
      static PhotonTrackedTarget target;
 
      public AprilTagFieldLayout fieldLayout;
      private PhotonPoseEstimator photonPoseEstimatorL;
      private PhotonPoseEstimator photonPoseEstimatorR;
-     private PhotonPoseEstimator photonPoseEstimatorNA;
+     private PhotonPoseEstimator photonPoseEstimatorB;
      private PhotonPoseEstimator photonPoseEstimatorF;
      ArrayList<AprilTag> aprilTagList;
         
@@ -43,7 +44,7 @@ public class PhotonVision extends SubsystemBase{
         //Left 
         photonCameraF = new PhotonCamera("Stereo_Vision_1");
         //Back camera
-        photonCameraL = new PhotonCamera("OV5647");
+        photonCameraB = new PhotonCamera("OV5647");
         //Right camera 
         photonCameraR = new PhotonCamera("Mirosoft_LifeCam_Cinema");
         //Front camera
@@ -89,35 +90,25 @@ public class PhotonVision extends SubsystemBase{
          fieldLayout = new AprilTagFieldLayout(aprilTagList, FieldConstants.length, FieldConstants.width);
 
                // PhotonposeEstimators constructors:
-                photonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS,photonCameraR, robotToCam);
+               PhotonPoseEstimator PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE,photonCameraR, robotToCam);
 
-                photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraNA, robotToCam);
+               PhotonPoseEstimator photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraF, robotToCam);
 
-                photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraF, robotToCam);
+               PhotonPoseEstimator photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraNA, robotToCam);
 
-                photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraL, robotToCam);
+               PhotonPoseEstimator photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCameraB, robotToCam);
 
       
-         photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraNA, VisionConstants.robotToCamL);
-         photonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraR, VisionConstants.robotToCamR);
-         photonPoseEstimatorL = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraL, VisionConstants.robotToCamR);
-         photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.AVERAGE_BEST_TARGETS, photonCameraF, VisionConstants.robotToCamR);
+         photonPoseEstimatorNA = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraF, VisionConstants.robotToCamL);
+         PhotonPoseEstimatorR = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorB = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraR, VisionConstants.robotToCamR);
+         photonPoseEstimatorF = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCameraR, VisionConstants.robotToCamR);
 
-        
+
 
 
     }
-/*
- * param fieldTags A WPILib {@link AprilTagFieldLayout} linking AprilTag IDs to Pose3d objects
-     *     with respect to the FIRST field using the <a href=
-     *     "https://docs.wpilib.org/en/stable/docs/software/advanced-controls/geometry/coordinate-systems.html#field-coordinate-system">Field
-     *     Coordinate System</a>. Note that setting the origin of this layout object will affect the
-     *     results from this class.
-     * @param strategy The strategy it should use to determine the best pose.
-     * @param camera PhotonCamera
-     * @param robotToCamera
-*/
- 
+
     /**
  * 
  */
@@ -129,7 +120,7 @@ public class PhotonVision extends SubsystemBase{
  }
  
  
-public Pose3d j2(){
+public Pose3d getBestPose(){
 AprilTag target = new AprilTag(0, null);
 var result = photonCameraF.getLatestResult(); 
 
@@ -144,17 +135,19 @@ var result = photonCameraF.getLatestResult();
 
 
 
-
-public PhotonTrackedTarget getID7(){
+public Optional<PhotonTrackedTarget> getID7(){
         var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
+                System.out.println(i.getFiducialId());
+                if(i.getFiducialId() == 7) System.out.println("Matched");
                 if(i.getFiducialId() == 7){
-                        return i;
+                        return Optional.of(i);
                 }
+                //edge case here where the id 7 goes under after the last check but before we extract targets
         }
-        return null;
+        return Optional.empty();
 }
 
 public boolean isThereID7(){
@@ -163,23 +156,23 @@ public boolean isThereID7(){
 
         for (PhotonTrackedTarget i : targets){
                 if(i.getFiducialId() == 7){
-                        System.out.println("True");
+                        //System.out.println("True");
                         return true;
                 }
         }
         return false;
 }
 
-public PhotonTrackedTarget getID4(){
+public Optional<PhotonTrackedTarget> getID4(){
         var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
                 if(i.getFiducialId() == 4){
-                        return i;
+                        return Optional.of(i);
                 }
         }
-        return null;
+        return Optional.empty();
 }
 
 public boolean isThereID4(){
@@ -193,22 +186,6 @@ public boolean isThereID4(){
         }
         return false;
 }
-
-
-
-public Pose3d j2R(){
-AprilTag target = new AprilTag(0, null);
-var result = photonCameraR.getLatestResult(); 
-
- for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                        }
-                }
-       return target.pose;
-}
-
-
 
  public boolean isTargetPresent(){
     return photonCameraF.getLatestResult().hasTargets();
@@ -228,7 +205,32 @@ var result = photonCameraR.getLatestResult();
         if(result.hasTargets()){
               if(isThereID4()){ 
          var PhotonVisionResult = getID4(); 
-        return PhotonVisionResult.getYaw() + VisionConstants.cameraYaw;
+                if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getYaw() + VisionConstants.cameraYaw;
+        }
+        return 0;
+        }
+        return 0;
+}
+ 
+ public double getSkewID7(){
+        var result = photonCameraF.getLatestResult(); 
+        if(result.hasTargets()){
+                if(isThereID7()){ 
+                        var PhotonVisionResult = getID7(); 
+                        if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getSkew();
+                }
+                return 0;
+        }
+        return 0;
+}
+ 
+
+ public double getSkewID4(){
+        var result = photonCameraF.getLatestResult(); 
+        if(result.hasTargets()){
+              if(isThereID4()){ 
+         var PhotonVisionResult = getID4(); 
+                if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getSkew();
         }
         return 0;
         }
@@ -240,24 +242,20 @@ var result = photonCameraR.getLatestResult();
         if(result.hasTargets()){
                 if(isThereID7()){ 
                         var PhotonVisionResult = getID7(); 
-                        return PhotonVisionResult.getYaw() + VisionConstants.cameraYaw;
+                        if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getYaw() + VisionConstants.cameraYaw;
                 }
                 return 0;
         }
         return 0;
 }
- 
   
 
 public double getRange(){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(0, null);
         var result = photonCameraF.getLatestResult(); 
             if (result.hasTargets()) { 
                 int ID = -1;
                 for(AprilTag i : aprilTagList){
                         if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
                                 ID = result.getBestTarget().getFiducialId();  
                         }
                 }
@@ -275,7 +273,6 @@ public double getRange(){
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
 
-
          return 0;
 
         // Use our forward/turn speeds to control the drivetrain
@@ -284,15 +281,15 @@ public double getRange(){
     }
 
     public double getRangeID4(){
-        ArrayList<Double> x = new ArrayList<>();
-        AprilTag target = new AprilTag(4, null);
         var result = photonCameraF.getLatestResult(); 
+        var p = result.getBestTarget();
             if (result.hasTargets()) { 
                 int ID = -1;
-                for(AprilTag i : aprilTagList){
-                        if(i.ID == result.getBestTarget().getFiducialId()){
-                                target = i;
-                                ID = result.getBestTarget().getFiducialId();  
+                if(isThereID4()){
+                p = getID4().get();
+                for(PhotonTrackedTarget i : result.getTargets()){
+                        if(i.getFiducialId() == 4){
+                                ID = 4;
                         }
                 }
                 // First calculate range
@@ -301,10 +298,44 @@ public double getRange(){
                                 VisionConstants.cameraPosY,
                                 aprilTagList.get(ID-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
-                                Units.degreesToRadians(result.getBestTarget().getPitch())); 
+                                Units.degreesToRadians(p.getPitch())); 
 
                 return (range);
-                
+        }
+                // Use this range as the measurement we give to the PID controller.
+                // -1.0 required to ensure positive PID controller effort _increases_ range
+        }
+
+
+         return 0;
+
+        // Use our forward/turn speeds to control the drivetrain
+       // HardwareDrivetrain.drive(forwardSpeed, rotationSpeed, 0, true, );
+       
+    }
+
+      public double getRangeID7(){
+        var result = photonCameraF.getLatestResult(); 
+        var p = result.getBestTarget();
+            if (result.hasTargets()) { 
+                int ID = -1;
+                if(isThereID7()){
+                p= getID7().get();
+                for(PhotonTrackedTarget i : result.getTargets()){
+                        if(i.getFiducialId() == 7){
+                                ID = 7;
+                        }
+                }
+                // First calculate range
+                double range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                VisionConstants.cameraPosY,
+                                aprilTagList.get(ID-1).pose.getZ(),
+                                Units.degreesToRadians(VisionConstants.cameraPitch),
+                                Units.degreesToRadians(p.getPitch())); 
+                System.out.println("Range: " + range);
+                return (range);
+        }
                 // Use this range as the measurement we give to the PID controller.
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
@@ -318,30 +349,21 @@ public double getRange(){
     }
 
 
-   public double getID(){
-
+   public double getBestID(){
         if(photonCameraF.getLatestResult().hasTargets()){ 
         double FidicualID = photonCameraF.getLatestResult().getBestTarget().getFiducialId();
         return (FidicualID);
 
         }
-        return 0;
+        return -1;
     }
-
     
-
-
-
-    
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         // The team assignment of the first grid the robot looks at is the team assignment of the robot
         // otherwise if we cant see any april tags trust the team assignment inputted on shuffle board
         //Trusting the left camera more, no idea on how to use filters to get the most information out of both cameras 2-6-2022
 
         if(photonPoseEstimatorF.update().isPresent()) return photonPoseEstimatorF.update();
-        if(photonPoseEstimatorR.update().isPresent()) return photonPoseEstimatorR.update();
-        if(photonPoseEstimatorL.update().isPresent()) return photonPoseEstimatorL.update();
-      //  if(photonPoseEstimatorNA.update().isPresent()) return photonPoseEstimatorNA.update();
         return Optional.empty();
 
     }

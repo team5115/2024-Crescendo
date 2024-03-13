@@ -28,15 +28,14 @@ public class AutoCommandTwo extends SequentialCommandGroup {
 
 
         addCommands(
-            
-        // new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d),
-        new PrepareShoot(intake, shooter, arm, d).withTimeout(2),
-        new TriggerShoot(intake, shooter, arm, d),
-        new IntakeSequence(intake, shooter, arm, d).raceWith(AutoBuilder.followPath(path)),
-        new WaitCommand(0.5),
-        new PrepareShoot(intake, shooter, arm, d).alongWith(new AutoAimAndRangeCommand(autoAimAndRange)).withTimeout(10),
-        new TriggerShoot(intake, shooter, arm, d)
-
+            // new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d),
+            new PrepareShoot(intake, shooter, arm, d, 0, 5000, null, false),
+            new TriggerShoot(intake, shooter, arm, d),
+            new IntakeSequence(intake, shooter, arm, d).raceWith(AutoBuilder.followPath(path)),
+            new WaitCommand(0.5),
+            new PrepareShoot(intake, shooter, arm, d, 34.5, 5000, null, false)
+                .alongWith(new AutoAimAndRangeCommand(autoAimAndRange)).withTimeout(10),
+            new TriggerShoot(intake, shooter, arm, d)
 
         );
     }

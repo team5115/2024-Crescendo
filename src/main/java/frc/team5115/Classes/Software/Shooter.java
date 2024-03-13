@@ -31,6 +31,8 @@ public class Shooter extends SubsystemBase {
     final SimpleMotorFeedforward ccwFF;
     final PIDController cwPID;
     final PIDController ccwPID;
+    final SimpleMotorFeedforward extraFF;
+    final PIDController extraPID;
     
     public Shooter(HardwareShooter hardwareShooter) {
         this.hardwareShooter = hardwareShooter;
@@ -41,14 +43,21 @@ public class Shooter extends SubsystemBase {
         ccwPID = new PIDController(ccwKp, 0, ccwKd); 
         cwPID.setTolerance(20);
         ccwPID.setTolerance(20);
+        extraFF = new SimpleMotorFeedforward(0, 0, 0);
+        extraPID = new PIDController(0, 0, 0);
+        extraPID.setTolerance(20);
     }
 
     public void slow() {
         hardwareShooter.setNormalized(0.08);
     }
 
-    public void ampCockSpeed() {
-        hardwareShooter.setNormalized(0.15);
+    public void ampRackSpeed() {
+        hardwareShooter.setNormalized(0.25, 0.25, 0);
+    }
+
+    public void slowBackwards() {
+        hardwareShooter.setNormalized(-0.5);
     }
 
     public void fast () {
@@ -67,14 +76,6 @@ public class Shooter extends SubsystemBase {
         return (hardwareShooter.getClockwiseVelocity() + hardwareShooter.getCounterClockwiseVelocity()) / 2.0;
     }
 
-    public double getClockwiseSpeed() {
-        return hardwareShooter.getClockwiseVelocity();
-    }
-
-    public double getCounterClockwiseSpeed() {
-        return hardwareShooter.getCounterClockwiseVelocity();
-    }
-
     public double[] spinByPid(double rpm) {
         // divide by 60 on speeds to go to rot/sec
         double rps = rpm / 60.0;
@@ -84,13 +85,13 @@ public class Shooter extends SubsystemBase {
         double ccwPIDValue = ccwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
         cwVolts += cwPIDValue;
         cwVolts += ccwPIDValue;
-        hardwareShooter.setVoltage(cwVolts, ccwVolts);
-        System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
+        hardwareShooter.setVoltage(cwVolts, ccwVolts, ccwVolts); // TODO add stuff for the third volts, rn it just uses ccwVolts
+        //System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
 
         return new double[] { cwPIDValue, ccwPIDValue };
     }
 
-    public void breakMode() {
+    public void brakeMode() {
         hardwareShooter.setIdleMode(IdleMode.kBrake);
     }
 

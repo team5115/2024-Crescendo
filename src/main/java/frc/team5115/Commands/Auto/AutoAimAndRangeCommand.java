@@ -22,7 +22,7 @@ public class AutoAimAndRangeCommand extends Command{
 
     @Override
     public void execute(){
-        errors = autoAimAndRange.periodic1();
+        errors = autoAimAndRange.periodicIDBased();
     }
 
     @Override
@@ -32,6 +32,7 @@ public class AutoAimAndRangeCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
+        autoAimAndRange.stop();
     }
 }
 

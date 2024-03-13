@@ -122,6 +122,12 @@ public class Drivetrain extends SubsystemBase {
             turn *= 0.2;
             forward *= 0.2;
         }
+
+        if (!fieldOriented) {
+            forward *= -1;
+            right *= -1;
+        }
+
         hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
     }
 
@@ -133,9 +139,9 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
     public Pose2d getEstimatedPose() {
-        System.out.println(poseEstimator.getEstimatedPosition());
-        var x = photonVision.getEstimatedGlobalPose();
-        if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
+        // System.out.println(poseEstimator.getEstimatedPosition());
+        // var x = photonVision.getEstimatedGlobalPose();
+        // if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
         return poseEstimator.getEstimatedPosition();
     }
 

@@ -47,7 +47,7 @@ public class AutoAimAndRange extends SubsystemBase{
     PhotonCamera camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
 
     // PID constants should be tuned per robot
-    final double LINEAR_P = 0.03;
+    final double LINEAR_P = 0.063;
     final double LINEAR_D = 0.0;
     PIDController forwardController = new PIDController(LINEAR_P, 0, LINEAR_D);
 
@@ -63,35 +63,29 @@ public class AutoAimAndRange extends SubsystemBase{
     public double[] periodic1() { 
         double forwardSpeed = 0;
         double rotationSpeed = 0;
-        double GOAL_RANGE_METERS = 0.3; // cam height = 0.68
+        double GOAL_RANGE_METERS = 3.048; // cam height = 0.68
         
 
         // Vision-alignment mode
             // Query the latest result from PhotonVision
 
         if(photonVision.isTargetPresent()){
-
-             
-
             //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
-            //forwardSpeed = forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
-
+            forwardSpeed = -forwardController.calculate(photonVision.getRange(), GOAL_RANGE_METERS);
+            System.out.println(photonVision.getRange());
             // Also calculate angular power
             // -1.0 required to ensure positive PID controller effort _increases_ yaw
             rotationSpeed = -turnController.calculate(photonVision.getAngle(), 0); 
-
             hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
-            
-
         }
 
         else{
             forwardSpeed = 100000;
-            rotationSpeed = 10000;
+            rotationSpeed = 100000;
             hd.drive(0, 0, 0, true, false); 
         }
 
-        double[] x = {forwardSpeed/0.03, rotationSpeed/0.0025};
+        double[] x = {forwardSpeed/0.054, rotationSpeed/0.0025};
 
         return x;
 
@@ -106,6 +100,55 @@ public class AutoAimAndRange extends SubsystemBase{
         if(photonVision.isThereID4()) hd.drive(1, 0, 0, false, false);
         else hd.drive(0, 0, 0, true, false);
     }
+
+    public double[] periodicIDBased() { 
+        double forwardSpeed = 0;
+        double rotationSpeed = 0;
+        double GOAL_RANGE_METERS = 3; // cam height = 0.68
+        
+
+        // Vision-alignment mode
+            // Query the latest result from PhotonVision
+
+        if(photonVision.isTargetPresent()){
+       
+        //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
+        if(photonVision.isThereID4()){
+        forwardSpeed = -forwardController.calculate(photonVision.getRangeID4(), GOAL_RANGE_METERS);
+
+        // Also calculate angular power
+        // -1.0 required to ensure positive PID controller effort _increases_ yaw
+            rotationSpeed = -turnController.calculate(photonVision.getAngleID4(), 0); 
+
+            hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
+            
+        }
+        else if(photonVision.isThereID7()){
+        forwardSpeed = -forwardController.calculate(photonVision.getRangeID7(), GOAL_RANGE_METERS);
+        //System.out.println("Range: " + photonVision.getRangeID7());
+        // Also calculate angular power
+        // -1.0 required to ensure positive PID controller effort _increases_ yaw
+            rotationSpeed = -turnController.calculate(photonVision.getAngleID7(), 0); 
+            hd.drive(forwardSpeed, 0, rotationSpeed, false, false);
+        }
+        else{
+        forwardSpeed = 100000;
+        rotationSpeed = 10000;
+        hd.drive(0, 0, 0, true, false);             
+        }
+    }    
+     else{
+        forwardSpeed = 100000;
+        rotationSpeed = 10000;
+        hd.drive(0, 0, 0, true, false); 
+     }
+
+     double[] x = {forwardSpeed/0.054, rotationSpeed/0.0025};
+
+     return x;
+
+    }
+
 
     public boolean isFinished(double[] i){ 
 
@@ -133,5 +176,8 @@ public class AutoAimAndRange extends SubsystemBase{
 }
 */
 
+    public void stop(){
+        hd.drive(0,0, 0, false, false);
+    }
 
 }
