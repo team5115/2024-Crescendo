@@ -120,24 +120,9 @@ public class RobotContainer {
         deployClimber = new DeployClimber(climber, +1);
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
-        configureButtonBindings();
-
+        
         autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-    }
-
-     public void registerCommand() {
-
-      NamedCommands.registerCommand("Unbasic Test", drivetrain.pathplanner());
-
-      NamedCommands.registerCommand("Path Uno", drivetrain.pathplanner());
-      NamedCommands.registerCommand("Path Dos", drivetrain.pathplanner());
-
-      NamedCommands.registerCommand("Path Tres", drivetrain.pathplanner());
-      NamedCommands.registerCommand("Path Quatro", drivetrain.pathplanner());
-
-      NamedCommands.registerCommand("Path Cinco", drivetrain.pathplanner());
-      NamedCommands.registerCommand("Path Seis", drivetrain.pathplanner());
-
+        configureButtonBindings();
     }
 
     public void configureButtonBindings() {
@@ -214,7 +199,7 @@ public class RobotContainer {
         drivetrain.resetEncoders();
         //navx.resetNAVx();
         drivetrain.stop();
-        //drivetrain.init();
+        drivetrain.init();
 
         // if (AutoBuilder.isConfigured()) {
         //     PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
@@ -227,7 +212,7 @@ public class RobotContainer {
         // autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
         //autoCommandGroup.schedule();
 
-        autoCommandTwo = new AutoCommandTwo(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        autoCommandTwo = new AutoCommandTwo(drivetrain, true, intake, shooter, arm, reflectiveSensor, aAR);
         autoCommandTwo.schedule();
         System.out.println("Starting auto");
     }

@@ -34,7 +34,6 @@ public class Drivetrain extends SubsystemBase {
     private final NAVx navx;
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
-    private SwerveDriveOdometry odometry;
     private final PhotonVision photonVision;
    
     public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision photonVision) {
@@ -51,14 +50,7 @@ public class Drivetrain extends SubsystemBase {
 
 
     public void init() {        
-        odometry = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
-        poseEstimator = new SwerveDrivePoseEstimator(
-            DriveConstants.kDriveKinematics,
-            navx.getYawRotation2D(),
-            hardwareDrivetrain.getModulePositions(),
-            getStartingPoseGuess()
-        );
-
+        
         resetPose(getStartingPoseGuess());
 
         AutoBuilder.configureHolonomic(
@@ -66,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
             this::resetPose,
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
-            new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
+            new HolonomicPathFollowerConfig(
                 new PIDConstants(1.8, 0.0, 0.0),
                 new PIDConstants(2.5, 0.0, 0.0),
                 1,
@@ -77,12 +69,12 @@ public class Drivetrain extends SubsystemBase {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-              return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
+                    return false; // TODO make it do flipping for when at comp?
+        //   var alliance = DriverStation.getAlliance();
+        //   if (alliance.isPresent()) {
+        //       return alliance.get() == DriverStation.Alliance.Red;
+        //   }
+        //   return false;
         },
             this
         );
@@ -183,11 +175,6 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetPose(Pose2d pose){
         poseEstimator.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
-    }
-
-    public Command pathplanner() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'pathplanner'");
     }
 
     // public Command pathplanner(){
