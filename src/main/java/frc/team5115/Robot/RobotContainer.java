@@ -2,9 +2,6 @@ package frc.team5115.Robot;
 
 import java.nio.file.Paths;
 
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonVersion;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -16,36 +13,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
-import frc.team5115.Classes.Hardware.HardwareAmper;
 import frc.team5115.Classes.Hardware.HardwareArm;
-import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
 import frc.team5115.Classes.Hardware.NAVx;
-import frc.team5115.Classes.Software.Amper;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Classes.Software.AutoAimAndRange;
-import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
-import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Auto.AutoCommandTwo;
-import frc.team5115.Commands.Climber.Climb;
-import frc.team5115.Commands.Climber.DeployClimber;
-import frc.team5115.Commands.Combo.IntakeSequence;
-import frc.team5115.Commands.Combo.PrepareAmp;
-import frc.team5115.Commands.Combo.PrepareShoot;
-import frc.team5115.Commands.Combo.ScoreAmp;
-import frc.team5115.Commands.Combo.StopBoth;
-import frc.team5115.Commands.Combo.TriggerShoot;
-import frc.team5115.Commands.Combo.Vomit;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -192,16 +174,19 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        if (AutoBuilder.isConfigured()) {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
-            Command test = AutoBuilder.followPath(path);
-            test.schedule();
-        } else {
-            System.out.println("ERROR! AutoBuilder has not been configured!");
-        }
+        // if (AutoBuilder.isConfigured()) {
+        //     PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
+        //     Command test = AutoBuilder.followPath(path);
+        //     test.schedule();
+        // } else {
+        //     System.out.println("ERROR! AutoBuilder has not been configured!");
+        // }
 
         // autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
         //autoCommandGroup.schedule();
+
+         autoCommandTwo = new AutoCommandTwo(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        autoCommandTwo.schedule();
         System.out.println("Starting auto");
     }
 
@@ -210,8 +195,7 @@ public class RobotContainer {
         System.out.println(navx.getYawDeg());
         // aAR.if7();
         // arm.updateController(i2cHandler);
-        autoCommandTwo = new AutoCommandTwo(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-        autoCommandTwo.schedule();
+       
     }
 
     public void startTeleop(){
