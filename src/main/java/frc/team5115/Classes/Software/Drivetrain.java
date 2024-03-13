@@ -14,6 +14,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -57,7 +59,7 @@ public class Drivetrain extends SubsystemBase {
             getStartingPoseGuess()
         );
 
-        resetPose(new Pose2d());
+        resetPose(getStartingPoseGuess());
 
         AutoBuilder.configureHolonomic(
             this::getEstimatedPose,
@@ -65,9 +67,9 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig( // TODO set the auto builder speeds/ pids
-                new PIDConstants(0.5, 0.0, 0.0),
-                new PIDConstants(0.5, 0.0, 0.0),
-                0,
+                new PIDConstants(1.8, 0.0, 0.0),
+                new PIDConstants(1.8, 0.0, 0.0),
+                1,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
@@ -89,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Pose2d getStartingPoseGuess() {
-            return new Pose2d();
+            return new Pose2d(new Translation2d(5,5), new Rotation2d(0,0));
     }
 
     /**

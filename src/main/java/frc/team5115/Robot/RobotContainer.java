@@ -193,7 +193,7 @@ public class RobotContainer {
 
         if (AutoBuilder.isConfigured()) {
             PathPlannerPath path = PathPlannerPath.fromPathFile("Unbasic Test");
-            Command test = AutoBuilder.followPath(path).andThen(drivetrain::stop);
+            Command test = AutoBuilder.followPath(path);
             test.schedule();
         } else {
             System.out.println("ERROR! AutoBuilder has not been configured!");
@@ -206,6 +206,7 @@ public class RobotContainer {
 
     public void autoPeriod() {
         drivetrain.updatePoseEstimator();
+        System.out.println(navx.getYawDeg());
         // aAR.if7();
         // arm.updateController(i2cHandler);
     }
