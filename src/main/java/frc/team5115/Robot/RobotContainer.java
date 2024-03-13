@@ -234,6 +234,7 @@ public class RobotContainer {
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
+        drivetrain.updatePoseEstimator();
         aAR.if7();
         arm.updateController(i2cHandler);
     }

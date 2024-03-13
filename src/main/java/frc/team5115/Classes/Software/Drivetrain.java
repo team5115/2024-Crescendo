@@ -91,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Pose2d getStartingPoseGuess() {
-            return new Pose2d(new Translation2d(5,5), new Rotation2d(0,0));
+            return new Pose2d(new Translation2d(1.44,5.55), new Rotation2d(0,0));
     }
 
     /**
