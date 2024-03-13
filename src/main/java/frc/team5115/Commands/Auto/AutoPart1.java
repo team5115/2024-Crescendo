@@ -64,7 +64,7 @@ public class AutoPart1 extends ParallelCommandGroup {
 
             addCommands(
                 new AutoAimAndRangeCommand(autoAimAndRange).withTimeout(5),
-                new PrepareShoot(intake, shooter, arm, d, 28, 5000, null, false)
+                new PrepareShoot(intake, shooter, arm, d, 33.4, 5000, null, false)
             );
 
        

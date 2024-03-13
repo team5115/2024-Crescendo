@@ -55,6 +55,9 @@ public class AutoAimAndRange extends SubsystemBase{
     final double ANGULAR_D = 0.0;
     PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
+    final double TRANSLATION_P = 0.003;
+    final double TRANSLATION_D = 0.0;
+    PIDController translationController = new PIDController(TRANSLATION_P, 0, TRANSLATION_D);
 
 
 
@@ -149,15 +152,53 @@ public class AutoAimAndRange extends SubsystemBase{
 
     }
 
+    public double translateSkew(){
+        double translateSpeed = 0;
+        
+
+        // Vision-alignment mode
+            // Query the latest result from PhotonVision
+
+        if(photonVision.isTargetPresent()){
+       
+        //Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(PhotonVision.target.getBestCameraToTarget(), photonVision.j2F(), VisionConstants.robotToCamL.times(-1));
+        if(photonVision.isThereID4()){
+        translateSpeed = translationController.calculate((photonVision.getSkewID4() + photonVision.getAngleID4()), 0);
+
+        // Also calculate angular power
+        // -1.0 required to ensure positive PID controller effort _increases_ yaw
+
+            hd.drive(0, translateSpeed, 0, true, false);
+            
+        }
+        else if(photonVision.isThereID7()){
+        translateSpeed = translationController.calculate((photonVision.getSkewID7() + photonVision.getAngleID7()), 0);
+        //System.out.println("Range: " + photonVision.getRangeID7());
+        // Also calculate angular power
+        // -1.0 required to ensure positive PID controller effort _increases_ yaw
+            hd.drive(0, translateSpeed, 0, true, false);
+        }
+        else{
+        translateSpeed = 100000;
+        hd.drive(0, 0, 0, true, false);             
+        }
+    }    
+     else{
+        translateSpeed = 100000;
+        hd.drive(0, 0, 0, true, false); 
+     }
+
+     double x = translateSpeed/0.054;
+
+     return x;
+
+    }
 
     public boolean isFinished(double[] i){ 
-
-         
         if(Math.abs(i[0]) <= 0.75){
             if(Math.abs(i[1]) <= 1)
             return true;
         }
-
      return false;
 
     }

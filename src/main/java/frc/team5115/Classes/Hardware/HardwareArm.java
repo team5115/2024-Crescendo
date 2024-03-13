@@ -46,6 +46,8 @@ public class HardwareArm extends SubsystemBase{
         turnLeft.setInverted(true);
 
         absoluteEncoder = turnLeft.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+        absoluteEncoder.setPositionConversionFactor(180);
+        absoluteEncoder.setInverted(true);
     }
 
     public void setTurn(double speed, Angle setpoint){

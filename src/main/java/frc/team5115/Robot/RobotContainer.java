@@ -159,7 +159,7 @@ public class RobotContainer {
         .onTrue(deployClimber);
         
         new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
-        .onTrue(climb);
+        .onTrue(climb); //drivebase / 0;
 
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
@@ -176,7 +176,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kLeftStick.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 34.5, 5000, null, true)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 33.4, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));     
@@ -273,7 +273,7 @@ public class RobotContainer {
 
         //aAR.periodic1();
 
-        //   System.out.println("bno angle: " + i2cHandler.getPitch());
+        //System.out.println("absolute encoder angle: " + arm.getAngle().angle);
 
         arm.updateController(i2cHandler);
     }

@@ -211,13 +211,15 @@ public boolean isThereID4(){
         }
         return 0;
 }
+
+// make the pose angle, the angle of the robot from the driverstation wall, match the skew angle, the angle that we are offset by the april tag.  
  
  public double getSkewID7(){
         var result = photonCameraF.getLatestResult(); 
         if(result.hasTargets()){
                 if(isThereID7()){ 
                         var PhotonVisionResult = getID7(); 
-                        if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getSkew();
+                        if(PhotonVisionResult.isPresent()) return Math.toDegrees(Math.atan2(PhotonVisionResult.get().getBestCameraToTarget().getY() ,PhotonVisionResult.get().getBestCameraToTarget().getX()));
                 }
                 return 0;
         }
@@ -229,8 +231,8 @@ public boolean isThereID4(){
         var result = photonCameraF.getLatestResult(); 
         if(result.hasTargets()){
               if(isThereID4()){ 
-         var PhotonVisionResult = getID4(); 
-                if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getSkew();
+                var PhotonVisionResult = getID4(); 
+                if(PhotonVisionResult.isPresent()) return Math.toDegrees(Math.atan2(PhotonVisionResult.get().getBestCameraToTarget().getY() ,PhotonVisionResult.get().getBestCameraToTarget().getX()));
         }
         return 0;
         }
