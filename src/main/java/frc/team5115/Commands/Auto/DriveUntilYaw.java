@@ -12,6 +12,7 @@ public class DriveUntilYaw extends Command {
     private final Timer timer;
     private final Drivetrain drivetrain;
     private final PhotonVision p;
+    private final NAVx navx;
 
     /**
      * 
@@ -20,22 +21,32 @@ public class DriveUntilYaw extends Command {
      * @param speed the speed to move, sign doesn't matter
      * @param direction the direction to move in, magnitude doesn't matter
      */
-    public DriveUntilYaw(Drivetrain drivetrain, PhotonVision p) {
+    public DriveUntilYaw(Drivetrain drivetrain, PhotonVision p, NAVx navx) {
         timer = new Timer();
         this.drivetrain = drivetrain;
         this.p = p;
+        this.navx = navx;
     }
 
     @Override
     public void initialize() {
         timer.reset();
         timer.start();
-        drivetrain.driveTranslationBySpeeds(0.1, 0);
+        navx.resetYawTo(p.getAngleID7());
+        System.out.println(navx.getYawDeg360());
+        drivetrain.SwerveDrive(0.1, 0, 0, false, true);
     }
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(p.getAngleID7() - 28.5) < 1);
+        System.out.println(navx.getYawDeg360());
+        //System.out.println("Difference: " + (Math.abs(p.getAngleID7()) - 28.5));
+        return (Math.abs(Math.abs(p.getAngleID7()) - 28.5) < 1);
+    }
+
+    public void periodic(){
+        double direction = Math.signum((Math.abs(p.getAngleID7()) - 28.5));
+        drivetrain.SwerveDrive(0.1*direction, 0, 0, false, true);
     }
 
     @Override

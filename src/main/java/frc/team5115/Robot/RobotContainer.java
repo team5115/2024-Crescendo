@@ -96,7 +96,7 @@ public class RobotContainer {
         p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
-        drivetrain = new Drivetrain(hardwareDrivetrain, navx);
+        drivetrain = new Drivetrain(hardwareDrivetrain, navx, p);
         
         HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm, i2cHandler);
@@ -236,7 +236,7 @@ public class RobotContainer {
         drivetrain.stop();
         //drivetrain.init();
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx);
         autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }

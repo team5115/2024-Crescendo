@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Drivetrain;
 import edu.wpi.first.math.controller.PIDController;
 import frc.team5115.Classes.Hardware.NAVx;
+import frc.team5115.Classes.Software.PhotonVision;
   
 public class TurnTimed extends Command {
     
@@ -12,6 +13,7 @@ public class TurnTimed extends Command {
     private final Drivetrain drivetrain;
     private final NAVx navx;
     private final PIDController pid; 
+    private final PhotonVision p;
 
     /**
      * 
@@ -20,11 +22,12 @@ public class TurnTimed extends Command {
      * @param speed the speed to move, sign doesn't matter
      * @param direction the direction to move in, magnitude doesn't matter
      */
-    public TurnTimed(Drivetrain drivetrain, NAVx navx) {
+    public TurnTimed(Drivetrain drivetrain, NAVx navx, PhotonVision p) {
         timer = new Timer();
         pid = new PIDController(0.003, 0, 0);
         this.drivetrain = drivetrain;
         this.navx = navx;
+        this.p = p;
     }
 
     @Override

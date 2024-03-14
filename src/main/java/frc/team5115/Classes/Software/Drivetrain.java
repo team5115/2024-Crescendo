@@ -1,5 +1,7 @@
 package frc.team5115.Classes.Software;
 
+import org.photonvision.proto.Photon;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -20,13 +22,14 @@ import frc.team5115.Classes.Hardware.NAVx;
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
+    private final PhotonVision p;
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision p) {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
-
+        this.p = p;
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -57,6 +60,10 @@ public class Drivetrain extends SubsystemBase {
     public void resetEncoders() {
         navx.resetNAVx();
         hardwareDrivetrain.resetEncoders();
+    }
+
+    public void resetToAngle(){
+        navx.resetYawTo(p.getAngleID7());
     }
     
     public void SwerveDrive(double forward, double turn, double right, boolean rookieMode, boolean fieldOriented){

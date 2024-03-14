@@ -12,8 +12,8 @@ import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.PrepareShoot;
 import frc.team5115.Commands.Combo.TriggerShoot;
 
-public class TwoNoteAuto extends SequentialCommandGroup {
-    public TwoNoteAuto(boolean actuallyRun, Drivetrain drivetrain, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, AutoAimAndRange autoAimAndRange) {
+public class CenterAuto extends SequentialCommandGroup {
+    public CenterAuto(boolean actuallyRun, Drivetrain drivetrain, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, AutoAimAndRange autoAimAndRange) {
         if (!actuallyRun) return;
 
         addCommands(

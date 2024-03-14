@@ -140,8 +140,7 @@ public Optional<PhotonTrackedTarget> getID7(){
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
-                System.out.println(i.getFiducialId());
-                if(i.getFiducialId() == 7) System.out.println("Matched");
+                //System.out.println(i.getFiducialId());
                 if(i.getFiducialId() == 7){
                         return Optional.of(i);
                 }
