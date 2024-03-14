@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -56,6 +57,9 @@ public class RobotContainer {
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
+    private final GenericEntry doAutoSide;
+    private final GenericEntry doAutoLeft;
+    private final GenericEntry doAutoRight;
     private final GenericEntry shootAngle;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
@@ -81,9 +85,16 @@ public class RobotContainer {
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
+
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        doAutoSide = shuffleboardTab.add("Do side auto?", false).getEntry();
+        doAutoLeft = shuffleboardTab.add("Do left auto 2?", false).getEntry();
+        doAutoRight = shuffleboardTab.add("Do right auto 3?", false).getEntry();
+
+
         shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
+      
 
         joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
