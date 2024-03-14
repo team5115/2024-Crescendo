@@ -23,7 +23,8 @@ public class DriveDistance extends Command {
         timer = new Timer();
         this.drivetrain = drivetrain;
 
-        time = Math.abs(distance / speed);
+       // time = Math.abs(distance / speed);
+       time = 3;
         this.speed = Math.abs(speed);
         this.direction = Math.signum(direction);
     }

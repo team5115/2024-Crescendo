@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.team5115.Constants;
 import frc.team5115.Classes.Software.Arm;
 import frc.team5115.Commands.Auto.AutoAimAndRangeCommand;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -64,7 +65,7 @@ public class AutoPart1 extends ParallelCommandGroup {
 
             addCommands(
                 new AutoAimAndRangeCommand(autoAimAndRange).withTimeout(5),
-                new PrepareShoot(intake, shooter, arm, d, 33.4, 5000, null, false)
+                new PrepareShoot(intake, shooter, arm, d, Constants.Arm10FtAngle, 5000, null, false)
             );
 
        

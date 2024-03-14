@@ -102,7 +102,7 @@ public class Arm extends SubsystemBase{
     public void deployToAngle(double newSetpoint){
         setpoint.angle = newSetpoint;
         if(newSetpoint == Constants.AmpArmAngle) turnController.setP(0.25);
-        else if(newSetpoint == 33.4) turnController.setP(0.65);
+        else if(newSetpoint == Constants.Arm10FtAngle) turnController.setP(0.65);
         else turnController.setP(TURN_PID_KP);
     }
 

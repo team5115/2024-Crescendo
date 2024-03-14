@@ -26,10 +26,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             
             // new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d),
             //new IntakeSequence(intake, shooter, arm, d),
-
-            new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d, aAR),
-            new TriggerShoot(intake, shooter, arm, d)
-
+            new TwoNoteAuto(actuallyRun, drivetrain, intake, shooter, arm, d, aAR)
         );
     }
 }

@@ -22,15 +22,11 @@ public class TwoNoteAuto extends SequentialCommandGroup {
             new TriggerShoot(intake, shooter, arm, sensor),
 
             // drive 8 ft at 3 ft/s while intaking to grab another note
-            new DriveDistance(drivetrain, Units.feetToMeters(8), Units.feetToMeters(3), +1)
-                .alongWith(new IntakeSequence(intake, shooter, arm, sensor)),
-            
-            // auto aim and range to line up the note while preparing shot
-            new AutoAimAndRangeCommand(autoAimAndRange)
-                .alongWith(new PrepareShoot(intake, shooter, arm, sensor, 28, 5000, null, false)),
-
-            // trigger the shot
-            new TriggerShoot(intake, shooter, arm, sensor)
+            new DriveWhileIntaking(actuallyRun, drivetrain, intake, shooter, arm, sensor, autoAimAndRange),
+            //  auto aim and range to line up the note while preparing shot
+            new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, sensor, autoAimAndRange),
+            //  trigger the shot
+             new TriggerShoot(intake, shooter, arm, sensor)
         );
     }
     

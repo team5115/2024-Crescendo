@@ -57,6 +57,8 @@ public class Constants{
 
     public static final double AmpArmAngle = 102;
 
+    public static final double Arm10FtAngle = 32.4;
+
     public static final double TARGET_ANGLE = 1;
 
     // Copyright (c) FIRST and other WPILib contributors.
