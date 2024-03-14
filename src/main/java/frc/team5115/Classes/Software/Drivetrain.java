@@ -61,7 +61,7 @@ public class Drivetrain extends SubsystemBase {
             new HolonomicPathFollowerConfig(
                 new PIDConstants(1.8, 0.0, 0.0),
                 new PIDConstants(2.5, 0.0, 0.0),
-                1,
+                .75,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
@@ -83,7 +83,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Pose2d getStartingPoseGuess() {
-            return new Pose2d(new Translation2d(1.44,5.55), new Rotation2d(0,0));
+            return new Pose2d(new Translation2d(1.37,5.52), new Rotation2d(0,0));
     }
 
     /**
