@@ -201,21 +201,25 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        // if (AutoBuilder.isConfigured()) {
-        //     PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
-        //     Command test = AutoBuilder.followPath(path);
-        //     test.schedule();
-        // } else {
-        //     System.out.println("ERROR! AutoBuilder has not been configured!");
-        // }
+        if (AutoBuilder.isConfigured()) {
+            PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
+            Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
+            test.schedule();
+        } else {
+            System.out.println("ERROR! AutoBuilder has not been configured!");
+        }
 
-        // autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-        //autoCommandGroup.schedule();
+        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        autoCommandGroup.schedule();
 
         autoCommandTwo = new AutoCommandTwo(drivetrain, true, intake, shooter, arm, reflectiveSensor, aAR);
         autoCommandTwo.schedule();
         System.out.println("Starting auto");
     }
+
+    private void printFinished() {
+        System.out.println("Path finished!");
+      }
 
     public void autoPeriod() {
         // drivetrain.updateOdometry();
