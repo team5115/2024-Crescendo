@@ -89,7 +89,49 @@ public class HardwareDrivetrain{
      *                      field.
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit, double angle) {
+        
+        double xSpeedCommanded;
+        double ySpeedCommanded;
+
+        xSpeedCommanded = xSpeed;
+        ySpeedCommanded = ySpeed;
+        m_currentRotation = rot;
+
+        // Convert the commanded speeds into the correct units for the drivetrain
+
+        double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
+        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond+rotDelivered/20;
+        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
+
+        ChassisSpeeds x = 
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(gyro.getYawDeg360() - angle))
+                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+        x = discretize(x, 0.02);
+
+        SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(x);
+        SwerveDriveKinematics.desaturateWheelSpeeds(
+            swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+            
+        frontLeft.setDesiredState(swerveModuleStates[0]);
+        frontRight.setDesiredState(swerveModuleStates[1]);
+        backLeft.setDesiredState(swerveModuleStates[2]);
+        backRight.setDesiredState(swerveModuleStates[3]);
+    }
+
+    public void driveBySpeeds(double xSpeed, double ySpeed) {
+        xSpeed = MathUtil.clamp(xSpeed, -DriveConstants.kMaxSpeedMetersPerSecond, +DriveConstants.kMaxSpeedMetersPerSecond);
+        ySpeed = MathUtil.clamp(ySpeed, -DriveConstants.kMaxSpeedMetersPerSecond, +DriveConstants.kMaxSpeedMetersPerSecond);
+
+        ChassisSpeeds x = new ChassisSpeeds(xSpeed, ySpeed, 0);
+        x = discretize(x, 0.02);
+        
+        SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(x);
+        setModuleStates(swerveModuleStates);
+    }
+
+public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
         
         double xSpeedCommanded;
         double ySpeedCommanded;
@@ -120,17 +162,7 @@ public class HardwareDrivetrain{
         backRight.setDesiredState(swerveModuleStates[3]);
     }
 
-    public void driveBySpeeds(double xSpeed, double ySpeed) {
-        xSpeed = MathUtil.clamp(xSpeed, -DriveConstants.kMaxSpeedMetersPerSecond, +DriveConstants.kMaxSpeedMetersPerSecond);
-        ySpeed = MathUtil.clamp(ySpeed, -DriveConstants.kMaxSpeedMetersPerSecond, +DriveConstants.kMaxSpeedMetersPerSecond);
-
-        ChassisSpeeds x = new ChassisSpeeds(xSpeed, ySpeed, 0);
-        x = discretize(x, 0.02);
-        
-        SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(x);
-        setModuleStates(swerveModuleStates);
-    }
-
+    
     /**
      * Sets the wheels into an X formation to prevent movement.
      */

@@ -36,10 +36,6 @@ public class NAVx implements Subsystem {
         yawAtReset = clampAngle(ahrs.getYaw());
     }
 
-    public void resetYawTo(double angle){
-        yawAtReset = clampAngle(ahrs.getYaw()) - angle;
-    }
-
 	/**
 	 * Sets the baseline pitch to the current pitch.
 	 */

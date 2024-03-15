@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team5115.Classes.Software.Drivetrain;
 
-public class DriveDistance extends Command {
+public class DriveByTime extends Command {
     
     private final Timer timer;
     private final Drivetrain drivetrain;
@@ -12,28 +12,39 @@ public class DriveDistance extends Command {
     private final double speed;
     private final double direction;
 
+    private final boolean useYaxis;
+
     /**
      * 
      * @param drivetrain the drivetrain
-     * @param distance distance magnitude
      * @param speed the speed to move, sign doesn't matter
      * @param direction the direction to move in, magnitude doesn't matter
+     * @param time the time to drive for
      */
-    public DriveDistance(Drivetrain drivetrain, double distance, double speed, double direction) {
+    public DriveByTime(Drivetrain drivetrain, double speed, double direction, double time, boolean useYaxis) {
         timer = new Timer();
         this.drivetrain = drivetrain;
+        this.useYaxis = useYaxis;
 
        // time = Math.abs(distance / speed);
-       time = 3;
+       this.time = time;
         this.speed = Math.abs(speed);
         this.direction = Math.signum(direction);
+    }
+
+    public DriveByTime(Drivetrain drivetrain, double speed, double direction, double time) {
+        this(drivetrain, speed, direction, time, false);
     }
 
     @Override
     public void initialize() {
         timer.reset();
         timer.start();
-        drivetrain.driveTranslationBySpeeds(speed * direction, 0);
+        if (useYaxis) {
+            drivetrain.driveTranslationBySpeeds(0, speed * direction);
+        } else {
+            drivetrain.driveTranslationBySpeeds(speed * direction, 0);
+        }
     }
 
     @Override

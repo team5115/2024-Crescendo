@@ -1,4 +1,5 @@
 package frc.team5115.Commands.Auto;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -19,19 +20,19 @@ public class SideAuto extends SequentialCommandGroup {
     private final AutoAimAndRange autoAimAndRange; 
     private final NAVx navx;
     
-    public SideAuto(Drivetrain drivetrain, boolean actuallyRun, Intake intake, Shooter shooter, Arm arm, DigitalInput d, AutoAimAndRange aAR, PhotonVision p, NAVx navx){
+    public SideAuto(Drivetrain drivetrain, boolean actuallyRun, Intake intake, Shooter shooter, Arm arm, DigitalInput d, AutoAimAndRange aAR, PhotonVision p, NAVx navx, boolean direction){
         this.drivetrain = drivetrain;
         autoAimAndRange = aAR;
         this.navx = navx;
         if (!actuallyRun) return;
 
         addCommands(
-            new PrepareShoot(intake, shooter, arm, d, 5, 5000, null, actuallyRun),
-            new TriggerShoot(intake, shooter, arm, d),
-            new DriveUntilYaw(drivetrain, p, navx),
-            new DriveUntilDistanceFromAprilTag(aAR)
+            new PrepareShoot(intake, shooter, arm, d, 5, 5000, null, false),
+            new TriggerShoot(intake, shooter, arm, d)
             //new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d, aAR),
             //new TriggerShoot(intake, shooter, arm, d)
+            //, new DriveByTime(drivetrain, Units.feetToMeters(1), -1, 1.5)
+            , new DriveByTime(drivetrain, 0.5, direction ? 1 : -1, 2, true)
 
         );
     }

@@ -30,7 +30,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             
             // new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d),
             //new IntakeSequence(intake, shooter, arm, d),
-            new SideAuto(drivetrain, actuallyRun, intake, shooter, arm, d, aAR, p, navx)
+            // new SideAuto(drivetrain, actuallyRun, intake, shooter, arm, d, aAR, p, navx)
             //new CenterAuto(actuallyRun, drivetrain, intake, shooter, arm, d, aAR)
         );
     }

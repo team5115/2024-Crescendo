@@ -40,6 +40,8 @@ import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Auto.AutoPart1;
+import frc.team5115.Commands.Auto.CenterAuto;
+import frc.team5115.Commands.Auto.SideAuto;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -57,7 +59,6 @@ public class RobotContainer {
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
     private final GenericEntry doAuto;
-    private final GenericEntry doAutoSide;
     private final GenericEntry doAutoLeft;
     private final GenericEntry doAutoRight;
     private final GenericEntry shootAngle;
@@ -71,14 +72,18 @@ public class RobotContainer {
     private final Amper amper;
     private final DigitalInput reflectiveSensor;
     private AutoAimAndRange aAR;
-    private AutoCommandGroup autoCommandGroup;
+    private Command autoCommandGroup;
     private Paths paths;
     private final AutoBuilder autoBuilder;
     private final Climb climb;
     private final DeployClimber deployClimber;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
     private final LedStrip ledStrip;
+    private double angleOfDrivetrain = 0;
     private final PhotonVision p;
+
+    private SideAuto sideAuto;
+    private CenterAuto centerAuto;
 
     boolean fieldOriented = true;
 
@@ -87,7 +92,6 @@ public class RobotContainer {
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
 
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
-        doAutoSide = shuffleboardTab.add("Do side auto?", false).getEntry();
         doAutoLeft = shuffleboardTab.add("Do left auto 2?", false).getEntry();
         doAutoRight = shuffleboardTab.add("Do right auto 3?", false).getEntry();
 
@@ -204,19 +208,14 @@ public class RobotContainer {
 
         new JoystickButton(joyDrive, XboxController.Button.kA.value)
         .onTrue(new InstantCommand(this :: switchFieldOriented));
+
+        new JoystickButton(joyDrive, XboxController.Button.kStart.value)
+        .onTrue(new InstantCommand(this :: resetAngleOfDrivetrain));
         /* 
         new JoystickButton(joyDrive, XboxController.Button.kB.value).
         onTrue(new InstantCommand(this::AutoPart1))
         .onFalse(new InstantCommand(this :: AutoPart1Cancel));
         */
-    }
-
-    private void AutoPart1(){
-        autoPart1.schedule();
-    }
-
-    private void AutoPart1Cancel(){
-        autoPart1.cancel();
     }
 
     private void switchFieldOriented() {
@@ -241,14 +240,27 @@ public class RobotContainer {
     }
 
     public void startAuto(){
-        if(autoCommandGroup != null) autoCommandGroup.cancel();
+        if(doAutoRight.getBoolean(false)) {
+            angleOfDrivetrain = 60;
+            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false);
+        }
+        else if(doAutoLeft.getBoolean(false)) {
+            angleOfDrivetrain = -60;
+            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, true);
+        }
+        else {
+            autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
+        } 
+
         drivetrain.resetEncoders();
         navx.resetNAVx();
         drivetrain.stop();
         //drivetrain.init();
+        if(doAuto.getBoolean(false)){
+             System.out.println("running auto");
+             autoCommandGroup.schedule();
+        }
 
-        autoCommandGroup = new AutoCommandGroup(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx);
-        autoCommandGroup.schedule();
         System.out.println("Starting auto");
     }
 
@@ -264,12 +276,20 @@ public class RobotContainer {
         System.out.println("Starting teleop");
     }
 
+    private void resetAngleOfDrivetrain() {
+        angleOfDrivetrain = 0;
+        navx.resetYaw();
+    }
+
     public void teleopPeriodic() {
+        
         //System.out.println("The Skew: " + p.getSkewID7());
-        if(joyDrive.getRawButton(2))
+        if(joyDrive.getRawButton(2)) {
             aAR.periodicIDBased();    
-        else 
-            drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented);
+        }
+        else {
+            drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented, angleOfDrivetrain);
+        }
 
         // manual climber
         if(climber.isDeployed()) {

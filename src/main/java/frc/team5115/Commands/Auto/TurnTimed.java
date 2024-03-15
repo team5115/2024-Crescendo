@@ -34,7 +34,7 @@ public class TurnTimed extends Command {
     public void initialize() {
         timer.reset();
         timer.start();
-        drivetrain.SwerveDrive(0, pid.calculate(navx.getYawDeg360(), 0), 0, false, false);
+        drivetrain.SwerveDrive(0, pid.calculate(navx.getYawDeg360(), 0), 0, false, false, 0);
     }
 
     @Override

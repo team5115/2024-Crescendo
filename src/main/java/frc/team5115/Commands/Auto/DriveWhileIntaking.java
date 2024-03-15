@@ -21,8 +21,8 @@ public class DriveWhileIntaking extends ParallelRaceGroup {
     public DriveWhileIntaking(boolean actuallyRun, Drivetrain drivetrain, Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, AutoAimAndRange autoAimAndRange) {
 
         addCommands(
-            // drive 8 ft at 3 ft/s while intaking to grab another note
-            new DriveDistance(drivetrain, Units.feetToMeters(6), Units.feetToMeters(1), -1)
+            // distance is not used
+            new DriveByTime(drivetrain, Units.feetToMeters(1), -1, 3)
             
             ,new InstantCommand(intake :: fastIn).andThen(
              new DeployArm(intake, shooter, arm, -1).withTimeout(5).alongWith(new InstantCommand(intake :: fastIn)),

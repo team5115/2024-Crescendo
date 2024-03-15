@@ -32,9 +32,8 @@ public class DriveUntilYaw extends Command {
     public void initialize() {
         timer.reset();
         timer.start();
-        navx.resetYawTo(p.getAngleID7());
         System.out.println(navx.getYawDeg360());
-        drivetrain.SwerveDrive(0.1, 0, 0, false, true);
+        drivetrain.SwerveDrive(0.1, 0, 0, false, true, 0);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class DriveUntilYaw extends Command {
 
     public void periodic(){
         double direction = Math.signum((Math.abs(p.getAngleID7()) - 28.5));
-        drivetrain.SwerveDrive(0.1*direction, 0, 0, false, true);
+        drivetrain.SwerveDrive(0.1*direction, 0, 0, false, true, 0);
     }
 
     @Override
