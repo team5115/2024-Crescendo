@@ -11,8 +11,7 @@ public class DriveByTime extends Command {
     private final double time;
     private final double speed;
     private final double direction;
-
-    private final boolean useYaxis;
+    private double drivetrainAngle;
 
     /**
      * 
@@ -21,11 +20,10 @@ public class DriveByTime extends Command {
      * @param direction the direction to move in, magnitude doesn't matter
      * @param time the time to drive for
      */
-    public DriveByTime(Drivetrain drivetrain, double speed, double direction, double time, boolean useYaxis) {
+    public DriveByTime(Drivetrain drivetrain, double speed, double direction, double time, double drivetrainAngle) {
         timer = new Timer();
         this.drivetrain = drivetrain;
-        this.useYaxis = useYaxis;
-
+        this.drivetrainAngle = drivetrainAngle;
        // time = Math.abs(distance / speed);
        this.time = time;
         this.speed = Math.abs(speed);
@@ -33,18 +31,14 @@ public class DriveByTime extends Command {
     }
 
     public DriveByTime(Drivetrain drivetrain, double speed, double direction, double time) {
-        this(drivetrain, speed, direction, time, false);
+        this(drivetrain, speed, direction, time, 0.0);
     }
 
     @Override
     public void initialize() {
         timer.reset();
         timer.start();
-        if (useYaxis) {
-            drivetrain.driveTranslationBySpeeds(0, speed * direction);
-        } else {
-            drivetrain.driveTranslationBySpeeds(speed * direction, 0);
-        }
+        drivetrain.SwerveDrive(speed*direction, 0, 0, false, true, drivetrainAngle);
     }
 
     @Override

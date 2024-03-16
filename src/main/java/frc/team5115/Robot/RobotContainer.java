@@ -242,11 +242,11 @@ public class RobotContainer {
     public void startAuto(){
         if(doAutoRight.getBoolean(false)) {
             angleOfDrivetrain = 60;
-            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false);
+            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, true, angleOfDrivetrain);
         }
         else if(doAutoLeft.getBoolean(false)) {
             angleOfDrivetrain = -60;
-            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, true);
+            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, true, angleOfDrivetrain);
         }
         else {
             autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);

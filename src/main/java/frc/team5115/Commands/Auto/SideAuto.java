@@ -19,10 +19,12 @@ public class SideAuto extends SequentialCommandGroup {
     final Drivetrain drivetrain;
     private final AutoAimAndRange autoAimAndRange; 
     private final NAVx navx;
+    private double drivetrainAngle;
     
-    public SideAuto(Drivetrain drivetrain, boolean actuallyRun, Intake intake, Shooter shooter, Arm arm, DigitalInput d, AutoAimAndRange aAR, PhotonVision p, NAVx navx, boolean direction){
+    public SideAuto(Drivetrain drivetrain, boolean actuallyRun, Intake intake, Shooter shooter, Arm arm, DigitalInput d, AutoAimAndRange aAR, PhotonVision p, NAVx navx, boolean direction, double drivetrainAngle){
         this.drivetrain = drivetrain;
         autoAimAndRange = aAR;
+        this.drivetrainAngle = drivetrainAngle;
         this.navx = navx;
         if (!actuallyRun) return;
 
@@ -32,7 +34,7 @@ public class SideAuto extends SequentialCommandGroup {
             //new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d, aAR),
             //new TriggerShoot(intake, shooter, arm, d)
             //, new DriveByTime(drivetrain, Units.feetToMeters(1), -1, 1.5)
-            , new DriveByTime(drivetrain, 0.5, direction ? 1 : -1, 2, true)
+            , new DriveByTime(drivetrain, 0.5, direction ? 1 : -1, 2, drivetrainAngle)
 
         );
     }
