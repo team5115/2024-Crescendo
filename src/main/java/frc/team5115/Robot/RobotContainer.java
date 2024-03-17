@@ -92,8 +92,8 @@ public class RobotContainer {
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
 
         doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
-        doAutoLeft = shuffleboardTab.add("Do left auto 2?", false).getEntry();
-        doAutoRight = shuffleboardTab.add("Do right auto 3?", false).getEntry();
+        doAutoLeft = shuffleboardTab.add("Do red auto?", false).getEntry();
+        doAutoRight = shuffleboardTab.add("Do blue auto?", false).getEntry();
 
         shuffleboardTab.addBoolean("In Rangle for 10ft Shot", () -> inRange);
         shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
