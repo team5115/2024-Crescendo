@@ -172,9 +172,6 @@ public class RobotContainer {
 
         new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
         .onTrue(deployClimber);
-        
-        new JoystickButton(joyManips, XboxController.Button.kRightBumper.value)
-        .onTrue(climb); //drivebase / 0;
 
         new JoystickButton(joyManips, XboxController.Button.kBack.value)
         .onTrue(new Vomit(shooter, intake))
