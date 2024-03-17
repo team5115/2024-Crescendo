@@ -22,7 +22,7 @@ public class DriveWhileIntaking extends ParallelRaceGroup {
 
         addCommands(
             // distance is not used
-            new DriveByTime(drivetrain, 2, 1, 0.75)
+            new DriveByTime(drivetrain, 1.25, 1, 0.75)
             
             ,new InstantCommand(intake :: fastIn).andThen(
              new DeployArm(intake, shooter, arm, -1).withTimeout(5).alongWith(new InstantCommand(intake :: fastIn)),

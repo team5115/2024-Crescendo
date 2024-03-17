@@ -146,7 +146,7 @@ public class AutoAimAndRange extends SubsystemBase{
         hd.drive(0, 0, 0, true, false); 
      }
 
-     double[] x = {forwardSpeed/0.054, rotationSpeed/0.0025};
+     double[] x = {forwardSpeed/0.17, rotationSpeed/0.0025};
 
      return x;
 
@@ -241,7 +241,7 @@ public class AutoAimAndRange extends SubsystemBase{
     }
 
     public boolean isFinished(double[] i){ 
-        if(Math.abs(i[0]) <= 0.75){
+        if(Math.abs(i[0]) <= 0.1){
             if(Math.abs(i[1]) <= 1)
             return true;
         }

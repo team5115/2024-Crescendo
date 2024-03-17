@@ -81,7 +81,7 @@ public class RobotContainer {
     private final LedStrip ledStrip;
     private double angleOfDrivetrain = 0;
     private final PhotonVision p;
-
+    boolean inRange = false;
     private SideAuto sideAuto;
     private CenterAuto centerAuto;
 
@@ -95,7 +95,7 @@ public class RobotContainer {
         doAutoLeft = shuffleboardTab.add("Do left auto 2?", false).getEntry();
         doAutoRight = shuffleboardTab.add("Do right auto 3?", false).getEntry();
 
-
+        shuffleboardTab.addBoolean("In Rangle for 10ft Shot", () -> inRange);
         shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
       
@@ -282,7 +282,9 @@ public class RobotContainer {
         
         //System.out.println("The Skew: " + p.getSkewID7());
         if(joyDrive.getRawButton(2)) {
-            aAR.periodicIDBased();    
+            aAR.periodicIDBased();
+            double[] x = aAR.periodicIDBased();
+            inRange = aAR.isFinished(x);
         }
         else {
             drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented, angleOfDrivetrain);
