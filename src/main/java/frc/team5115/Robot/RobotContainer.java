@@ -230,7 +230,7 @@ public class RobotContainer {
         }
         drivetrain.init();
         if (AutoBuilder.isConfigured()) {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
+            PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
             Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
             test.schedule();
         } else {
