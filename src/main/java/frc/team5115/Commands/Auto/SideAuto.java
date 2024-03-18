@@ -34,7 +34,7 @@ public class SideAuto extends SequentialCommandGroup {
             //new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d, aAR),
             //new TriggerShoot(intake, shooter, arm, d)
             //, new DriveByTime(drivetrain, Units.feetToMeters(1), -1, 1.5)
-            , new StrafeByTime(drivetrain, 0.5, direction ? 1 : -1, 1, drivetrainAngle)
+            , new StrafeByTime(drivetrain, 0.5, direction ? 1 : -1, 0.5, drivetrainAngle)
             , new DriveByTime(drivetrain, 0.5, 1, 2, drivetrainAngle)
 
         );
