@@ -37,6 +37,7 @@ import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
 import frc.team5115.Commands.Auto.AutoCommandGroup;
+import frc.team5115.Commands.Auto.AutoCommandTwo;
 import frc.team5115.Commands.Auto.AutoPart1;
 import frc.team5115.Commands.Auto.CenterAuto;
 import frc.team5115.Commands.Auto.SideAuto;
