@@ -2,6 +2,8 @@ package frc.team5115.Classes.Software;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -133,19 +135,18 @@ var result = photonCameraF.getLatestResult();
 
 
 
-public PhotonTrackedTarget getID7(){
+public Optional<PhotonTrackedTarget> getID7(){
         var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
-                System.out.println(i.getFiducialId());
-                if(i.getFiducialId() == 7) System.out.println("Matched");
+                //System.out.println(i.getFiducialId());
                 if(i.getFiducialId() == 7){
-                        return i;
+                        return Optional.of(i);
                 }
                 //edge case here where the id 7 goes under after the last check but before we extract targets
         }
-        return null;
+        return Optional.empty();
 }
 
 public boolean isThereID7(){
@@ -161,16 +162,16 @@ public boolean isThereID7(){
         return false;
 }
 
-public PhotonTrackedTarget getID4(){
+public Optional<PhotonTrackedTarget> getID4(){
         var result = photonCameraF.getLatestResult(); 
         var targets = result.getTargets();
 
         for (PhotonTrackedTarget i : targets){
                 if(i.getFiducialId() == 4){
-                        return i;
+                        return Optional.of(i);
                 }
         }
-        return null;
+        return Optional.empty();
 }
 
 public boolean isThereID4(){
@@ -203,7 +204,34 @@ public boolean isThereID4(){
         if(result.hasTargets()){
               if(isThereID4()){ 
          var PhotonVisionResult = getID4(); 
-        return PhotonVisionResult.getYaw() + VisionConstants.cameraYaw;
+                if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getYaw() + VisionConstants.cameraYaw;
+        }
+        return 0;
+        }
+        return 0;
+}
+
+// make the pose angle, the angle of the robot from the driverstation wall, match the skew angle, the angle that we are offset by the april tag.  
+ 
+ public double getSkewID7(){
+        var result = photonCameraF.getLatestResult(); 
+        if(result.hasTargets()){
+                if(isThereID7()){ 
+                        var PhotonVisionResult = getID7(); 
+                        if(PhotonVisionResult.isPresent()) return Math.toDegrees(Math.atan2(PhotonVisionResult.get().getBestCameraToTarget().getY() ,PhotonVisionResult.get().getBestCameraToTarget().getX()));
+                }
+                return 0;
+        }
+        return 0;
+}
+ 
+
+ public double getSkewID4(){
+        var result = photonCameraF.getLatestResult(); 
+        if(result.hasTargets()){
+              if(isThereID4()){ 
+                var PhotonVisionResult = getID4(); 
+                if(PhotonVisionResult.isPresent()) return Math.toDegrees(Math.atan2(PhotonVisionResult.get().getBestCameraToTarget().getY() ,PhotonVisionResult.get().getBestCameraToTarget().getX()));
         }
         return 0;
         }
@@ -215,13 +243,12 @@ public boolean isThereID4(){
         if(result.hasTargets()){
                 if(isThereID7()){ 
                         var PhotonVisionResult = getID7(); 
-                        return PhotonVisionResult.getYaw() + VisionConstants.cameraYaw;
+                        if(PhotonVisionResult.isPresent()) return PhotonVisionResult.get().getYaw() + VisionConstants.cameraYaw;
                 }
                 return 0;
         }
         return 0;
 }
- 
   
 
 public double getRange(){
@@ -247,7 +274,6 @@ public double getRange(){
                 // -1.0 required to ensure positive PID controller effort _increases_ range
         }
 
-
          return 0;
 
         // Use our forward/turn speeds to control the drivetrain
@@ -257,9 +283,11 @@ public double getRange(){
 
     public double getRangeID4(){
         var result = photonCameraF.getLatestResult(); 
+        var p = result.getBestTarget();
             if (result.hasTargets()) { 
                 int ID = -1;
                 if(isThereID4()){
+                p = getID4().get();
                 for(PhotonTrackedTarget i : result.getTargets()){
                         if(i.getFiducialId() == 4){
                                 ID = 4;
@@ -271,7 +299,7 @@ public double getRange(){
                                 VisionConstants.cameraPosY,
                                 aprilTagList.get(ID-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
-                                Units.degreesToRadians(getID4().getPitch())); 
+                                Units.degreesToRadians(p.getPitch())); 
 
                 return (range);
         }
@@ -289,9 +317,11 @@ public double getRange(){
 
       public double getRangeID7(){
         var result = photonCameraF.getLatestResult(); 
+        var p = result.getBestTarget();
             if (result.hasTargets()) { 
                 int ID = -1;
                 if(isThereID7()){
+                p= getID7().get();
                 for(PhotonTrackedTarget i : result.getTargets()){
                         if(i.getFiducialId() == 7){
                                 ID = 7;
@@ -303,8 +333,8 @@ public double getRange(){
                                 VisionConstants.cameraPosY,
                                 aprilTagList.get(ID-1).pose.getZ(),
                                 Units.degreesToRadians(VisionConstants.cameraPitch),
-                                Units.degreesToRadians(getID7().getPitch())); 
-
+                                Units.degreesToRadians(p.getPitch())); 
+                System.out.println("Range: " + range);
                 return (range);
         }
                 // Use this range as the measurement we give to the PID controller.

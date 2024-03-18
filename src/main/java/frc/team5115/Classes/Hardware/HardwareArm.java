@@ -23,7 +23,7 @@ public class HardwareArm extends SubsystemBase{
     private final AbsoluteEncoder absoluteEncoder;
     private final I2CHandler i2c;
 
-    private final double Ks = 0.4;
+    private final double Ks = 0.3;
     private final double Kv = 0.13509;
     private final double Ka = 0.048686;
     private final double Kg = 0.35;
@@ -46,6 +46,8 @@ public class HardwareArm extends SubsystemBase{
         turnLeft.setInverted(true);
 
         absoluteEncoder = turnLeft.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+        absoluteEncoder.setPositionConversionFactor(180);
+        absoluteEncoder.setInverted(true);
     }
 
     public void setTurn(double speed, Angle setpoint){
@@ -85,13 +87,23 @@ public class HardwareArm extends SubsystemBase{
      * @return the angle the arm is at relative to the horizontal
      */
     public Angle getAngle(){
-        try {
-            armAngle.angle = i2c.getPitch();
-        } catch (ReadAbortedException exception) {
-            System.out.println("Using arm absolute encoder");
-            armAngle.angle = absoluteEncoder.getPosition();
-        }
+        // try {
+        //     armAngle.angle = i2c.getPitch();
+        // } catch (ReadAbortedException exception) {
+        //     armAngle.angle = getAngleFromEncoder();
+        //     System.out.println("Using arm absolute encoder @ " + armAngle.getDegrees(-90));
+        // }
+
+        armAngle.angle = getAngleFromEncoder();
+        // System.out.println("Using arm absolute encoder @ " + armAngle.getDegrees(-90));
         return armAngle;
+    }
+
+    private double getAngleFromEncoder() {
+        // ! the -8.40 is because the zero offset in the spark max firmware is not at the zero point
+        // this is because we want the encoder to never return a number that wraps down below zero
+        // so yeah this isn't great but it should work
+        return absoluteEncoder.getPosition() - 8.40; // this is a magic number
     }
 
     public void setIdleMode(IdleMode mode) {

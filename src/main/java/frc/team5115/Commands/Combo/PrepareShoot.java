@@ -1,8 +1,5 @@
 package frc.team5115.Commands.Combo;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,7 +26,7 @@ public class PrepareShoot extends SequentialCommandGroup{
             new DeployArm(intake, shooter, arm, angle, angleSupplier).withTimeout(8),
 
             // spin up
-            new SpinUpShooter(shooter, speed, neverExit).withTimeout(3)
+            new SpinUpShooter(shooter, speed, neverExit).withTimeout(3) // TODO never exit won't really work if there is a timeout placed on this command
         );
     }
 } 

@@ -17,7 +17,7 @@ public class Arm extends SubsystemBase{
     //private final GenericEntry rookie;
     private static final double MIN_DEGREES = -90.0;
     private static final double TURN_PID_TOLERANCE = 5;
-    private static final double TURN_PID_KP = 0.4;
+    private static final double TURN_PID_KP = 0.35;
     private static final double TURN_PID_KI = 0.0;
     private static final double TURN_PID_KD = 0.0;
     private final I2CHandler bno;
@@ -83,6 +83,10 @@ public class Arm extends SubsystemBase{
         //return Math.abs(getAngle().angle-setpoint.angle) < TURN_PID_TOLERANCE;
     }
 
+    public double getPID(){
+        return turnController.getP();
+    }
+
     public boolean getFault(CANSparkMax.FaultID f){
         return hardwareArm.getFault(f);
     }
@@ -98,7 +102,8 @@ public class Arm extends SubsystemBase{
     public void deployToAngle(double newSetpoint){
         setpoint.angle = newSetpoint;
         if(newSetpoint == Constants.AmpArmAngle) turnController.setP(0.25);
-        else turnController.setP(0.4);
+        else if(newSetpoint == Constants.Arm10FtAngle) turnController.setP(0.65);
+        else turnController.setP(TURN_PID_KP);
     }
 
     public void stow() {

@@ -45,7 +45,7 @@ public class IntakeSequence extends Command{
             this.shooter = shooter;
             addCommands(
              new InstantCommand(intake :: fastIn),
-             new DeployArm(intake, shooter, arm, -1).withTimeout(5).alongWith(new InstantCommand(intake :: fastIn)),
+             new DeployArm(intake, shooter, arm, +0).withTimeout(5).alongWith(new InstantCommand(intake :: fastIn)),
                 // Intake
                 new InstantCommand(intake :: fastIn),
                 new InstantCommand(shooter :: slow),

@@ -15,7 +15,7 @@ public class PrepareAmp extends SequentialCommandGroup {
     public PrepareAmp(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor, Amper amper) {
         addCommands(
             // deploy both
-            new DeployArm(intake, shooter, arm, Constants.AmpArmAngle).alongWith(new WaitCommand(1)),
+            new DeployArm(intake, shooter, arm, Constants.AmpArmAngle).alongWith(new WaitCommand(1)).withTimeout(10),
             new SpinAmper(amper, Amper.OUT_ANGLE).withTimeout(5)
             
             // "backwards" rack by spinning intake and primary shooter in and holding extra shooter in brake mode 

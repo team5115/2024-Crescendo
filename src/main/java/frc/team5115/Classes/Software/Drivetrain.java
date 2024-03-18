@@ -20,13 +20,14 @@ import frc.team5115.Classes.Hardware.NAVx;
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
+    private final PhotonVision p;
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx) {
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision p) {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.navx = navx;
-
+        this.p = p;
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
@@ -55,11 +56,11 @@ public class Drivetrain extends SubsystemBase {
 	 * Sets the encoder values to 0.
 	 */
     public void resetEncoders() {
-        navx.resetNAVx();
+        //navx.resetNAVx();
         hardwareDrivetrain.resetEncoders();
     }
     
-    public void SwerveDrive(double forward, double turn, double right, boolean rookieMode, boolean fieldOriented){
+    public void SwerveDrive(double forward, double turn, double right, boolean rookieMode, boolean fieldOriented, double angle){
 
         if(Math.abs(forward)< 0.1){
             forward = 0;
@@ -85,7 +86,15 @@ public class Drivetrain extends SubsystemBase {
             right *= -1;
         }
 
-        hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false);
+        hardwareDrivetrain.drive(forward, right, turn, fieldOriented, false, angle);
+    }
+
+public void SwerveDrive(double forward, double turn, double right, boolean rookieMode, boolean fieldOriented){
+        SwerveDrive(forward, turn, right, rookieMode, fieldOriented, 0);
+    }
+
+    public void driveTranslationBySpeeds(double xSpeed, double ySpeed) {
+        hardwareDrivetrain.driveBySpeeds(xSpeed, ySpeed);
     }
 
 	/**

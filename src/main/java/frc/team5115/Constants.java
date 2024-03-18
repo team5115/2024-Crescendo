@@ -57,6 +57,8 @@ public class Constants{
 
     public static final double AmpArmAngle = 102;
 
+    public static final double Arm10FtAngle = 32.4;
+
     public static final double TARGET_ANGLE = 1;
 
     // Copyright (c) FIRST and other WPILib contributors.
@@ -172,7 +174,7 @@ public class Constants{
         public static final double cameraPosX = 0.0;
         public static final double cameraPosY = 0.483; // 0.0889001778004
         private static final double cameraRoll = 0.0;
-        public static final double cameraPitch = 22;
+        public static final double cameraPitch = 27.1;
         public static final double cameraYaw = 1;
 
         //TODO get the pose.... 
