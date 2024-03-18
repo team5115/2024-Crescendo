@@ -3,7 +3,7 @@ package frc.team5115.Commands.Auto;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import com.pathplanner.lib.auto.AutoBuilder;
 public class AutoChooser extends Command {
     private final SendableChooser<Command> autoChooser;
 

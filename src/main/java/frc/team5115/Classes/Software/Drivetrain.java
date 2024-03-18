@@ -1,16 +1,28 @@
 package frc.team5115.Classes.Software;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import org.photonvision.PhotonPoseEstimator;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team5115.Constants.DriveConstants;
@@ -20,36 +32,59 @@ import frc.team5115.Classes.Hardware.NAVx;
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
-    private final PhotonVision p;
     private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
+    private final PhotonVision photonVision;
    
-    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision p) {
+
+    public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision photonVision) {
         this.hardwareDrivetrain = hardwareDrivetrain;
+        this.photonVision = photonVision;
         this.navx = navx;
-        this.p = p;
         // ? do we need to tune the pid controllers for the holonomic drive controller?
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(1, 0, 0),
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0,
-                new TrapezoidProfile.Constraints(6.28, 3.14))); 
+                new TrapezoidProfile.Constraints(6.28, 3.14)));    
     }
 
-    public void init() {
-        poseEstimator = new SwerveDrivePoseEstimator(
-            DriveConstants.kDriveKinematics,
-            navx.getYawRotation2D(),
-            hardwareDrivetrain.getModulePositions(),
-            getStartingPoseGuess());
 
+    public void init() {        
+        
+        resetPose(getStartingPoseGuess());
+
+        AutoBuilder.configureHolonomic(
+            this::getEstimatedPose,
+            this::resetPose,
+            hardwareDrivetrain::getChassisSpeeds,
+            hardwareDrivetrain::driveChassisSpeeds,
+            new HolonomicPathFollowerConfig(
+                new PIDConstants(1.8, 0.0, 0.0),
+                new PIDConstants(2.5, 0.0, 0.0),
+                .75,
+                DriveConstants.kRobotRadius,
+                new ReplanningConfig()
+            ),
+            () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+                    return false; // TODO make it do flipping for when at comp?
+        //   var alliance = DriverStation.getAlliance();
+        //   if (alliance.isPresent()) {
+        //       return alliance.get() == DriverStation.Alliance.Red;
+        //   }
+        //   return false;
+        },
+            this
+        );
+        
         System.out.println("Angle from navx" + navx.getYawDeg());
-
-        AutoBuilder.configureHolonomic(this :: getEstimatedPose, null, null, null, null, null, navx);
     }
 
     private Pose2d getStartingPoseGuess() {
-            return new Pose2d();
+            return new Pose2d(new Translation2d(1.37,5.52), new Rotation2d(0,0));
     }
 
     /**
@@ -105,6 +140,9 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
 	 * @return The estimated pose of the robot based on vision measurements COMBINED WITH drive motor measurements
 	 */
     public Pose2d getEstimatedPose() {
+        // System.out.println(poseEstimator.getEstimatedPosition());
+        // var x = photonVision.getEstimatedGlobalPose();
+        // if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
         return poseEstimator.getEstimatedPosition();
     }
 
@@ -113,6 +151,10 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
         ChassisSpeeds adjustedSpeeds = holonomicDriveController.calculate(getEstimatedPose(), goal, goal.poseMeters.getRotation());
         SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(adjustedSpeeds);
         hardwareDrivetrain.setModuleStates(moduleStates);
+    }
+
+    public void updatePoseEstimator() {
+        poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
     }
 
     public void stop() {
@@ -140,9 +182,9 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
         return navx.getPitchDeg();
     }
 
-    // public void resetPose(){
-    //     poseEstimator.resetPosition(null, null, getEstimatedPose());
-    // }
+    public void resetPose(Pose2d pose){
+        poseEstimator.resetPosition(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions(), pose);
+    }
 
     // public Command pathplanner(){
     //     return AutoBuilder.getAutonomousCommand();

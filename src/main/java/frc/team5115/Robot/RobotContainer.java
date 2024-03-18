@@ -2,8 +2,6 @@ package frc.team5115.Robot;
 
 import java.nio.file.Paths;
 
-import org.photonvision.PhotonVersion;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -16,8 +14,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareAmper;
@@ -51,7 +49,7 @@ import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Classes.Software.AimAndRangeFrontCam;
+import frc.team5115.Commands.Auto.AutoPart1;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -67,14 +65,13 @@ public class RobotContainer {
     private final AutoPart1 autoPart1;
     private final Climber climber;
     private final Arm arm;
-    private final Intake intake;
-    private final Shooter shooter;
+     private final Intake intake;
+     private final Shooter shooter;
     private final Amper amper;
-    private final DigitalInput reflectiveSensor;
+     private final DigitalInput reflectiveSensor;
     private AutoAimAndRange aAR;
     private Command autoCommandGroup;
     private Paths paths;
-    private final AutoBuilder autoBuilder;
     private final Climb climb;
     private final DeployClimber deployClimber;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
@@ -86,6 +83,7 @@ public class RobotContainer {
     private CenterAuto centerAuto;
 
     boolean fieldOriented = true;
+    private AutoCommandTwo autoCommandTwo;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
@@ -103,20 +101,22 @@ public class RobotContainer {
         joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
         navx = new NAVx();
-        i2cHandler = new I2CHandler();
-        autoBuilder = new AutoBuilder();
+        //private final PhotonPoseEstimator photonPoseEstimatorFP
+
         ledStrip = new LedStrip(0, 20);
         ledStrip.start();
+        
+        i2cHandler = new I2CHandler();
 
         p = new PhotonVision();
 
         HardwareDrivetrain hardwareDrivetrain = new HardwareDrivetrain(navx);
         drivetrain = new Drivetrain(hardwareDrivetrain, navx, p);
         
-        HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
+         HardwareArm hardwareArm = new HardwareArm(i2cHandler, Constants.ARM_RIGHT_MOTOR_ID, Constants.ARM_LEFT_MOTOR_ID);
         arm = new Arm(hardwareArm, i2cHandler);
 
-        HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
+         HardwareShooter hardwareShooter = new HardwareShooter(Constants.SHOOTER_CLOCKWISE_MOTOR_ID, Constants.SHOOTER_COUNTERCLOCKWISE_MOTOR_ID);
         shooter = new Shooter(hardwareShooter);
         intake = new Intake(Constants.INTAKE_MOTOR_ID);
         reflectiveSensor = new DigitalInput(Constants.SHOOTER_SENSOR_ID);
@@ -134,39 +134,10 @@ public class RobotContainer {
         deployClimber = new DeployClimber(climber, +1);
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
-        configureButtonBindings();
-
+        
         autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+        configureButtonBindings();
     }
-
-    // public void registerCommand() {
-
-    // Register Named Commands for pathplanner
-
-    //   NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("Path Uno", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Dos", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("Path Tres", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Quatro", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("Path Cinco", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Seis", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
-
-    // }
 
     public void configureButtonBindings() {
 
@@ -185,13 +156,13 @@ public class RobotContainer {
         .onTrue(new PrepareAmp(intake, shooter, arm, reflectiveSensor, amper)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
-
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));     
+        
         new JoystickButton(joyManips, XboxController.Button.kLeftStick.value)
         .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, Constants.Arm10FtAngle, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));     
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, null, true)
@@ -226,7 +197,7 @@ public class RobotContainer {
 
     public void stopEverything(){
         drivetrain.stop();
-        arm.stop();
+        // arm.stop();
     }
 
     public void startTest() {
@@ -234,6 +205,7 @@ public class RobotContainer {
 
     public void testPeriodic() {
         amper.setSpeed(joyManips.getRawAxis(XboxController.Axis.kLeftY.value) * 0.3);
+        System.out.println(amper.getAngle());
     }
 
     public void startAuto(){
@@ -250,20 +222,32 @@ public class RobotContainer {
         } 
 
         drivetrain.resetEncoders();
-        navx.resetNAVx();
+        //navx.resetNAVx();
         drivetrain.stop();
         //drivetrain.init();
         if(doAuto.getBoolean(false)){
              System.out.println("running auto");
              autoCommandGroup.schedule();
         }
-
+        drivetrain.init();
+        if (AutoBuilder.isConfigured()) {
+            PathPlannerPath path = PathPlannerPath.fromPathFile("surfers");
+            Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
+            test.schedule();
+        } else {
+            System.out.println("ERROR! AutoBuilder has not been configured!");
+        }
         System.out.println("Starting auto");
     }
 
+    private void printFinished() {
+        System.out.println("Path finished!");
+      }
+
     public void autoPeriod() {
         // drivetrain.updateOdometry();
-        //aAR.periodicIDBased();
+        drivetrain.updatePoseEstimator();
+        aAR.if7();
         arm.updateController(i2cHandler);
     }
 
