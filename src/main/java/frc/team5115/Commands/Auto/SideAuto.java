@@ -29,7 +29,7 @@ public class SideAuto extends SequentialCommandGroup {
         if (!actuallyRun) return;
 
         addCommands(
-            new PrepareShoot(intake, shooter, arm, d, 5, 5000, null, false),
+            new PrepareShoot(intake, shooter, arm, d, 15, 5000, null, false),
             new TriggerShoot(intake, shooter, arm, d)
             //new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, d, aAR),
             //new TriggerShoot(intake, shooter, arm, d)

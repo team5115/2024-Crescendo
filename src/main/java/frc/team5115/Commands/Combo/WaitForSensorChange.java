@@ -16,7 +16,7 @@ public class WaitForSensorChange extends Command{
     @Override
     public void execute() {
         detected = !sensor.get();
-        System.out.println("sensor state " + detected);
+        //System.out.println("sensor state " + detected);
     }
 
     @Override
