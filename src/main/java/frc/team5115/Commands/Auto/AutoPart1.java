@@ -18,7 +18,6 @@ import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Classes.Software.Arm;
 import edu.wpi.first.wpilibj.DigitalInput;
  import frc.team5115.Commands.Combo.IntakeSequence;
- import frc.team5115.Commands.Combo.ShootSequence;
  import frc.team5115.Commands.Combo.SpinUpShooter;
 
 

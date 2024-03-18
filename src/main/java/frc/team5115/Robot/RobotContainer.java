@@ -194,7 +194,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));     
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, null, true)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 15, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
@@ -279,7 +279,6 @@ public class RobotContainer {
     }
 
     public void teleopPeriodic() {
-        
         //System.out.println("The Skew: " + p.getSkewID7());
         if(joyDrive.getRawButton(2)) {
             aAR.periodicIDBased();
