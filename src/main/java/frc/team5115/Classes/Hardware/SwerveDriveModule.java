@@ -100,7 +100,7 @@ public class SwerveDriveModule {
     m_drivingSparkMax.setSmartCurrentLimit(SwerveConstants.DrivingMotorCurrentLimit);
     m_turningSparkMax.setSmartCurrentLimit(SwerveConstants.TurningMotorCurrentLimit);
 
-    m_drivingSparkMax.setSmartCurrentLimit(30);
+    m_drivingSparkMax.setSmartCurrentLimit(40);
 
     // Save the SPARK MAX configurations. If a SPARK MAX browns out during
     // operation, it will maintain the above configurations.
