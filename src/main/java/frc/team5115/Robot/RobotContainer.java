@@ -81,6 +81,7 @@ public class RobotContainer {
     boolean inRange = false;
     private SideAuto sideAuto;
     private CenterAuto centerAuto;
+    boolean finishedAuto = false;
 
     boolean fieldOriented = true;
 
@@ -208,6 +209,7 @@ public class RobotContainer {
     }
 
     public void startAuto(){
+        finishedAuto = false;
         if(doAutoRight.getBoolean(false)) {
             angleOfDrivetrain = 60;
             autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false, angleOfDrivetrain);
@@ -229,6 +231,7 @@ public class RobotContainer {
              autoCommandGroup.schedule();
         }
         drivetrain.init();
+        System.out.println("Starting auto");
         if (AutoBuilder.isConfigured()) {
             PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
             Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
@@ -236,11 +239,12 @@ public class RobotContainer {
         } else {
             System.out.println("ERROR! AutoBuilder has not been configured!");
         }
-        System.out.println("Starting auto");
     }
 
     private void printFinished() {
         System.out.println("Path finished!");
+        finishedAuto = true;
+        
       }
 
     public void autoPeriod() {
@@ -248,6 +252,9 @@ public class RobotContainer {
         drivetrain.updatePoseEstimator();
         aAR.if7();
         arm.updateController(i2cHandler);
+        if(finishedAuto == true){
+            drivetrain.stop();
+        }
     }
 
     public void startTeleop(){

@@ -46,29 +46,15 @@ public class Drivetrain extends SubsystemBase {
             new PIDController(1, 0, 0),
             new PIDController(1, 0, 0),
             new ProfiledPIDController(1, 0, 0,
-                new TrapezoidProfile.Constraints(6.28, 3.14)));    
-            
-            }
-    
-
-
-    public void init() {        
-            poseEstimator = new SwerveDrivePoseEstimator(
-                DriveConstants.kDriveKinematics,
-                navx.getYawRotation2D(),
-                hardwareDrivetrain.getModulePositions(),
-                getStartingPoseGuess()
-            );
-        resetPose(getStartingPoseGuess());
-
-        AutoBuilder.configureHolonomic(
+            new TrapezoidProfile.Constraints(6.28, 3.14)));    
+            AutoBuilder.configureHolonomic(
             this::getEstimatedPose,
             this::resetPose,
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig(
                 new PIDConstants(1.8, 0.0, 0.0),
-                new PIDConstants(2.5, 0.0, 0.0),
+                new PIDConstants(4.5, 0.0, 0.0),
                 .75,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
@@ -86,6 +72,20 @@ public class Drivetrain extends SubsystemBase {
         },
             this
         );
+            }
+    
+
+
+    public void init() {        
+            poseEstimator = new SwerveDrivePoseEstimator(
+                DriveConstants.kDriveKinematics,
+                navx.getYawRotation2D(),
+                hardwareDrivetrain.getModulePositions(),
+                getStartingPoseGuess()
+            );
+        resetPose(getStartingPoseGuess());
+
+        
         
         System.out.println("Angle from navx" + navx.getYawDeg());
     }
