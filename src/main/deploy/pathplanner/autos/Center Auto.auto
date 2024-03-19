@@ -1,16 +1,193 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 2,
-      "y": 2
-    },
-    "rotation": 0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepareShootClose"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAuto"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PrepareShootClose"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAuto"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PrepareShootClose"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAuto"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 5"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PrepareShootClose"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeAuto"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 7"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "PrepareShootClose"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Auto 8"
+                }
+              }
+            ]
+          }
+        }
+      ]
     }
   },
   "folder": null,

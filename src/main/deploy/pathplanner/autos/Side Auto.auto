@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "gili's path 1"
+                  "pathName": "path 1"
                 }
               }
             ]
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "gili's path 2"
+                  "pathName": "path 2"
                 }
               }
             ]
@@ -80,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "gili's path 3"
+                  "pathName": "path 3"
                 }
               }
             ]
@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "gili's path 4"
+                  "pathName": "path 4"
                 }
               }
             ]
