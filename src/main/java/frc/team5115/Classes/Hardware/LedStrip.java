@@ -55,7 +55,7 @@ public class LedStrip extends SubsystemBase {
             state = AnimationState.InRange;
         } else if (aligning) {
             state = AnimationState.Aligning;
-        } else if (intakeStuck || sensorSensing) {
+        } else if (sensorSensing) {
             state = AnimationState.ControllingNote;
         }
 
