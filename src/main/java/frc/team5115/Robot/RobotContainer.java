@@ -1,20 +1,11 @@
 package frc.team5115.Robot;
 
-import java.nio.file.Paths;
-
-import org.photonvision.PhotonVersion;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,11 +29,9 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
-import frc.team5115.Commands.Auto.AutoPart1;
+import frc.team5115.Commands.Auto.AutoAimAndRangeCommand;
 import frc.team5115.Commands.Auto.CenterAuto;
 import frc.team5115.Commands.Auto.SideAuto;
-import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
 import frc.team5115.Commands.Combo.PrepareAmp;
@@ -51,7 +40,6 @@ import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Classes.Software.AimAndRangeFrontCam;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -61,30 +49,24 @@ public class RobotContainer {
     private final GenericEntry doAuto;
     private final GenericEntry doAutoLeft;
     private final GenericEntry doAutoRight;
-    private final GenericEntry shootAngle;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
-    private final AutoPart1 autoPart1;
     private final Climber climber;
     private final Arm arm;
     private final Intake intake;
     private final Shooter shooter;
     private final Amper amper;
     private final DigitalInput reflectiveSensor;
-    private AutoAimAndRange aAR;
+    private final AutoAimAndRange aAR;
     private Command autoCommandGroup;
-    private Paths paths;
-    private final AutoBuilder autoBuilder;
-    private final Climb climb;
     private final DeployClimber deployClimber;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
     private final LedStrip ledStrip;
     private double angleOfDrivetrain = 0;
     private final PhotonVision p;
     boolean inRange = false;
-    private SideAuto sideAuto;
-    private CenterAuto centerAuto;
-    private Command ShotFrom10ft;
+    boolean aligning = false;
+    private final Command ezTenFootShot;
 
     boolean fieldOriented = true;
 
@@ -97,15 +79,12 @@ public class RobotContainer {
         doAutoRight = shuffleboardTab.add("Do blue auto?", false).getEntry();
 
         shuffleboardTab.addBoolean("In Rangle for 10ft Shot", () -> inRange);
-        shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
-      
 
         joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
         navx = new NAVx();
         i2cHandler = new I2CHandler();
-        autoBuilder = new AutoBuilder();
         ledStrip = new LedStrip(0, 20);
         ledStrip.start();
 
@@ -130,46 +109,20 @@ public class RobotContainer {
         HardwareAmper hardwareAmper = new HardwareAmper(Constants.SNOWBLOWER_MOTOR_ID);
         amper = new Amper(hardwareAmper);
 
-        // the sign of the delta for these commands can be used to change the direction
-        climb = new Climb(climber, +12);
+        // the sign of the delta for this command can be used to change the direction
         deployClimber = new DeployClimber(climber, +1);
+
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
+
+        ezTenFootShot =
+            new PrepareShoot(intake, shooter, arm, reflectiveSensor, Constants.Arm10FtAngle, 5000, null, false)
+            .alongWith(new AutoAimAndRangeCommand(aAR))
+            .andThen(new TriggerShoot(intake, shooter, arm, reflectiveSensor))
+            .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+            
         configureButtonBindings();
-
-        autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-
-        ShotFrom10ft = new PrepareShoot(intake, shooter, arm, reflectiveSensor, Constants.Arm10FtAngle, 5000, null, false);
     }
-
-    // public void registerCommand() {
-
-    // Register Named Commands for pathplanner
-
-    //   NamedCommands.registerCommand("Example Path", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("Path Uno", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Dos", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("Path Tres", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Quatro", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("Path Cinco", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("Path Seis", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("START middle to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START middle to bottom", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START middle to top", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("START top to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START top to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START top to bottom", drivetrain.pathplanner());
-
-    //   NamedCommands.registerCommand("START bottom to top", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START bottom to middle", drivetrain.pathplanner());
-    //   NamedCommands.registerCommand("START bottom to bottom", drivetrain.pathplanner());
-
-    // }
 
     public void configureButtonBindings() {
 
@@ -190,12 +143,6 @@ public class RobotContainer {
         .onFalse(new ScoreAmp(intake, shooter, arm, reflectiveSensor, amper)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
-        new JoystickButton(joyManips, XboxController.Button.kLeftStick.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, Constants.Arm10FtAngle, 5000, null, true)
-        .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
-        .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
-        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));     
-
         new JoystickButton(joyManips, XboxController.Button.kB.value)
         .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 15, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
@@ -212,8 +159,8 @@ public class RobotContainer {
         new JoystickButton(joyDrive, XboxController.Button.kStart.value)
         .onTrue(new InstantCommand(this :: resetAngleOfDrivetrain));
 
-        new JoystickButton(joyDrive, XboxController.Button.kB.value)
-        .onTrue(ShotFrom10ft);
+        new JoystickButton(joyDrive, XboxController.Button.kB.value).onTrue(ezTenFootShot);
+        
         /* 
         new JoystickButton(joyDrive, XboxController.Button.kB.value).
         onTrue(new InstantCommand(this::AutoPart1))
@@ -286,18 +233,8 @@ public class RobotContainer {
 
     public void teleopPeriodic() {
         //System.out.println("The Skew: " + p.getSkewID7());
-        boolean aligning = joyDrive.getRawButton(XboxController.Button.kB.value);
-        if(aligning) {
-            aAR.periodicIDBased();
-            double[] x = aAR.periodicIDBased();
-            inRange = aAR.isFinished(x);
-            if(inRange && ShotFrom10ft.isFinished()){
-                Command shoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor);
-                shoot.schedule();
-            }
-        }
-        else {
-            inRange = false;
+        aligning = ezTenFootShot.isScheduled();
+        if(!aligning) {
             drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented, angleOfDrivetrain);
         }
 
@@ -307,8 +244,6 @@ public class RobotContainer {
         }
 
         ledStrip.update(!reflectiveSensor.get(), intake.stuck(), aligning, inRange);
-
-        //aAR.periodic1();
 
         //System.out.println("absolute encoder angle: " + arm.getAngle().angle);
 
