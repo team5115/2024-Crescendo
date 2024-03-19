@@ -280,7 +280,8 @@ public class RobotContainer {
 
     public void teleopPeriodic() {
         //System.out.println("The Skew: " + p.getSkewID7());
-        if(joyDrive.getRawButton(2)) {
+        boolean aligning = joyDrive.getRawButton(XboxController.Button.kB.value);
+        if(aligning) {
             aAR.periodicIDBased();
             double[] x = aAR.periodicIDBased();
             inRange = aAR.isFinished(x);
@@ -294,11 +295,7 @@ public class RobotContainer {
             climber.setBoth(joyManips.getRawAxis(1));
         }
 
-        if (reflectiveSensor.get()) {
-            ledStrip.updateKnightRider();
-        } else {
-            ledStrip.setUniformColor(0, 150, 0);
-        }
+        ledStrip.update(!reflectiveSensor.get(), intake.stuck(), aligning, inRange);
 
         //aAR.periodic1();
 
