@@ -287,6 +287,7 @@ public class RobotContainer {
             inRange = aAR.isFinished(x);
         }
         else {
+            inRange = false;
             drivetrain.SwerveDrive(-joyDrive.getRawAxis(1), joyDrive.getRawAxis(4), -joyDrive.getRawAxis(0),rookie.getBoolean(false), fieldOriented, angleOfDrivetrain);
         }
 
