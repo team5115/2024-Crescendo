@@ -147,7 +147,7 @@ public class AutoAimAndRange extends SubsystemBase{
      }
 
      double[] x = {forwardSpeed/0.17, rotationSpeed/0.0025};
-
+     System.out.println("How Fast the drivetrain should be moving: " + forwardSpeed);
      return x;
 
     }

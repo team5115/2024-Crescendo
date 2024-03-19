@@ -84,6 +84,7 @@ public class RobotContainer {
     boolean inRange = false;
     private SideAuto sideAuto;
     private CenterAuto centerAuto;
+    private Command shoot;
     private Command ShotFrom10ft;
 
     boolean fieldOriented = true;
@@ -135,11 +136,12 @@ public class RobotContainer {
         deployClimber = new DeployClimber(climber, +1);
         aAR = new AutoAimAndRange(hardwareDrivetrain, p);
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
-        configureButtonBindings();
-
+        
         autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
-
         ShotFrom10ft = new PrepareShoot(intake, shooter, arm, reflectiveSensor, Constants.Arm10FtAngle, 5000, null, false);
+        shoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor);
+
+        configureButtonBindings();
     }
 
     // public void registerCommand() {
@@ -288,12 +290,10 @@ public class RobotContainer {
         //System.out.println("The Skew: " + p.getSkewID7());
         boolean aligning = joyDrive.getRawButton(XboxController.Button.kB.value);
         if(aligning) {
-            aAR.periodicIDBased();
             double[] x = aAR.periodicIDBased();
             inRange = aAR.isFinished(x);
             if(inRange && ShotFrom10ft.isFinished()){
-                Command shoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor);
-                shoot.schedule();
+                if(!shoot.isScheduled()) shoot.schedule();
             }
         }
         else {
