@@ -15,14 +15,6 @@ public class PrepareShoot extends SequentialCommandGroup{
         addRequirements(intake, shooter, arm);
         addCommands(
             // deploy
-            new DeployArm(intake, shooter, arm, 5).withTimeout(4),
-            
-            // rack
-            new InstantCommand(intake :: out),
-            new WaitForSensorChange(false, sensor),
-            new WaitCommand(0.05),
-            new InstantCommand(intake :: stop),
-
             new DeployArm(intake, shooter, arm, angle, angleSupplier).withTimeout(8),
 
             // spin up

@@ -76,19 +76,21 @@ public class Shooter extends SubsystemBase {
         return (hardwareShooter.getClockwiseVelocity() + hardwareShooter.getCounterClockwiseVelocity()) / 2.0;
     }
 
-    public double[] spinByPid(double rpm) {
+    public double[] spinGreenShooter(double rpm) {
         // divide by 60 on speeds to go to rot/sec
         double rps = rpm / 60.0;
         double cwVolts = cwFF.calculate(rps);
-        double ccwVolts = ccwFF.calculate(rps);
         double cwPIDValue = cwPID.calculate(hardwareShooter.getClockwiseVelocity()/60.0, rps);
-        double ccwPIDValue = ccwPID.calculate(hardwareShooter.getCounterClockwiseVelocity()/60.0, rps);
         cwVolts += cwPIDValue;
-        cwVolts += ccwPIDValue;
-        hardwareShooter.setVoltage(cwVolts, ccwVolts, ccwVolts); // TODO add stuff for the third volts, rn it just uses ccwVolts
+        hardwareShooter.setGreenShooterVoltage(cwVolts); // TODO add stuff for the third volts, rn it just uses ccwVolts
         //System.out.println("clockwise vel: " + hardwareShooter.getClockwiseVelocity());
 
-        return new double[] { cwPIDValue, ccwPIDValue };
+        return new double[] {cwPIDValue};
+    }
+
+    public void spinFeederMotors(){
+        double speed = 1;
+        hardwareShooter.spinFeederMotors(speed, speed);
     }
 
     public void brakeMode() {

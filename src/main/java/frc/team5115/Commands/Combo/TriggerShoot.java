@@ -12,7 +12,7 @@ public class TriggerShoot extends SequentialCommandGroup {
     public TriggerShoot(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
         addRequirements(intake, shooter, arm);
         addCommands(
-            new InstantCommand(intake :: fastIn),
+            new InstantCommand(shooter :: spinFeederMotors),
             new WaitCommand(0.5),
             new StopBoth(intake, shooter)
         );

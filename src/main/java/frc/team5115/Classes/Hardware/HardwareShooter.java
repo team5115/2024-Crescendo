@@ -36,6 +36,15 @@ public class HardwareShooter extends SubsystemBase{
         extraMotor.setVoltage(thirdVolts);
     }
 
+    public void setGreenShooterVoltage(double volts){
+        extraMotor.setVoltage(volts);
+    }
+
+    public void spinFeederMotors(double cwSpeed, double ccwSpeed){
+        cwMotor.set(cwSpeed);
+        ccwMotor.set(ccwSpeed);
+    }
+
     public void setVoltage(double voltage) {
         setVoltage(voltage, voltage, voltage);
     }
