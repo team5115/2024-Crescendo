@@ -53,9 +53,9 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(1.8, 0.0, 0.0),
-                new PIDConstants(4.5, 0.0, 0.0),
-                .75,
+                new PIDConstants(0.005, 0.0, 0.0),
+                new PIDConstants(0.05, 0.0, 0.0),
+                2,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
@@ -93,14 +93,14 @@ public class Drivetrain extends SubsystemBase {
     private Pose2d getStartingPoseGuess() {
         final double x = 1.35;
         final double y = 5.55;
-        return new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(0));
+        return new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(180));
     }
 
     /**
 	 * Sets the encoder values to 0.
 	 */
     public void resetEncoders() {
-        //navx.resetNAVx();
+        navx.resetNAVx();
         hardwareDrivetrain.resetEncoders();
     }
     
@@ -164,6 +164,7 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
 
     public void updatePoseEstimator() {
         poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
+        System.out.println("Estimated Pose: " + poseEstimator.getEstimatedPosition());
     }
 
     public void stop() {

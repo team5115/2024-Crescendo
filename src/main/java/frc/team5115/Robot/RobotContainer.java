@@ -223,7 +223,7 @@ public class RobotContainer {
         } 
 
         drivetrain.resetEncoders();
-        //navx.resetNAVx();
+        navx.resetNAVx();
         drivetrain.stop();
         //drivetrain.init();
         if(doAuto.getBoolean(false)){
@@ -253,6 +253,7 @@ public class RobotContainer {
         aAR.if7();
         arm.updateController(i2cHandler);
         if(finishedAuto == true){
+        
             drivetrain.stop();
         }
     }
