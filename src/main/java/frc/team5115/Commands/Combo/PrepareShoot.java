@@ -26,7 +26,7 @@ public class PrepareShoot extends SequentialCommandGroup{
             new DeployArm(intake, shooter, arm, angle, angleSupplier).withTimeout(8),
 
             // spin up
-            new SpinUpShooter(shooter, speed, neverExit).withTimeout(3) // TODO never exit won't really work if there is a timeout placed on this command
+            new SpinUpShooter(shooter, speed, neverExit) // TODO never exit won't really work if there is a timeout placed on this command
         );
     }
 } 

@@ -84,6 +84,7 @@ public class RobotContainer {
     boolean inRange = false;
     private SideAuto sideAuto;
     private CenterAuto centerAuto;
+    private Command ShotFrom10ft;
 
     boolean fieldOriented = true;
 
@@ -137,6 +138,8 @@ public class RobotContainer {
         configureButtonBindings();
 
         autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+
+        ShotFrom10ft = new PrepareShoot(intake, shooter, arm, reflectiveSensor, Constants.Arm10FtAngle, 5000, null, false);
     }
 
     // public void registerCommand() {
@@ -208,6 +211,9 @@ public class RobotContainer {
 
         new JoystickButton(joyDrive, XboxController.Button.kStart.value)
         .onTrue(new InstantCommand(this :: resetAngleOfDrivetrain));
+
+        new JoystickButton(joyDrive, XboxController.Button.kB.value)
+        .onTrue(ShotFrom10ft);
         /* 
         new JoystickButton(joyDrive, XboxController.Button.kB.value).
         onTrue(new InstantCommand(this::AutoPart1))
@@ -285,6 +291,10 @@ public class RobotContainer {
             aAR.periodicIDBased();
             double[] x = aAR.periodicIDBased();
             inRange = aAR.isFinished(x);
+            if(inRange && ShotFrom10ft.isFinished()){
+                Command shoot = new TriggerShoot(intake, shooter, arm, reflectiveSensor);
+                shoot.schedule();
+            }
         }
         else {
             inRange = false;
