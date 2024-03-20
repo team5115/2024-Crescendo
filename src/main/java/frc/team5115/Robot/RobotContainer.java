@@ -90,7 +90,7 @@ public class RobotContainer {
         doAutoLeft = shuffleboardTab.add("Do red auto?", false).getEntry();
         doAutoRight = shuffleboardTab.add("Do blue auto?", false).getEntry();
 
-        shuffleboardTab.addBoolean("In Rangle for 10ft Shot", () -> inRange);
+        shuffleboardTab.addBoolean("In Range for 10ft Shot", () -> inRange);
         shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
       
