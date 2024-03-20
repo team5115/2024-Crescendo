@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareAmper;
@@ -36,10 +37,6 @@ import frc.team5115.Classes.Software.Intake;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
-import frc.team5115.Commands.Auto.AutoPart1;
-import frc.team5115.Commands.Auto.CenterAuto;
-import frc.team5115.Commands.Auto.SideAuto;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -49,7 +46,7 @@ import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Commands.Auto.AutoPart1;
+import frc.team5115.Commands.Auto.*;
 
 public class RobotContainer {
     private final Joystick joyDrive;
@@ -140,6 +137,10 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
+
+        NamedCommands.registerCommand("10ft Shot", new ShotFrom10Ft(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
+        NamedCommands.registerCommand("Drive While Intaking", new DriveWhileIntaking(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
+        NamedCommands.registerCommand("Shoot Up Close", new AutoShoot(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
 
         new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
         .onTrue(deployClimber);
@@ -234,6 +235,7 @@ public class RobotContainer {
         System.out.println("Starting auto");
         if (AutoBuilder.isConfigured()) {
             PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
+            //Command test2 = AutoBuilder.buildAuto("null");
             Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
             test.schedule();
         } else {
