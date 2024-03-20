@@ -1,9 +1,6 @@
 package frc.team5115.Robot;
 
-import java.nio.file.Paths;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.networktables.GenericEntry;
@@ -12,10 +9,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team5115.Constants;
 import frc.team5115.Classes.Hardware.HardwareAmper;
@@ -33,13 +29,11 @@ import frc.team5115.Classes.Software.AutoAimAndRange;
 import frc.team5115.Classes.Software.Climber;
 import frc.team5115.Classes.Software.Drivetrain;
 import frc.team5115.Classes.Software.Intake;
+import frc.team5115.Classes.Software.PathAuto;
 import frc.team5115.Classes.Software.PhotonVision;
 import frc.team5115.Classes.Software.Shooter;
 import frc.team5115.Commands.Arm.StowArm;
-import frc.team5115.Commands.Auto.AutoCommandGroup;
 import frc.team5115.Commands.Auto.AutoPart1;
-import frc.team5115.Commands.Auto.CenterAuto;
-import frc.team5115.Commands.Auto.SideAuto;
 import frc.team5115.Commands.Climber.Climb;
 import frc.team5115.Commands.Climber.DeployClimber;
 import frc.team5115.Commands.Combo.IntakeSequence;
@@ -49,17 +43,12 @@ import frc.team5115.Commands.Combo.ScoreAmp;
 import frc.team5115.Commands.Combo.StopBoth;
 import frc.team5115.Commands.Combo.TriggerShoot;
 import frc.team5115.Commands.Combo.Vomit;
-import frc.team5115.Commands.Auto.AutoPart1;
 
 public class RobotContainer {
     private final Joystick joyDrive;
     private final Joystick joyManips;
     private final Drivetrain drivetrain;
     private final GenericEntry rookie;
-    private final GenericEntry doAuto;
-    private final GenericEntry doAutoLeft;
-    private final GenericEntry doAutoRight;
-    private final GenericEntry shootAngle;
     private final I2CHandler i2cHandler;
     private final NAVx navx;
     private final AutoPart1 autoPart1;
@@ -71,7 +60,6 @@ public class RobotContainer {
      private final DigitalInput reflectiveSensor;
     private AutoAimAndRange aAR;
     private Command autoCommandGroup;
-    private Paths paths;
     private final Climb climb;
     private final DeployClimber deployClimber;
     private final AimAndRangeFrontCam aimAndRangeFrontCam;
@@ -79,24 +67,13 @@ public class RobotContainer {
     private double angleOfDrivetrain = 0;
     private final PhotonVision p;
     boolean inRange = false;
-    private SideAuto sideAuto;
-    private CenterAuto centerAuto;
-    boolean finishedAuto = false;
-
     boolean fieldOriented = true;
 
     public RobotContainer() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
-
-        doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
-        doAutoLeft = shuffleboardTab.add("Do red auto?", false).getEntry();
-        doAutoRight = shuffleboardTab.add("Do blue auto?", false).getEntry();
-
         shuffleboardTab.addBoolean("In Rangle for 10ft Shot", () -> inRange);
-        shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
         shuffleboardTab.addBoolean("Field Oriented?", () -> fieldOriented);
-      
 
         joyDrive = new Joystick(0);
         joyManips = new Joystick(1);
@@ -136,6 +113,9 @@ public class RobotContainer {
         aimAndRangeFrontCam = new AimAndRangeFrontCam(hardwareDrivetrain, p);
         
         autoPart1 = new AutoPart1(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR);
+
+        PathAuto.registerCommands(intake, shooter, arm, reflectiveSensor);
+        PathAuto.loadPaths();
         configureButtonBindings();
     }
 
@@ -209,52 +189,27 @@ public class RobotContainer {
     }
 
     public void startAuto(){
-        finishedAuto = false;
-        if(doAutoRight.getBoolean(false)) {
-            angleOfDrivetrain = 60;
-            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false, angleOfDrivetrain);
-        }
-        else if(doAutoLeft.getBoolean(false)) {
-            angleOfDrivetrain = -60;
-            autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, true, angleOfDrivetrain);
-        }
-        else {
-            autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
-        } 
-
         drivetrain.resetEncoders();
-        //navx.resetNAVx();
+        // navx.resetNAVx();
         drivetrain.stop();
-        //drivetrain.init();
-        if(doAuto.getBoolean(false)){
-             System.out.println("running auto");
-             autoCommandGroup.schedule();
-        }
         drivetrain.init();
+        
         System.out.println("Starting auto");
         if (AutoBuilder.isConfigured()) {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
-            Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
-            test.schedule();
+            PathAuto.getTestAuto().andThen(new InstantCommand(this::printFinished)).schedule();
         } else {
             System.out.println("ERROR! AutoBuilder has not been configured!");
         }
     }
 
     private void printFinished() {
-        System.out.println("Path finished!");
-        finishedAuto = true;
-        
+        System.out.println("Auto finished!");
       }
 
     public void autoPeriod() {
-        // drivetrain.updateOdometry();
         drivetrain.updatePoseEstimator();
         aAR.if7();
         arm.updateController(i2cHandler);
-        if(finishedAuto == true){
-            drivetrain.stop();
-        }
     }
 
     public void startTeleop(){

@@ -1,38 +1,49 @@
 package frc.team5115.Classes.Software;
 
-import java.util.List;
-
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.team5115.Commands.Arm.DeployArm;
 import frc.team5115.Commands.Combo.PrepareShoot;
 import frc.team5115.Commands.Combo.TriggerShoot;
+import frc.team5115.Commands.Combo.WaitForSensorChange;
 
 public class PathAuto {
-    
-    public final static PathPlannerAuto SideAutoPt1 = new PathPlannerAuto("Example Auto");
-   // public final static Commmand PrepareShootClose =  
+    private static boolean commandsRegistered = false;
+    public static PathPlannerAuto testAuto;
 
-    public final static List<PathPlannerPath> sideAutoPt1Group = PathPlannerAuto.getPathGroupFromAutoFile("Example Auto");
-
-    public Command getSideAutoPt1(){
-        return SideAutoPt1;
- 
+    public static Command getTestAuto(){
+        return testAuto;
     }
 
-    public PathPlannerPath getSideAutoList(int i){
-        return sideAutoPt1Group.get(i);
+    public static void registerCommands(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor){
+        if (commandsRegistered) {
+            return;
+        }
+        commandsRegistered = true;
+
+        NamedCommands.registerCommand("PrepareShootClose", new PrepareShoot(intake, shooter, arm, sensor, 5, 5000, null, false));
+        NamedCommands.registerCommand("PrepareShootFar", new PrepareShoot(intake, shooter, arm, sensor, 32.4, 5000, null, false));
+        NamedCommands.registerCommand("TriggerShoot", new TriggerShoot(intake, shooter, arm, sensor));
+        NamedCommands.registerCommand("IntakeAuto", getAutoIntakeCommand(intake, shooter, arm, sensor));
     }
 
-    public void registerCommands(PrepareShoot prepareShoot, TriggerShoot triggerShoot){
-        NamedCommands.registerCommand("PrepareShootClose", prepareShoot);
-        NamedCommands.registerCommand("PrepareShootFar", prepareShoot);
-        NamedCommands.registerCommand("TriggerShoot", triggerShoot);
-
-
-
+    public static void loadPaths() {
+        testAuto = new PathPlannerAuto("Test Auto");
     }
 
+    private static Command getAutoIntakeCommand(Intake intake, Shooter shooter, Arm arm, DigitalInput sensor) {
+        return new InstantCommand(intake :: fastIn).andThen(
+            new DeployArm(intake, shooter, arm, 0).withTimeout(3).alongWith(new InstantCommand(intake :: fastIn)),
+            // Intake
+            new InstantCommand(intake :: fastIn),
+            new InstantCommand(shooter :: slow),
+            new WaitForSensorChange(true, sensor),
+            new InstantCommand(intake :: stop),
+            new InstantCommand(shooter :: stop)
+        );
+    }
 }

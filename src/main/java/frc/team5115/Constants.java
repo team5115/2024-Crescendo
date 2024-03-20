@@ -165,9 +165,9 @@ public class Constants{
 
 
     public static class VisionConstants {
-        public static final String leftCameraName = "Stereo_Vision_1";
+        public static final String leftCameraName = "Microsoft_LifeCam_HD-3000";
         public static final String rightCameraName = "Mirosoft_LifeCam_Cinema"; 
-        public static final String frontCameraName = "Microsoft_LifeCam_HD-3000";
+        public static final String frontCameraName = "Stereo_Vision_1";
         public static final String backCameraName = "OV5647"; 
 
         private static final double cameraPosZ = 0.2413; // 0.2413

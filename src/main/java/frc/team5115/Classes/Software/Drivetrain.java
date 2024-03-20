@@ -32,61 +32,42 @@ import frc.team5115.Classes.Hardware.NAVx;
 public class Drivetrain extends SubsystemBase {
     private final HardwareDrivetrain hardwareDrivetrain;
     private final NAVx navx;
-    private final HolonomicDriveController holonomicDriveController;
     private SwerveDrivePoseEstimator poseEstimator;
     private final PhotonVision photonVision;
-   
 
     public Drivetrain(HardwareDrivetrain hardwareDrivetrain, NAVx navx, PhotonVision photonVision) {
         this.hardwareDrivetrain = hardwareDrivetrain;
         this.photonVision = photonVision;
         this.navx = navx;
-        // ? do we need to tune the pid controllers for the holonomic drive controller?
-        holonomicDriveController = new HolonomicDriveController(
-            new PIDController(1, 0, 0),
-            new PIDController(1, 0, 0),
-            new ProfiledPIDController(1, 0, 0,
-            new TrapezoidProfile.Constraints(6.28, 3.14)));    
-            AutoBuilder.configureHolonomic(
+        
+        AutoBuilder.configureHolonomic(
             this::getEstimatedPose,
             this::resetPose,
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(1.8, 0.0, 0.0),
-                new PIDConstants(4.5, 0.0, 0.0),
+                new PIDConstants(1.4, 0.0, 0.0),
+                new PIDConstants(4.2, 0.0, 0.0),
                 .75,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
             () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-                    return false; // TODO make it do flipping for when at comp?
-        //   var alliance = DriverStation.getAlliance();
-        //   if (alliance.isPresent()) {
-        //       return alliance.get() == DriverStation.Alliance.Red;
-        //   }
-        //   return false;
-        },
+                return false; // TODO make it do flipping for when at comp?
+            },
             this
         );
-            }
-    
-
+    }
 
     public void init() {        
-            poseEstimator = new SwerveDrivePoseEstimator(
-                DriveConstants.kDriveKinematics,
-                navx.getYawRotation2D(),
-                hardwareDrivetrain.getModulePositions(),
-                getStartingPoseGuess()
-            );
+        poseEstimator = new SwerveDrivePoseEstimator(
+            DriveConstants.kDriveKinematics,
+            navx.getYawRotation2D(),
+            hardwareDrivetrain.getModulePositions(),
+            getStartingPoseGuess()
+        );
         resetPose(getStartingPoseGuess());
 
-        
-        
         System.out.println("Angle from navx" + navx.getYawDeg());
     }
 
@@ -153,13 +134,6 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
         // var x = photonVision.getEstimatedGlobalPose();
         // if(x.isPresent()) poseEstimator.addVisionMeasurement(x.get().estimatedPose.toPose2d(), x.get().timestampSeconds);
         return poseEstimator.getEstimatedPosition();
-    }
-
-    public void followTrajectoryState(Trajectory trajectory, double time) {
-        Trajectory.State goal = trajectory.sample(time);
-        ChassisSpeeds adjustedSpeeds = holonomicDriveController.calculate(getEstimatedPose(), goal, goal.poseMeters.getRotation());
-        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(adjustedSpeeds);
-        hardwareDrivetrain.setModuleStates(moduleStates);
     }
 
     public void updatePoseEstimator() {
