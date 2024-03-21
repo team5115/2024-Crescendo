@@ -125,20 +125,21 @@ public class Constants{
         public static final double DrivingEncoderVelocityFactor = ((WheelDiameterMeters * Math.PI)
             / DrivingMotorReduction) / 60.0; // meters per second
     
+        public static final double kDrivingMotorFreeSpeedRps = 5676 / 60;
         public static final double TurningEncoderPositionFactor = (2 * Math.PI); // radians
         public static final double TurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
-    
+        public static final double kDriveWheelFreeSpeedMps = (kDrivingMotorFreeSpeedRps * WheelCircumferenceMeters) / DrivingMotorReduction;
         public static final double TurningEncoderPositionPIDMinInput = 0; // radians
         public static final double TurningEncoderPositionPIDMaxInput = TurningEncoderPositionFactor; // radians
     
-        public static final double DrivingP = 0.04;
+        public static final double DrivingP = 0.5;
         public static final double DrivingI = 0;
         public static final double DrivingD = 0;
-        public static final double DrivingFF = 1;
+        public static final double DrivingFF = 1 / kDriveWheelFreeSpeedMps;
         public static final double DrivingMinOutput = -1;
         public static final double DrivingMaxOutput = 1;
     
-        public static final double TurningP = 1;
+        public static final double TurningP = 0.75;
         public static final double TurningI = 0;
         public static final double TurningD = 0;
         public static final double TurningFF = 0;
