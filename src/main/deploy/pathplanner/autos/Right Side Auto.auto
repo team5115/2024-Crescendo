@@ -1,0 +1,106 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.8,
+      "y": 4.6
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepareShootClose"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "right path 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Drive While Intaking"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepareShootFar"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "right path 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Drive While Intaking"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "right path 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PrepareShootFar"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TriggerShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
