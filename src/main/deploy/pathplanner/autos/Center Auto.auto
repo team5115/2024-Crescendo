@@ -6,15 +6,33 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot Up Close"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Center Auto 1"
+            "pathName": "Copy of Center Auto 1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Drive While Intaking"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Up Close"
           }
         }
       ]

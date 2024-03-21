@@ -43,6 +43,7 @@ public class DriveByTime extends Command {
 
     @Override
     public boolean isFinished() {
+        drivetrain.SwerveDrive(speed*direction, 0, 0, false, false, drivetrainAngle);
         return timer.get() > time;
     }
 

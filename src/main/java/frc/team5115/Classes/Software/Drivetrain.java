@@ -55,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
             new HolonomicPathFollowerConfig(
                 new PIDConstants(0.005, 0.0, 0.0),
                 new PIDConstants(0.05, 0.0, 0.0),
-                2,
+                6,
                 DriveConstants.kRobotRadius,
                 new ReplanningConfig()
             ),
@@ -91,8 +91,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private Pose2d getStartingPoseGuess() {
-        final double x = 1.35;
-        final double y = 5.55;
+        final double x = 15.35;
+        final double y = 5.69;
         return new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(0));
     }
 
@@ -162,7 +162,7 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
 
     public void updatePoseEstimator() {
         poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
-        System.out.println("Estimated Yaw: " + navx.getYawDeg());
+        //System.out.println("Estimated Yaw: " + navx.getYawDeg());
     }
 
     public void stop() {

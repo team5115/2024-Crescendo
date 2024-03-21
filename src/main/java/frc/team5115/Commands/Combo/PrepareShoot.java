@@ -15,7 +15,7 @@ public class PrepareShoot extends SequentialCommandGroup{
         addRequirements(intake, shooter, arm);
         addCommands(
             // deploy
-            new DeployArm(intake, shooter, arm, 5).withTimeout(4),
+            new DeployArm(intake, shooter, arm, 5).withTimeout(2),
             
             // rack
             new InstantCommand(intake :: out),
@@ -23,7 +23,7 @@ public class PrepareShoot extends SequentialCommandGroup{
             new WaitCommand(0.05),
             new InstantCommand(intake :: stop),
 
-            new DeployArm(intake, shooter, arm, angle, angleSupplier).withTimeout(8),
+            //new DeployArm(intake, shooter, arm, angle, angleSupplier).withTimeout(2),
 
             // spin up
             new SpinUpShooter(shooter, speed, neverExit).withTimeout(3) // TODO never exit won't really work if there is a timeout placed on this command

@@ -18,7 +18,7 @@ public class AutoShoot extends SequentialCommandGroup {
 
         addCommands(
             // shoot the preloaded note
-            new PrepareShoot(intake, shooter, arm, sensor, 15, 5000, null, false),
+            new PrepareShoot(intake, shooter, arm, sensor, 5, 5000, null, false),
             new TriggerShoot(intake, shooter, arm, sensor)
         );
     }

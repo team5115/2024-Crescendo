@@ -22,18 +22,8 @@ public class DriveWhileIntaking extends ParallelRaceGroup {
 
         addCommands(
             // distance is not used
-            new DriveByTime(drivetrain, 1.25, 1, 0.75)
-            
-            ,new InstantCommand(intake :: fastIn).andThen(
-             new DeployArm(intake, shooter, arm, -1).withTimeout(5).alongWith(new InstantCommand(intake :: fastIn)),
-                // Intake
-                new InstantCommand(intake :: fastIn),
-                new InstantCommand(shooter :: slow),
-                new WaitForSensorChange(true, sensor),
-                new InstantCommand(intake :: stop),
-                new InstantCommand(shooter :: stop),
-
-                new WaitCommand(0.5)
+            new DriveByTime(drivetrain, 1.25, 1, 4),
+            new IntakeSequence(intake, shooter, arm, sensor)
             )
             
             // // auto aim and range to line up the note while preparing shot
@@ -42,7 +32,7 @@ public class DriveWhileIntaking extends ParallelRaceGroup {
 
             // // trigger the shot
             // new TriggerShoot(intake, shooter, arm, sensor)
-        );
+        ;
     }
     
 }

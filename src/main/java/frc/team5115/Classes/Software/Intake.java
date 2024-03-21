@@ -14,7 +14,7 @@ public class Intake extends SubsystemBase {
     public Intake(int canId){
         motor = new CANSparkMax(canId, MotorType.kBrushless);
         motor.setIdleMode(IdleMode.kBrake);
-        motor.setSmartCurrentLimit(30);
+        motor.setSmartCurrentLimit(55);
         intakeEncoder = motor.getEncoder();
     }
 

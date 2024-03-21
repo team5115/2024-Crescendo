@@ -139,7 +139,7 @@ public class RobotContainer {
     public void configureButtonBindings() {
 
         NamedCommands.registerCommand("10ft Shot", new ShotFrom10Ft(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
-        NamedCommands.registerCommand("Drive While Intaking", new DriveWhileIntaking(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
+        NamedCommands.registerCommand("Drive While Intaking", new IntakeSequence(intake, shooter, arm, reflectiveSensor));
         NamedCommands.registerCommand("Shoot Up Close", new AutoShoot(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
 
         new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
@@ -235,9 +235,11 @@ public class RobotContainer {
         System.out.println("Starting auto");
         if (AutoBuilder.isConfigured()) {
             PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
-            //Command test2 = AutoBuilder.buildAuto("null");
+            Command test2 = AutoBuilder.buildAuto("Center Auto");
             Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
-            test.schedule();
+            test2.addRequirements(drivetrain);
+            //test.schedule();
+            test2.schedule();
         } else {
             System.out.println("ERROR! AutoBuilder has not been configured!");
         }
