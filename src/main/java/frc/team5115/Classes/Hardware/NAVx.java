@@ -109,7 +109,7 @@ public class NAVx implements Subsystem {
 	 * @return The yaw in `Rotation2d` form
 	 */
     public Rotation2d getYawRotation2D() {
-        return Rotation2d.fromDegrees(getYawDeg360());
+        return Rotation2d.fromDegrees(-getYawDeg());
     }
 
 	/**

@@ -93,7 +93,7 @@ public class Drivetrain extends SubsystemBase {
     private Pose2d getStartingPoseGuess() {
         final double x = 1.35;
         final double y = 5.55;
-        return new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(180));
+        return new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(0));
     }
 
     /**
@@ -120,9 +120,7 @@ public class Drivetrain extends SubsystemBase {
             turn *= 0.1;
             forward *= 0.1;
         }else{
-            right *= 0.2;
-            turn *= 0.2;
-            forward *= 0.2;
+
         }
 
         if (!fieldOriented) {
@@ -164,7 +162,7 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
 
     public void updatePoseEstimator() {
         poseEstimator.update(navx.getYawRotation2D(), hardwareDrivetrain.getModulePositions());
-        System.out.println("Estimated Pose: " + poseEstimator.getEstimatedPosition());
+        System.out.println("Estimated Yaw: " + navx.getYawDeg());
     }
 
     public void stop() {
