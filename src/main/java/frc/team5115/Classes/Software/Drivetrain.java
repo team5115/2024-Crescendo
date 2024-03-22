@@ -169,6 +169,10 @@ public void SwerveDrive(double forward, double turn, double right, boolean rooki
         hardwareDrivetrain.drive(0, 0, 0, false, false);
     }
 
+    public void driveForward(){
+        hardwareDrivetrain.drive(1, 0, 0, false, false);
+    }
+
 	/**
 	 * Resets the NAVx.
 	 */

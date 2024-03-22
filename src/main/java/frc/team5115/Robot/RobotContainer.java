@@ -25,6 +25,7 @@ import frc.team5115.Classes.Hardware.HardwareClimber;
 import frc.team5115.Classes.Hardware.HardwareDrivetrain;
 import frc.team5115.Classes.Hardware.HardwareShooter;
 import frc.team5115.Classes.Hardware.I2CHandler;
+import frc.team5115.Commands.Combo.AutoIntakeSequence;
 import frc.team5115.Classes.Hardware.LedStrip;
 import frc.team5115.Classes.Hardware.NAVx;
 import frc.team5115.Classes.Software.AimAndRangeFrontCam;
@@ -139,7 +140,7 @@ public class RobotContainer {
     public void configureButtonBindings() {
 
         NamedCommands.registerCommand("10ft Shot", new ShotFrom10Ft(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
-        NamedCommands.registerCommand("Drive While Intaking", new IntakeSequence(intake, shooter, arm, reflectiveSensor));
+        NamedCommands.registerCommand("Drive While Intaking", new AutoIntakeSequence(intake, shooter, arm, reflectiveSensor).alongWith(new InstantCommand(drivetrain :: driveForward)));
         NamedCommands.registerCommand("Shoot Up Close", new AutoShoot(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
 
         new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
@@ -236,8 +237,8 @@ public class RobotContainer {
         if (AutoBuilder.isConfigured()) {
             PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
             Command test2 = AutoBuilder.buildAuto("Center Auto");
-            Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
-            test2.addRequirements(drivetrain);
+            //Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
+            //test2.addRequirements(drivetrain);
             //test.schedule();
             test2.schedule();
         } else {

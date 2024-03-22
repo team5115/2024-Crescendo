@@ -139,7 +139,7 @@ public class Constants{
         public static final double DrivingMinOutput = -1;
         public static final double DrivingMaxOutput = 1;
     
-        public static final double TurningP = 0.75;
+        public static final double TurningP = 0.45;
         public static final double TurningI = 0;
         public static final double TurningD = 0;
         public static final double TurningFF = 0;
