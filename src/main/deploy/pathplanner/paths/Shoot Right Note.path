@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 13.738234333611524,
-        "y": 7.520301897746653
+        "y": 3.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.694255959945615,
-        "y": 6.743350629553233
+        "x": 14.075401865089445,
+        "y": 4.236583330309518
       },
       "isLocked": false,
-      "linkedName": "right note1"
+      "linkedName": "intook the other note"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 5.585253456221199
       },
       "prevControl": {
-        "x": 14.867012591168038,
-        "y": 5.849123698247399
+        "x": 15.028266627961827,
+        "y": 5.08683188794949
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "end of left note"
+      "linkedName": "finish 4 note"
     }
   ],
   "rotationTargets": [],
