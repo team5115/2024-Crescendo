@@ -100,7 +100,7 @@ public class Drivetrain extends SubsystemBase {
 	 * Sets the encoder values to 0.
 	 */
     public void resetEncoders() {
-        navx.resetNAVx();
+        //navx.resetNAVx();
         hardwareDrivetrain.resetEncoders();
     }
     

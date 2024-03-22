@@ -269,7 +269,7 @@ public class RobotContainer {
 
     public void startTeleop(){
         if(autoCommandGroup != null) autoCommandGroup.cancel();
-        drivetrain.resetEncoders();
+        //drivetrain.resetEncoders();
         System.out.println("Starting teleop");
     }
 
