@@ -87,7 +87,7 @@ public class RobotContainer {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
 
-        doAuto = shuffleboardTab.add("Do auto at all?", false).getEntry();
+        doAuto = shuffleboardTab.add("Do path auto?", false).getEntry();
         doAutoLeft = shuffleboardTab.add("Do red auto?", false).getEntry();
         doAutoRight = shuffleboardTab.add("Do blue auto?", false).getEntry();
 
@@ -211,7 +211,12 @@ public class RobotContainer {
     }
 
     public void startAuto(){
-        finishedAuto = false;
+        drivetrain.resetEncoders();
+        navx.resetNAVx();
+        drivetrain.stop();
+        drivetrain.init();
+
+        Command test2 = new InstantCommand();
         if(doAutoRight.getBoolean(false)) {
             angleOfDrivetrain = 60;
             autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false, angleOfDrivetrain);
@@ -221,29 +226,28 @@ public class RobotContainer {
             autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, true, angleOfDrivetrain);
         }
         else {
+        if (AutoBuilder.isConfigured()) {
+            test2 = AutoBuilder.buildAuto("Three Note Auto");
             autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
+        } else {
+            System.out.println("AutoBuilder has not been configured!");
+            autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
+        }
         } 
 
-        drivetrain.resetEncoders();
-        navx.resetNAVx();
-        drivetrain.stop();
-        //drivetrain.init();
-        if(doAuto.getBoolean(false)){
+
+        if(!doAuto.getBoolean(false)){
              System.out.println("running auto");
              autoCommandGroup.schedule();
         }
-        drivetrain.init();
-        System.out.println("Starting auto");
-        if (AutoBuilder.isConfigured()) {
-            PathPlannerPath path = PathPlannerPath.fromPathFile("Center Auto 1");
-            Command test2 = AutoBuilder.buildAuto("Center Auto");
-            //Command test = AutoBuilder.followPath(path).andThen(new InstantCommand(this::printFinished));
-            //test2.addRequirements(drivetrain);
-            //test.schedule();
+        else{
+            if(AutoBuilder.isConfigured()){
             test2.schedule();
-        } else {
-            System.out.println("ERROR! AutoBuilder has not been configured!");
+            }
+            System.out.println("running path auto");
         }
+        System.out.println("Starting auto");
+
     }
 
     private void printFinished() {
@@ -255,7 +259,7 @@ public class RobotContainer {
     public void autoPeriod() {
         // drivetrain.updateOdometry();
         drivetrain.updatePoseEstimator();
-        aAR.if7();
+        //aAR.if7();
         arm.updateController(i2cHandler);
         if(finishedAuto == true){
         
