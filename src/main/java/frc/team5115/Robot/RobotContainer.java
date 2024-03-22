@@ -140,7 +140,7 @@ public class RobotContainer {
     public void configureButtonBindings() {
 
         NamedCommands.registerCommand("10ft Shot", new ShotFrom10Ft(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
-        NamedCommands.registerCommand("Drive While Intaking", new AutoIntakeSequence(intake, shooter, arm, reflectiveSensor).alongWith(new InstantCommand(drivetrain :: driveForward)));
+        NamedCommands.registerCommand("Drive While Intaking", new AutoIntakeSequence(intake, shooter, arm, reflectiveSensor, drivetrain));
         NamedCommands.registerCommand("Shoot Up Close", new AutoShoot(true, drivetrain, intake, shooter, arm, reflectiveSensor, aAR));
 
         new JoystickButton(joyManips, XboxController.Button.kLeftBumper.value)
@@ -259,7 +259,7 @@ public class RobotContainer {
         arm.updateController(i2cHandler);
         if(finishedAuto == true){
         
-            drivetrain.stop();
+            //drivetrain.stop();
         }
     }
 

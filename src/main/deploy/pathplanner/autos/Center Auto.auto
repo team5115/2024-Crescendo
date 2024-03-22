@@ -18,9 +18,35 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Drive While Intaking"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Drive While Intaking"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "New New New Path"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {

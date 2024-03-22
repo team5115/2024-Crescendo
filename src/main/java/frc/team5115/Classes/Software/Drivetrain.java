@@ -53,7 +53,7 @@ public class Drivetrain extends SubsystemBase {
             hardwareDrivetrain::getChassisSpeeds,
             hardwareDrivetrain::driveChassisSpeeds,
             new HolonomicPathFollowerConfig(
-                new PIDConstants(0.005, 0.0, 0.0),
+                new PIDConstants(0.05, 0.0, 0.0),
                 new PIDConstants(0.05, 0.0, 0.0),
                 6,
                 DriveConstants.kRobotRadius,

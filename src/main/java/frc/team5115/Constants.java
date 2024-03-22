@@ -132,7 +132,7 @@ public class Constants{
         public static final double TurningEncoderPositionPIDMinInput = 0; // radians
         public static final double TurningEncoderPositionPIDMaxInput = TurningEncoderPositionFactor; // radians
     
-        public static final double DrivingP = 0.5;
+        public static final double DrivingP = 0.4;
         public static final double DrivingI = 0;
         public static final double DrivingD = 0;
         public static final double DrivingFF = 1 / kDriveWheelFreeSpeedMps;
