@@ -88,8 +88,8 @@ public class RobotContainer {
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
 
         doAuto = shuffleboardTab.add("Do path auto?", false).getEntry();
-        doAutoLeft = shuffleboardTab.add("Do red auto?", false).getEntry();
-        doAutoRight = shuffleboardTab.add("Do blue auto?", false).getEntry();
+        doAutoLeft = shuffleboardTab.add("Do red auto? (left)", false).getEntry();
+        doAutoRight = shuffleboardTab.add("Do blue auto? (right)", false).getEntry();
 
         shuffleboardTab.addBoolean("In Range for 10ft Shot", () -> inRange);
         shootAngle = shuffleboardTab.add("Shooter angle", 5).getEntry();
@@ -167,7 +167,7 @@ public class RobotContainer {
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
 
         new JoystickButton(joyManips, XboxController.Button.kB.value)
-        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 5, 5000, null, true)
+        .onTrue(new PrepareShoot(intake, shooter, arm, reflectiveSensor, 15, 5000, null, true)
         .withInterruptBehavior(InterruptionBehavior.kCancelSelf))
         .onFalse(new TriggerShoot(intake, shooter, arm, reflectiveSensor)
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming));
