@@ -26,9 +26,9 @@ public class AutoIntakeSequence extends SequentialCommandGroup {
                 new WaitForSensorChange(true, sensor),
                 new InstantCommand(d :: stop),
                 new InstantCommand(intake :: stop),
-                new InstantCommand(shooter :: stop),
+                new InstantCommand(shooter :: stop)
 
-                new WaitCommand(0.5)
+                //new WaitCommand(0.5)
                 
             );
         }

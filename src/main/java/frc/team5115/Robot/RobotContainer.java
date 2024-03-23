@@ -82,8 +82,10 @@ public class RobotContainer {
     boolean finishedAuto = false;
 
     boolean fieldOriented = true;
+    Command test2;
 
     public RobotContainer() {
+        test2 = new InstantCommand(this :: print);
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("SmartDashboard");
         rookie = shuffleboardTab.add("Rookie?", false).getEntry();
 
@@ -216,7 +218,7 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        Command test2 = new InstantCommand(this :: print);
+        test2 = new InstantCommand(this :: print);
         if(doAutoRight.getBoolean(false)) {
             angleOfDrivetrain = 60;
             autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false, angleOfDrivetrain);
@@ -228,10 +230,8 @@ public class RobotContainer {
         else {
         if (AutoBuilder.isConfigured()) {
             test2 = AutoBuilder.buildAuto("Four Note Auto");
-            autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
         } else {
             System.out.println("AutoBuilder has not been configured!");
-            autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
         }
         } 
 
@@ -273,6 +273,7 @@ public class RobotContainer {
 
     public void startTeleop(){
         if(autoCommandGroup != null) autoCommandGroup.cancel();
+        if(test2 != null) test2.cancel();
         //drivetrain.resetEncoders();
         System.out.println("Starting teleop");
     }

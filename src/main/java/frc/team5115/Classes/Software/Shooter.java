@@ -49,7 +49,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void slow() {
-        hardwareShooter.setNormalized(0.08);
+        hardwareShooter.setNormalized(0.08, 0.08, 0);
     }
 
     public void ampRackSpeed() {
