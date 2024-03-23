@@ -227,7 +227,7 @@ public class RobotContainer {
         }
         else {
         if (AutoBuilder.isConfigured()) {
-            test2 = AutoBuilder.buildAuto("Three Note Auto");
+            test2 = AutoBuilder.buildAuto("Four Note Auto");
             autoCommandGroup = new CenterAuto(fieldOriented, drivetrain, intake, shooter, arm, reflectiveSensor, aAR);
         } else {
             System.out.println("AutoBuilder has not been configured!");
