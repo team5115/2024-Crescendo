@@ -19,14 +19,7 @@ public class CenterAuto extends SequentialCommandGroup {
         addCommands(
             // shoot the preloaded note
             new PrepareShoot(intake, shooter, arm, sensor, 15, 5000, null, false),
-            new TriggerShoot(intake, shooter, arm, sensor),
-
-            // drive 8 ft at 3 ft/s while intaking to grab another note
-            new DriveWhileIntaking(actuallyRun, drivetrain, intake, shooter, arm, sensor, autoAimAndRange),
-            //  auto aim and range to line up the note while preparing shot
-            new AutoPart1(drivetrain, actuallyRun, intake, shooter, arm, sensor, autoAimAndRange),
-            //  trigger the shot
-             new TriggerShoot(intake, shooter, arm, sensor)
+            new TriggerShoot(intake, shooter, arm, sensor)
         );
     }
     

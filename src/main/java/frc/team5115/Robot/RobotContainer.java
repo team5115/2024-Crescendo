@@ -216,7 +216,7 @@ public class RobotContainer {
         drivetrain.stop();
         drivetrain.init();
 
-        Command test2 = new InstantCommand();
+        Command test2 = new InstantCommand(this :: print);
         if(doAutoRight.getBoolean(false)) {
             angleOfDrivetrain = 60;
             autoCommandGroup = new SideAuto(drivetrain, fieldOriented, intake, shooter, arm, reflectiveSensor, aAR, p, navx, false, angleOfDrivetrain);
@@ -265,6 +265,10 @@ public class RobotContainer {
         
             //drivetrain.stop();
         }
+    }
+
+    public void print(){
+        System.out.println("Path Auto Not Working");
     }
 
     public void startTeleop(){
